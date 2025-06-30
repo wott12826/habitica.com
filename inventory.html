@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habitica - Inventory</title>
+  <link rel="shortcut icon" href="static/icons/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --main-purple: #6c5ce7;
+      --main-dark: #2d1436;
+      --light-bg: #f8f9fa;
+      --card-bg: #fff;
+      --border: #e9ecef;
+      --gray: #888;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      color: #222;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--main-purple);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-right: 2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      flex: 1;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+      position: relative;
+    }
+    .nav a.active, .nav a:hover {
+      opacity: 1;
+    }
+    .nav a.active::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .header-actions .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .header-actions .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--main-purple);
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .inventory-container {
+      max-width: 1400px;
+      margin: 2.5rem auto 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .sidebar {
+      width: 220px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1.5rem 1rem 1.5rem 1rem;
+      min-width: 180px;
+    }
+    .sidebar h4 {
+      color: var(--main-purple);
+      margin-bottom: 1rem;
+      font-size: 1.08rem;
+    }
+    .filter-group {
+      margin-bottom: 1.2rem;
+    }
+    .filter-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.98rem;
+      color: #444;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    .filter-group input[type="checkbox"] {
+      accent-color: var(--main-purple);
+    }
+    .main-inventory {
+      flex: 1;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .tabs {
+      display: flex;
+      gap: 2rem;
+      border-bottom: 2px solid #ececec;
+      margin-bottom: 1.5rem;
+    }
+    .tab {
+      padding: 0.7rem 1.2rem;
+      font-weight: 600;
+      color: var(--main-purple);
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: border 0.2s, color 0.2s;
+    }
+    .tab.active {
+      border-bottom: 3px solid var(--main-purple);
+      color: #222;
+      background: #f3f0ff;
+      border-radius: 8px 8px 0 0;
+    }
+    .tab-content {
+      margin-top: 1.5rem;
+    }
+    .items-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+    }
+    .item-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1.2rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border: 1.5px solid #e9ecef;
+      min-height: 120px;
+    }
+    .item-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #6c5ce7;
+    }
+    .item-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+      text-align: center;
+    }
+    .item-desc {
+      color: #888;
+      font-size: 0.93rem;
+      text-align: center;
+    }
+    .empty-state {
+      color: #bbb;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+    @media (max-width: 1100px) {
+      .inventory-container { flex-direction: column; }
+      .sidebar { width: 100%; min-width: 0; margin-bottom: 1.5rem; }
+      .main-inventory { width: 100%; }
+    }
+    @media (max-width: 600px) {
+      .header-inner, .inventory-container { padding: 0 0.5rem; }
+      .items-list { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">Habitica</a>
+      <nav class="nav">
+        <a href="dashboard.html">Tasks</a>
+        <a href="#" class="active">Inventory</a>
+        <a href="#">Shops</a>
+        <a href="#">Party</a>
+        <a href="#">Guild</a>
+        <a href="#">Challenges</a>
+        <a href="#">Help</a>
+      </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+        <span class="avatar"><i class="fa-solid fa-user"></i></span>
+      </div>
+    </div>
+  </header>
+  <div class="inventory-container">
+    <aside class="sidebar">
+      <h4>Filters</h4>
+      <div class="filter-group">
+        <label><input type="checkbox" checked disabled> Eggs</label>
+        <label><input type="checkbox" disabled> Hatching Potions</label>
+        <label><input type="checkbox" disabled> Food & Saddles</label>
+        <label><input type="checkbox" disabled> Special</label>
+        <label><input type="checkbox" disabled> Quests</label>
+      </div>
+    </aside>
+    <main class="main-inventory">
+      <div class="tabs">
+        <button class="tab active" data-tab="items">Items</button>
+        <button class="tab" data-tab="equipment">Equipment</button>
+        <button class="tab" data-tab="pets">Pets & Mounts</button>
+      </div>
+      <div class="tab-content" id="tab-items">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
+            <div class="item-title">Wolf Egg</div>
+            <div class="item-desc">A mysterious egg. What will hatch?</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
+            <div class="item-title">Tiger Cub Egg</div>
+            <div class="item-desc">A rare egg. Maybe a tiger cub?</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
+            <div class="item-title">Panda Egg</div>
+            <div class="item-desc">A cute panda is waiting inside!</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-equipment" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-hat-wizard"></i></div>
+            <div class="item-title">Wizard Hat</div>
+            <div class="item-desc">+5 Intelligence</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="item-title">Warrior Shield</div>
+            <div class="item-desc">+5 Defense</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-pets" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-dog"></i></div>
+            <div class="item-title">Wolf Pet</div>
+            <div class="item-desc">Loyal companion</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-cat"></i></div>
+            <div class="item-title">Tiger Cub Pet</div>
+            <div class="item-desc">Fierce and playful</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">iOS App</a></li>
+          <li><a href="#">Android App</a></li>
+          <li><a href="#">Group Plans</a></li>
+          <li><a href="#">How it works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Community Guidelines</a></li>
+          <li><a href="#">Hall of Heroes</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Translate Habitica</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Report a Problem</a></li>
+          <li><a href="#">Suggest a Feature</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="#">API v3</a></li>
+          <li><a href="#">Data Display</a></li>
+          <li><a href="#">Blacksmiths Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Habitica. All rights reserved.
+    </div>
+  </footer>
+  <script>
+    // Simple tab switcher
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+        document.getElementById('tab-' + this.dataset.tab).style.display = '';
+      });
+    });
+  </script>
+</body>
+</html> 

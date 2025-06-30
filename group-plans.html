@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habitica - Group Plans</title>
+  <link rel="shortcut icon" href="static/icons/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --main-purple: #6c5ce7;
+      --main-dark: #2d1436;
+      --light-bg: #f8f9fa;
+      --card-bg: #fff;
+      --border: #e9ecef;
+      --gray: #888;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      color: #222;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--main-purple);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-right: 2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      flex: 1;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+      position: relative;
+    }
+    .nav a.active, .nav a:hover {
+      opacity: 1;
+    }
+    .nav a.active::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .header-actions .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .header-actions .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--main-purple);
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .group-banner {
+      background: linear-gradient(90deg, #a29bfe 0%, #6c5ce7 100%);
+      color: #fff;
+      border-radius: 18px;
+      margin: 2.5rem auto 2rem auto;
+      max-width: 900px;
+      padding: 3rem 2rem 2.5rem 2rem;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 4px 24px rgba(108,92,231,0.08);
+    }
+    .group-banner .group-avatars {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .group-banner .group-avatars .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      color: var(--main-purple);
+      border: 3px solid #a29bfe;
+    }
+    .group-banner h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+    }
+    .group-banner p {
+      font-size: 1.15rem;
+      margin-bottom: 1.2rem;
+      opacity: 0.95;
+    }
+    .group-banner .price {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: #ffeaa7;
+    }
+    .group-banner .cta-btn {
+      background: #fff;
+      color: var(--main-purple);
+      border: none;
+      border-radius: 8px;
+      padding: 0.9rem 2.2rem;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 1.2rem;
+    }
+    .group-banner .cta-btn:hover {
+      background: #f3f0ff;
+    }
+    .group-banner .note {
+      font-size: 0.95rem;
+      color: #dfe6e9;
+      margin-top: 0.7rem;
+    }
+    .group-tasks-section {
+      max-width: 900px;
+      margin: 0 auto 2.5rem auto;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 2rem 2rem 1.5rem 2rem;
+    }
+    .group-tasks-section h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+      color: var(--main-purple);
+    }
+    .group-tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .group-task-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.05rem;
+      border-left: 4px solid #6c5ce7;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    }
+    .group-task-card .task-title {
+      font-weight: 600;
+    }
+    .group-task-card .task-status {
+      margin-left: auto;
+      color: #00b894;
+      font-weight: 600;
+      font-size: 0.98rem;
+    }
+    .footer {
+      background: #f8f9fa;
+      color: #888;
+      margin-top: 3rem;
+      padding: 2.5rem 0 1.2rem 0;
+      border-top: 1px solid #e9ecef;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .footer-section h4 {
+      color: var(--main-purple);
+      margin-bottom: 0.7rem;
+      font-size: 1.08rem;
+    }
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-section ul li a {
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-section ul li a:hover {
+      color: #6c5ce7;
+    }
+    .footer-bottom {
+      text-align: center;
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 700px) {
+      .group-banner, .group-tasks-section { padding: 1.2rem 0.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">Habitica</a>
+      <nav class="nav">
+        <a href="dashboard.html">Tasks</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="market.html">Shops</a>
+        <a href="#" class="active">Group</a>
+        <a href="#">Guild</a>
+        <a href="#">Challenges</a>
+        <a href="#">Help</a>
+      </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+        <span class="avatar"><i class="fa-solid fa-user"></i></span>
+      </div>
+    </div>
+  </header>
+  <section class="group-banner">
+    <div class="group-avatars">
+      <span class="avatar"><i class="fa-solid fa-user-ninja"></i></span>
+      <span class="avatar"><i class="fa-solid fa-hat-wizard"></i></span>
+      <span class="avatar"><i class="fa-solid fa-dog"></i></span>
+      <span class="avatar"><i class="fa-solid fa-user-astronaut"></i></span>
+    </div>
+    <h1>Need more people in your team?</h1>
+    <p>Manage a small team or organize work at home? Group Plans give you exclusive access to a team dashboard and chat, created just for you and your teammates!</p>
+    <div class="price">Just $9 per month + $3 per additional member</div>
+    <button class="cta-btn">Start</button>
+    <div class="note">*billed monthly</div>
+  </section>
+  <section class="group-tasks-section">
+    <h2>Team Tasks</h2>
+    <div class="group-tasks-list">
+      <div class="group-task-card">
+        <span class="task-title">Take Odie for a walk</span>
+        <span class="task-status"><i class="fa-solid fa-check-square"></i> Done</span>
+      </div>
+      <div class="group-task-card">
+        <span class="task-title">Prepare tomorrow's lunch</span>
+        <span class="task-status"><i class="fa-regular fa-square"></i> To Do</span>
+      </div>
+      <div class="group-task-card">
+        <span class="task-title">Take out the trash and recycling</span>
+        <span class="task-status"><i class="fa-regular fa-square"></i> To Do</span>
+      </div>
+    </div>
+  </section>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">iOS App</a></li>
+          <li><a href="#">Android App</a></li>
+          <li><a href="#">Group Plans</a></li>
+          <li><a href="#">How it works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Community Guidelines</a></li>
+          <li><a href="#">Hall of Heroes</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Translate Habitica</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Report a Problem</a></li>
+          <li><a href="#">Suggest a Feature</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="#">API v3</a></li>
+          <li><a href="#">Data Display</a></li>
+          <li><a href="#">Blacksmiths Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Habitica. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html> 

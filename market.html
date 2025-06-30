@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habitica - Market</title>
+  <link rel="shortcut icon" href="static/icons/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --main-purple: #6c5ce7;
+      --main-dark: #2d1436;
+      --light-bg: #f8f9fa;
+      --card-bg: #fff;
+      --border: #e9ecef;
+      --gray: #888;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      color: #222;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--main-purple);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-right: 2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      flex: 1;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+      position: relative;
+    }
+    .nav a.active, .nav a:hover {
+      opacity: 1;
+    }
+    .nav a.active::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .header-actions .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .header-actions .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--main-purple);
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .market-container {
+      max-width: 1400px;
+      margin: 2.5rem auto 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .sidebar {
+      width: 220px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1.5rem 1rem 1.5rem 1rem;
+      min-width: 180px;
+    }
+    .sidebar h4 {
+      color: var(--main-purple);
+      margin-bottom: 1rem;
+      font-size: 1.08rem;
+    }
+    .filter-group {
+      margin-bottom: 1.2rem;
+    }
+    .filter-group label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.98rem;
+      color: #444;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    .filter-group input[type="checkbox"] {
+      accent-color: var(--main-purple);
+    }
+    .main-market {
+      flex: 1;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .tabs {
+      display: flex;
+      gap: 2rem;
+      border-bottom: 2px solid #ececec;
+      margin-bottom: 1.5rem;
+    }
+    .tab {
+      padding: 0.7rem 1.2rem;
+      font-weight: 600;
+      color: var(--main-purple);
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      cursor: pointer;
+      font-size: 1.05rem;
+      transition: border 0.2s, color 0.2s;
+    }
+    .tab.active {
+      border-bottom: 3px solid var(--main-purple);
+      color: #222;
+      background: #f3f0ff;
+      border-radius: 8px 8px 0 0;
+    }
+    .tab-content {
+      margin-top: 1.5rem;
+    }
+    .market-banner {
+      width: 100%;
+      height: 90px;
+      background: linear-gradient(90deg, #a29bfe 0%, #6c5ce7 100%);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 1.3rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+    .market-banner .banner-pixelart {
+      position: absolute;
+      left: 30px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.5rem;
+      opacity: 0.7;
+    }
+    .market-banner .banner-pixelart-right {
+      left: auto;
+      right: 30px;
+    }
+    .items-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.2rem;
+    }
+    .item-card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 1.2rem 0.7rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      border: 1.5px solid #e9ecef;
+      min-height: 120px;
+      position: relative;
+    }
+    .item-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+      color: #6c5ce7;
+    }
+    .item-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.2rem;
+      text-align: center;
+    }
+    .item-desc {
+      color: #888;
+      font-size: 0.93rem;
+      text-align: center;
+    }
+    .item-cost {
+      margin-top: 0.5rem;
+      color: #a29bfe;
+      font-weight: 600;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .item-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #6c5ce7;
+      color: #fff;
+      font-size: 0.8rem;
+      padding: 0.2rem 0.7rem;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+    .empty-state {
+      color: #bbb;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+    @media (max-width: 1100px) {
+      .market-container { flex-direction: column; }
+      .sidebar { width: 100%; min-width: 0; margin-bottom: 1.5rem; }
+      .main-market { width: 100%; }
+    }
+    @media (max-width: 600px) {
+      .header-inner, .market-container { padding: 0 0.5rem; }
+      .items-list { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="dashboard.html" class="logo">Habitica</a>
+      <nav class="nav">
+        <a href="dashboard.html">Tasks</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="#" class="active">Shops</a>
+        <a href="#">Party</a>
+        <a href="#">Guild</a>
+        <a href="#">Challenges</a>
+        <a href="#">Help</a>
+      </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+        <span class="avatar"><i class="fa-solid fa-user"></i></span>
+      </div>
+    </div>
+  </header>
+  <div class="market-container">
+    <aside class="sidebar">
+      <h4>Filters</h4>
+      <div class="filter-group">
+        <label><input type="checkbox" checked disabled> Equipment</label>
+        <label><input type="checkbox" disabled> Eggs</label>
+        <label><input type="checkbox" disabled> Hatching Potions</label>
+        <label><input type="checkbox" disabled> Food & Saddles</label>
+        <label><input type="checkbox" disabled> Special</label>
+      </div>
+    </aside>
+    <main class="main-market">
+      <div class="tabs">
+        <button class="tab active" data-tab="market">Market</button>
+        <button class="tab" data-tab="quests">Quests</button>
+        <button class="tab" data-tab="styles">Styles</button>
+        <button class="tab" data-tab="seasonal">Seasonal Shop</button>
+        <button class="tab" data-tab="timetravelers">Time Travelers</button>
+      </div>
+      <div class="market-banner">
+        <span class="banner-pixelart"><i class="fa-solid fa-store"></i></span>
+        Welcome to the Market! Buy equipment, pets, and more.
+        <span class="banner-pixelart banner-pixelart-right"><i class="fa-solid fa-dragon"></i></span>
+      </div>
+      <div class="tab-content" id="tab-market">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-hat-wizard"></i></div>
+            <div class="item-title">Wizard Hat</div>
+            <div class="item-cost"><i class="fa-solid fa-coins"></i> 90</div>
+            <div class="item-badge">Featured</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-shield-halved"></i></div>
+            <div class="item-title">Warrior Shield</div>
+            <div class="item-cost"><i class="fa-solid fa-coins"></i> 70</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+            <div class="item-title">Magic Wand</div>
+            <div class="item-cost"><i class="fa-solid fa-coins"></i> 60</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
+            <div class="item-title">Food</div>
+            <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
+            <div class="item-title">Wolf Egg</div>
+            <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-quests" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+            <div class="item-title">Quest: Defeat the Skeleton</div>
+            <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+          </div>
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+            <div class="item-title">Quest: Find the Lost Pet</div>
+            <div class="item-cost"><i class="fa-solid fa-gem"></i> 2</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-styles" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-hat-cowboy"></i></div>
+            <div class="item-title">Cowboy Hat</div>
+            <div class="item-cost"><i class="fa-solid fa-gem"></i> 5</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-seasonal" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="item-title">Royal Crown</div>
+            <div class="item-cost"><i class="fa-solid fa-gem"></i> 10</div>
+            <div class="item-badge">Seasonal</div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content" id="tab-timetravelers" style="display:none">
+        <div class="items-list">
+          <div class="item-card">
+            <div class="item-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div class="item-title">Time Traveler's Watch</div>
+            <div class="item-cost"><i class="fa-solid fa-gem"></i> 20</div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">iOS App</a></li>
+          <li><a href="#">Android App</a></li>
+          <li><a href="#">Group Plans</a></li>
+          <li><a href="#">How it works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Community Guidelines</a></li>
+          <li><a href="#">Hall of Heroes</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Translate Habitica</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Report a Problem</a></li>
+          <li><a href="#">Suggest a Feature</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="#">API v3</a></li>
+          <li><a href="#">Data Display</a></li>
+          <li><a href="#">Blacksmiths Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Habitica. All rights reserved.
+    </div>
+  </footer>
+  <script>
+    // Simple tab switcher
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
+        document.getElementById('tab-' + this.dataset.tab).style.display = '';
+      });
+    });
+  </script>
+</body>
+</html> 
