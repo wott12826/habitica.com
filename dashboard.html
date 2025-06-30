@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Habitica - Dashboard</title>
+  <link rel="shortcut icon" href="static/icons/favicon.ico">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --main-purple: #6c5ce7;
+      --main-dark: #2d1436;
+      --light-bg: #f8f9fa;
+      --card-bg: #fff;
+      --border: #e9ecef;
+      --gray: #888;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--light-bg);
+      color: #222;
+      min-height: 100vh;
+    }
+    .header {
+      background: var(--main-purple);
+      color: #fff;
+      padding: 0 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      height: 64px;
+    }
+    .logo {
+      font-weight: 800;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      margin-right: 2rem;
+      color: #fff;
+      text-decoration: none;
+    }
+    .nav {
+      display: flex;
+      gap: 2rem;
+      flex: 1;
+    }
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      opacity: 0.9;
+      transition: opacity 0.2s;
+      position: relative;
+    }
+    .nav a.active, .nav a:hover {
+      opacity: 1;
+    }
+    .nav a.active::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .header-actions .icon-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+      margin-left: 0.5rem;
+    }
+    .header-actions .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--main-purple);
+      font-weight: bold;
+      margin-left: 0.5rem;
+    }
+    .dashboard {
+      max-width: 1400px;
+      margin: 2.5rem auto 0 auto;
+      display: flex;
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .profile {
+      width: 260px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 220px;
+    }
+    .profile .avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .profile .username {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .profile .userid {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 0.7rem;
+      text-align: center;
+    }
+    .profile .level {
+      font-size: 0.95rem;
+      color: var(--main-purple);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+    .profile .bar-label {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 0.2rem;
+    }
+    .profile .bar {
+      width: 100%;
+      height: 12px;
+      background: #eee;
+      border-radius: 6px;
+      margin-bottom: 0.5rem;
+      overflow: hidden;
+    }
+    .profile .bar-inner {
+      height: 100%;
+      border-radius: 6px;
+    }
+    .profile .bar-inner.xp {
+      background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+      width: 50%;
+    }
+    .profile .bar-inner.hp {
+      background: linear-gradient(90deg, #00b894, #00cec9);
+      width: 100%;
+    }
+    .profile .bar-label span {
+      float: right;
+    }
+    .profile .stats {
+      display: flex;
+      gap: 1.2rem;
+      margin: 1.2rem 0 0.5rem 0;
+      justify-content: center;
+    }
+    .profile .stats .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 1.1rem;
+      color: var(--main-purple);
+      font-weight: 600;
+    }
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .dashboard-header {
+      background: var(--main-purple);
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .dashboard-header .title {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .dashboard-header .desc {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .dashboard-header .cta-btn {
+      background: #fff;
+      color: var(--main-purple);
+      border: none;
+      border-radius: 8px;
+      padding: 0.7rem 1.5rem;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .dashboard-header .cta-btn:hover {
+      background: #f3f0ff;
+    }
+    .tasks-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .task-col {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1.2rem 1rem 1.5rem 1rem;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+    .task-col .col-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+    .task-col .col-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--main-purple);
+    }
+    .task-col .add-btn {
+      background: none;
+      border: none;
+      color: var(--main-purple);
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .task-col .add-btn:hover {
+      color: #a29bfe;
+    }
+    .task-list {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+    .task-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 0.8rem 0.7rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.7rem;
+      font-size: 0.98rem;
+      border-left: 4px solid #6c5ce7;
+      position: relative;
+    }
+    .task-card.negative { border-left-color: #e17055; }
+    .task-card .task-title { font-weight: 600; }
+    .task-card .task-desc { color: #888; font-size: 0.93rem; margin-top: 0.2rem; }
+    .task-card .task-actions {
+      margin-left: auto;
+      display: flex;
+      gap: 0.5rem;
+    }
+    .task-card .icon-btn {
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .task-card .icon-btn:hover { color: #6c5ce7; }
+    .empty-state {
+      color: #bbb;
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1rem;
+    }
+    .reward-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.7rem;
+    }
+    .reward-card {
+      background: #f8f9fa;
+      border-radius: 8px;
+      padding: 0.7rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.97rem;
+      border: 1.5px solid #e9ecef;
+      position: relative;
+    }
+    .reward-card .reward-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: #6c5ce7;
+    }
+    .reward-card .reward-cost {
+      font-size: 0.95rem;
+      color: #a29bfe;
+      margin-top: 0.2rem;
+    }
+    .footer {
+      background: #f8f9fa;
+      color: #888;
+      margin-top: 3rem;
+      padding: 2.5rem 0 1.2rem 0;
+      border-top: 1px solid #e9ecef;
+    }
+    .footer-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+      padding: 0 2rem;
+    }
+    .footer-section h4 {
+      color: var(--main-purple);
+      margin-bottom: 0.7rem;
+      font-size: 1.08rem;
+    }
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .footer-section ul li {
+      margin-bottom: 0.5rem;
+    }
+    .footer-section ul li a {
+      color: #888;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-section ul li a:hover {
+      color: #6c5ce7;
+    }
+    .footer-bottom {
+      text-align: center;
+      color: #bbb;
+      font-size: 0.95rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 1100px) {
+      .dashboard { flex-direction: column; }
+      .profile { width: 100%; flex-direction: row; gap: 2rem; justify-content: flex-start; }
+      .main { width: 100%; }
+    }
+    @media (max-width: 900px) {
+      .tasks-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .header-inner, .dashboard, .footer-inner { padding: 0 0.5rem; }
+      .tasks-grid { grid-template-columns: 1fr; }
+      .profile { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="#" class="logo">Habitica</a>
+      <nav class="nav">
+        <a href="#" class="active">Tasks</a>
+        <a href="#">Inventory</a>
+        <a href="#">Shops</a>
+        <a href="#">Party</a>
+        <a href="#">Guild</a>
+        <a href="#">Challenges</a>
+        <a href="#">Help</a>
+      </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+        <span class="avatar"><i class="fa-solid fa-user"></i></span>
+      </div>
+    </div>
+  </header>
+  <div class="dashboard">
+    <aside class="profile">
+      <div class="avatar"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <div class="username">Arubi Kuroko</div>
+        <div class="userid">@hb-3b3fc7b8d4ewmgmttr</div>
+        <div class="level">Level 1 Warrior</div>
+        <div class="bar-label">XP <span>50 / 50</span></div>
+        <div class="bar"><div class="bar-inner xp"></div></div>
+        <div class="bar-label">HP <span>50 / 50</span></div>
+        <div class="bar"><div class="bar-inner hp"></div></div>
+        <div class="stats">
+          <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
+          <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        </div>
+      </div>
+    </aside>
+    <main class="main">
+      <div class="dashboard-header">
+        <div>
+          <div class="title">Defeat monsters with friends</div>
+          <div class="desc">Create your own party or join an existing one to complete tasks and boost motivation!</div>
+        </div>
+        <button class="cta-btn">Start</button>
+      </div>
+      <div class="tasks-grid">
+        <!-- Habits -->
+        <div class="task-col">
+          <div class="col-header">
+            <span class="col-title">Habits</span>
+            <button class="add-btn" title="Add Habit"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="task-list">
+            <div class="task-card negative">
+              <div>
+                <div class="task-title">Click to mark this as a bad habit you want to break</div>
+                <div class="task-desc">Or edit or delete this habit</div>
+              </div>
+              <div class="task-actions">
+                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="task-card">
+              <div>
+                <div class="task-title">Add a Habit in Habitica</div>
+                <div class="task-desc">Either a positive, negative, or both habit</div>
+              </div>
+              <div class="task-actions">
+                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Dailies -->
+        <div class="task-col">
+          <div class="col-header">
+            <span class="col-title">Dailies</span>
+            <button class="add-btn" title="Add Daily"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="task-list">
+            <div class="empty-state">No dailies yet</div>
+          </div>
+        </div>
+        <!-- To-Dos -->
+        <div class="task-col">
+          <div class="col-header">
+            <span class="col-title">To-Dos</span>
+            <button class="add-btn" title="Add To-Do"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="task-list">
+            <div class="task-card">
+              <div>
+                <div class="task-title">Join Habitica (Check me off!)</div>
+                <div class="task-desc">You can complete, edit, or delete this task</div>
+              </div>
+              <div class="task-actions">
+                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
+                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Rewards -->
+        <div class="task-col">
+          <div class="col-header">
+            <span class="col-title">Rewards</span>
+            <button class="add-btn" title="Add Reward"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="reward-list">
+            <div class="reward-card">
+              <div class="reward-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <div>Watch TV</div>
+              <div class="reward-cost">10</div>
+            </div>
+            <div class="reward-card">
+              <div class="reward-icon"><i class="fa-solid fa-gamepad"></i></div>
+              <div>Play a game</div>
+              <div class="reward-cost">20</div>
+            </div>
+            <div class="reward-card">
+              <div class="reward-icon"><i class="fa-solid fa-cookie-bite"></i></div>
+              <div>Eat a treat</div>
+              <div class="reward-cost">15</div>
+            </div>
+            <div class="reward-card">
+              <div class="reward-icon"><i class="fa-solid fa-crown"></i></div>
+              <div>Special reward</div>
+              <div class="reward-cost">100</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-section">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#">iOS App</a></li>
+          <li><a href="#">Android App</a></li>
+          <li><a href="#">Group Plans</a></li>
+          <li><a href="#">How it works</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Community Guidelines</a></li>
+          <li><a href="#">Hall of Heroes</a></li>
+          <li><a href="#">Contribute</a></li>
+          <li><a href="#">Translate Habitica</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Report a Problem</a></li>
+          <li><a href="#">Suggest a Feature</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Developers</h4>
+        <ul>
+          <li><a href="#">API v3</a></li>
+          <li><a href="#">Data Display</a></li>
+          <li><a href="#">Blacksmiths Guide</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2025 Habitica. All rights reserved.
+    </div>
+  </footer>
+</body>
+</html> 
