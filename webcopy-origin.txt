@@ -1,0 +1,64 @@
+Uri: https://cdn.habitica.com/compressed/index-BC5COr9C.js
+File Name: C:\Downloaded Web Sites\habitica.com\compressed\index-BC5COr9C.js
+Content Type: application/javascript
+
+Uri: https://cdn.habitica.com/compressed/index-CDOS9SbD.css
+File Name: C:\Downloaded Web Sites\habitica.com\compressed\index-CDOS9SbD.css
+Content Type: text/css
+
+Uri: https://cdn.habitica.com/static/icons/favicon.ico
+File Name: C:\Downloaded Web Sites\habitica.com\static\icons\favicon.ico
+Content Type: image/vnd.microsoft.icon
+
+Uri: https://cdn.habitica.com/static/icons/favicon_192x192.png
+File Name: C:\Downloaded Web Sites\habitica.com\static\icons\favicon_192x192.png
+Content Type: image/png
+
+Uri: https://cloudfront.loggly.com/js/loggly.tracker-latest.min.js
+File Name: C:\Downloaded Web Sites\habitica.com\js\loggly.tracker-latest.min.js
+Content Type: application/javascript
+
+Uri: https://fonts.googleapis.com/css?family=Roboto+Condensed:400,400i,700,700i|Roboto:400,400i,700,700i
+File Name: C:\Downloaded Web Sites\habitica.com\css
+Content Type: text/css
+
+Uri: https://fonts.gstatic.com/s/roboto/v48/KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLmbXuAj-lg.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\roboto\v48\KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLmbXuAj-lg.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/roboto/v48/KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLoHQuAj-lg.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\roboto\v48\KFOKCnqEu92Fr1Mu53ZEC9_Vu3r1gIhOszmOClHrs6ljXfMMLoHQuAj-lg.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/roboto/v48/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiA8.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\roboto\v48\KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWubEbVmUiA8.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/roboto/v48/KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiA8.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\roboto\v48\KFOMCnqEu92Fr1ME7kSn66aGLdTylUAMQXC89YmC2DPNWuYjalmUiA8.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/robotocondensed/v30/ieVo2ZhZI2eCN5jzbjEETS9weq8-_d6T_POl0fRJeyVVpcBO5Xk.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\robotocondensed\v30\ieVo2ZhZI2eCN5jzbjEETS9weq8-_d6T_POl0fRJeyVVpcBO5Xk.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/robotocondensed/v30/ieVo2ZhZI2eCN5jzbjEETS9weq8-_d6T_POl0fRJeyWyosBO5Xk.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\robotocondensed\v30\ieVo2ZhZI2eCN5jzbjEETS9weq8-_d6T_POl0fRJeyWyosBO5Xk.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/robotocondensed/v30/ieVW2ZhZI2eCN5jzbjEETS9weq8-19ehAyvMum7nfDB64f8N1X5pKQ.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\robotocondensed\v30\ieVW2ZhZI2eCN5jzbjEETS9weq8-19ehAyvMum7nfDB64f8N1X5pKQ.ttf
+Content Type: font/ttf
+
+Uri: https://fonts.gstatic.com/s/robotocondensed/v30/ieVW2ZhZI2eCN5jzbjEETS9weq8-19ehAyvMum7nfDB64RgK1X5pKQ.ttf
+File Name: C:\Downloaded Web Sites\habitica.com\s\robotocondensed\v30\ieVW2ZhZI2eCN5jzbjEETS9weq8-19ehAyvMum7nfDB64RgK1X5pKQ.ttf
+Content Type: font/ttf
+
+Uri: https://habitica.com/
+File Name: C:\Downloaded Web Sites\habitica.com\index.htm
+Content Type: text/html
+
+Uri: https://habitica.com/api/v4/i18n/browser-script
+File Name: C:\Downloaded Web Sites\habitica.com\api\v4\i18n\browser-script
+Content Type: application/javascript
+
