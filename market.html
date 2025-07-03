@@ -1257,8 +1257,11 @@
           <div class="featuredItems">
             <div class="background"></div>
             <div class="background" style="background: url('static/icons/imgi_83_market_background.png') repeat-x;">
-              <div class="npc" style="background: url('static/icons/imgi_85_quests_banner_npc_ian.png') no-repeat;">
-                <div class="featured-label">
+              <div class="npc" style="background: none; display: flex; align-items: flex-end; justify-content: flex-start; width: 80px; height: 80px;">
+                <div style="width: 48px; height: 48px; background: #fff3; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                  <i class="fa-solid fa-scroll" style="font-size: 2.2rem; color: #a67c52;"></i>
+                </div>
+                <div class="featured-label" style="position: static; margin-left: 8px;">
                   <span class="rectangle"></span>
                   <span class="text">Ian</span>
                   <span class="rectangle"></span>
@@ -1274,20 +1277,10 @@
                   <div class="item-wrapper">
                     <div class="item suggested">
                       <div class="image">
-                        <img src="static/icons/imgi_2_shop_quest_special_summer2025.png" class="pixel-art">
+                        <i class="fa-solid fa-scroll" style="font-size: 2rem; color: #a67c52;"></i>
                       </div>
                       <div class="price d-flex align-items-center justify-content-center gold">
-                        <span class="svg-icon inline icon-16 mr-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g fill="none" fill-rule="evenodd">
-                              <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
-                              <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
-                              <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
-                              <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
-                              <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
-                            </g>
-                          </svg>
-                        </span>
+                        <span class="svg-icon inline icon-16 mr-1"><i class="fa-solid fa-gem"></i></span>
                         <span class="price-label gold">7</span>
                       </div>
                     </div>
@@ -1295,20 +1288,10 @@
                   <div class="item-wrapper">
                     <div class="item suggested">
                       <div class="image">
-                        <img src="static/icons/imgi_3_shop_quest_special_summer2025.png" class="pixel-art">
+                        <i class="fa-solid fa-scroll" style="font-size: 2rem; color: #a67c52;"></i>
                       </div>
                       <div class="price d-flex align-items-center justify-content-center gold">
-                        <span class="svg-icon inline icon-16 mr-1">
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                            <g fill="none" fill-rule="evenodd">
-                              <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
-                              <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
-                              <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
-                              <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
-                              <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
-                            </g>
-                          </svg>
-                        </span>
+                        <span class="svg-icon inline icon-16 mr-1"><i class="fa-solid fa-gem"></i></span>
                         <span class="price-label gold">7</span>
                       </div>
                     </div>
@@ -1317,7 +1300,7 @@
               </div>
             </div>
           </div>
-          <!-- QUESTS FILTERS AND GRID (заглушка, далее можно доработать) -->
+          <!-- QUESTS FILTERS AND GRID -->
           <div class="market-container">
             <aside class="sidebar">
               <input type="text" class="market-search" placeholder="Search Quests">
@@ -1346,13 +1329,63 @@
               <div class="quests-section">
                 <h2>Quest Bundles with Discount</h2>
                 <div class="items-list">
-                  <!-- Quest cards here -->
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Bundle: Skeleton Attack</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 7</div>
+                  </div>
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Bundle: Moonstone Chain</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 7</div>
+                  </div>
                 </div>
                 <h2>Main Questlines</h2>
                 <div class="items-list">
-                  <!-- Quest cards here -->
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Attack of the Mundane</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+                  </div>
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Vice, Shadow of the Serpent</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+                  </div>
+                  <div class="item-card locked">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Moonstone Chain</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+                    <div class="item-badge">Locked</div>
+                  </div>
                 </div>
-                <!-- ...добавить остальные секции как на скрине... -->
+                <h2>Order of the Masters</h2>
+                <div class="items-list">
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Master's Challenge</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 5</div>
+                  </div>
+                  <div class="item-card locked">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Master's Secret</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 6</div>
+                    <div class="item-badge">Locked</div>
+                  </div>
+                </div>
+                <h2>Pet & Mount Quests</h2>
+                <div class="items-list">
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Wolf Quest</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 3</div>
+                  </div>
+                  <div class="item-card">
+                    <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+                    <div class="item-title">Tiger Quest</div>
+                    <div class="item-cost"><i class="fa-solid fa-gem"></i> 3</div>
+                  </div>
+                </div>
               </div>
             </main>
           </div>
