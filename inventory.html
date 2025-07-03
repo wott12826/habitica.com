@@ -447,13 +447,39 @@
   <div class="inventory-container">
     <aside class="sidebar">
       <h4>Filters</h4>
-      <div class="filter-group">
+      <div class="filter-group" id="items-filters">
         <label><input type="checkbox" value="Eggs"> Eggs</label>
         <label><input type="checkbox" value="Hatching Potions"> Hatching Potions</label>
         <label><input type="checkbox" value="Food & Saddles"> Food & Saddles</label>
         <label><input type="checkbox" value="Special"> Special</label>
         <label><input type="checkbox" value="Quests"> Quests</label>
         <label><input type="checkbox" value="Other"> Other</label>
+      </div>
+      <div class="filter-group" id="equipment-filters" style="display:none">
+        <label><input type="checkbox" value="Weapon"> Weapon</label>
+        <label><input type="checkbox" value="Offhand"> Offhand</label>
+        <label><input type="checkbox" value="Head"> Headgear</label>
+        <label><input type="checkbox" value="Armor"> Armor</label>
+        <label><input type="checkbox" value="HeadAccessory"> Head Accessory</label>
+        <label><input type="checkbox" value="Eyewear"> Eyewear</label>
+        <label><input type="checkbox" value="Body"> Body Accessory</label>
+        <label><input type="checkbox" value="Back"> Back Accessory</label>
+      </div>
+      <div class="filter-group" id="pets-filters" style="display:none">
+        <div><b>Pets</b></div>
+        <label><input type="checkbox" value="Base" checked> Base</label>
+        <label><input type="checkbox" value="Magic" checked> Magic</label>
+        <label><input type="checkbox" value="Quest" checked> Quest</label>
+        <label><input type="checkbox" value="Wacky" checked> Wacky</label>
+        <label><input type="checkbox" value="Special" checked> Special</label>
+        <div style="margin-top:1rem"><b>Mounts</b></div>
+        <label><input type="checkbox" value="Base_mount" checked> Base</label>
+        <label><input type="checkbox" value="Magic_mount" checked> Magic</label>
+        <label><input type="checkbox" value="Quest_mount" checked> Quest</label>
+        <label><input type="checkbox" value="Special_mount" checked> Special</label>
+        <div style="margin-top:1rem">
+          <label style="font-weight:600"><input type="checkbox" id="hide-missing"> Hide missing</label>
+        </div>
       </div>
     </aside>
     <main class="main-inventory">
@@ -463,51 +489,13 @@
         <button class="tab" data-tab="pets">Pets & Mounts</button>
       </div>
       <div class="tab-content" id="tab-items">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
-            <div class="item-title">Wolf Egg</div>
-            <div class="item-desc">A mysterious egg. What will hatch?</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
-            <div class="item-title">Tiger Cub Egg</div>
-            <div class="item-desc">A rare egg. Maybe a tiger cub?</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
-            <div class="item-title">Panda Egg</div>
-            <div class="item-desc">A cute panda is waiting inside!</div>
-          </div>
-        </div>
+        <div class="items-list"></div>
       </div>
       <div class="tab-content" id="tab-equipment" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-hat-wizard"></i></div>
-            <div class="item-title">Wizard Hat</div>
-            <div class="item-desc">+5 Intelligence</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="item-title">Warrior Shield</div>
-            <div class="item-desc">+5 Defense</div>
-          </div>
-        </div>
+        <div class="items-list" id="equipment-list"></div>
       </div>
       <div class="tab-content" id="tab-pets" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-dog"></i></div>
-            <div class="item-title">Wolf Pet</div>
-            <div class="item-desc">Loyal companion</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-cat"></i></div>
-            <div class="item-title">Tiger Cub Pet</div>
-            <div class="item-desc">Fierce and playful</div>
-          </div>
-        </div>
+        <div id="pets-section"></div>
       </div>
     </main>
   </div>
@@ -701,6 +689,145 @@
         cb.addEventListener('change', renderInventoryItems);
       });
       renderInventoryItems();
+    });
+
+    // --- Пример данных экипировки ---
+    const equipmentData = [
+      { src: 'static/icons/imgi_1_swords-CvGDZwaq.png', name: 'Warrior Sword', type: 'Weapon' },
+      { src: 'static/icons/imgi_8_shop_shield_warrior_1.png', name: 'Warrior Shield', type: 'Offhand' },
+      { src: 'static/icons/imgi_9_shop_head_warrior_1.png', name: 'Viking Helm', type: 'Head' },
+      { src: 'static/icons/imgi_7_shop_armor_warrior_1.png', name: 'Warrior Armor', type: 'Armor' },
+      { src: 'static/icons/imgi_64_headAccessory_special_pinkHeadband.png', name: 'Pink Headband', type: 'HeadAccessory' },
+      { src: 'static/icons/imgi_63_eyewear_special_greenTopFrame.png', name: 'Green TopFrame', type: 'Eyewear' },
+      { src: 'static/icons/imgi_59_slim_shirt_green.png', name: 'Green Shirt', type: 'Body' },
+      { src: 'static/icons/imgi_55_background_purple.png', name: 'Purple Cape', type: 'Back' },
+    ];
+    function getActiveEquipmentFilters() {
+      return Array.from(document.querySelectorAll('#equipment-filters input[type=checkbox]:checked')).map(cb => cb.value);
+    }
+    function renderEquipment() {
+      const filters = getActiveEquipmentFilters();
+      const list = document.getElementById('equipment-list');
+      list.innerHTML = '';
+      let filtered = equipmentData;
+      if (filters.length > 0) {
+        filtered = equipmentData.filter(item => filters.includes(item.type));
+      }
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">Нет предметов для выбранных фильтров.</div>';
+        return;
+      }
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.type}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Переключение фильтров при смене таба
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.dataset.tab;
+          document.getElementById('items-filters').style.display = tabName === 'items' ? '' : 'none';
+          document.getElementById('equipment-filters').style.display = tabName === 'equipment' ? '' : 'none';
+        });
+      });
+      // Слушатели фильтров экипировки
+      document.querySelectorAll('#equipment-filters input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', renderEquipment);
+      });
+      renderEquipment();
+    });
+
+    // --- Пример данных питомцев и скакунов ---
+    const petsData = [
+      { name: 'Wolf', type: 'Base', owned: true },
+      { name: 'Tiger Cub', type: 'Base', owned: false },
+      { name: 'Panda', type: 'Magic', owned: false },
+      { name: 'Lion', type: 'Quest', owned: true },
+      { name: 'Fox', type: 'Wacky', owned: false },
+      { name: 'Bear', type: 'Special', owned: true },
+    ];
+    const mountsData = [
+      { name: 'Wolf Mount', type: 'Base_mount', owned: true },
+      { name: 'Tiger Mount', type: 'Base_mount', owned: false },
+      { name: 'Panda Mount', type: 'Magic_mount', owned: false },
+      { name: 'Lion Mount', type: 'Quest_mount', owned: true },
+      { name: 'Fox Mount', type: 'Special_mount', owned: false },
+    ];
+    function getActivePetsFilters() {
+      const filters = Array.from(document.querySelectorAll('#pets-filters input[type=checkbox]:checked')).map(cb => cb.value);
+      return filters;
+    }
+    function renderPetsAndMounts() {
+      const filters = getActivePetsFilters();
+      const hideMissing = document.getElementById('hide-missing')?.checked;
+      const petsSection = document.getElementById('pets-section');
+      petsSection.innerHTML = '';
+      // --- Pets ---
+      const petTypes = ['Base', 'Magic', 'Quest', 'Wacky', 'Special'];
+      petTypes.forEach(type => {
+        if (!filters.includes(type)) return;
+        const group = petsData.filter(p => p.type === type && (!hideMissing || p.owned));
+        if (group.length === 0) return;
+        const block = document.createElement('div');
+        block.innerHTML = `<div style="font-weight:700;font-size:1.1rem;margin:1.2rem 0 0.5rem 0;">${type}</div>`;
+        const list = document.createElement('div');
+        list.className = 'items-list';
+        group.forEach(pet => {
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.innerHTML = pet.owned
+            ? `<div class="item-icon"><img src="static/icons/imgi_11_default.svg" style="width:40px;height:40px;"></div><div class="item-title">${pet.name}</div>`
+            : `<div class="item-icon"><img src="static/icons/paw-missing.png" style="width:40px;height:40px;opacity:0.3;"></div><div class="item-title">${pet.name}</div>`;
+          list.appendChild(card);
+        });
+        block.appendChild(list);
+        petsSection.appendChild(block);
+      });
+      // --- Mounts ---
+      const mountTypes = ['Base_mount', 'Magic_mount', 'Quest_mount', 'Special_mount'];
+      mountTypes.forEach(type => {
+        if (!filters.includes(type)) return;
+        const group = mountsData.filter(m => m.type === type && (!hideMissing || m.owned));
+        if (group.length === 0) return;
+        const block = document.createElement('div');
+        block.innerHTML = `<div style="font-weight:700;font-size:1.1rem;margin:1.2rem 0 0.5rem 0;">${type.replace('_mount','')}</div>`;
+        const list = document.createElement('div');
+        list.className = 'items-list';
+        group.forEach(mount => {
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.innerHTML = mount.owned
+            ? `<div class="item-icon"><img src="static/icons/imgi_12_default.svg" style="width:40px;height:40px;"></div><div class="item-title">${mount.name}</div>`
+            : `<div class="item-icon"><img src="static/icons/paw-missing.png" style="width:40px;height:40px;opacity:0.3;"></div><div class="item-title">${mount.name}</div>`;
+          list.appendChild(card);
+        });
+        block.appendChild(list);
+        petsSection.appendChild(block);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Переключение фильтров при смене таба
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', function() {
+          const tabName = this.dataset.tab;
+          document.getElementById('items-filters').style.display = tabName === 'items' ? '' : 'none';
+          document.getElementById('equipment-filters').style.display = tabName === 'equipment' ? '' : 'none';
+          document.getElementById('pets-filters').style.display = tabName === 'pets' ? '' : 'none';
+        });
+      });
+      // Слушатели фильтров питомцев и скакунов
+      document.querySelectorAll('#pets-filters input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', renderPetsAndMounts);
+      });
+      document.getElementById('hide-missing')?.addEventListener('change', renderPetsAndMounts);
+      renderPetsAndMounts();
     });
   </script>
 </body>
