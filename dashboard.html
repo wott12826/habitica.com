@@ -781,54 +781,67 @@
     }
     .rewards-special-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 0.5rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
       width: 100%;
       max-width: 100%;
       box-sizing: border-box;
     }
     .reward-card {
       background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 1px 4px rgba(108,92,231,0.04);
-      padding: 0.7rem 0.5rem 0.9rem 0.5rem;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.08);
+      padding: 0.7rem 0.5rem 1.1rem 0.5rem;
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.97rem;
+      font-size: 1rem;
       border: 1.5px solid #e9ecef;
       position: relative;
-      min-height: 120px;
+      min-width: 0;
+      min-height: 140px;
+      aspect-ratio: 1/1;
       cursor: pointer;
       transition: box-shadow 0.2s, border-color 0.2s;
-    }
-    .reward-card:hover {
-      box-shadow: 0 4px 16px rgba(108,92,231,0.10);
-      border-color: #a29bfe;
+      word-break: break-word;
+      white-space: normal;
+      justify-content: flex-start;
     }
     .reward-card .reward-icon {
-      font-size: 1.3rem;
-      margin-bottom: 0.3rem;
+      font-size: 2.1rem;
+      margin-bottom: 0.5rem;
       color: #6c5ce7;
-      width: 40px;
-      height: 40px;
+      width: 56px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
+    .reward-card .reward-icon img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      display: block;
+    }
+    .reward-card .reward-title {
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.2rem;
+      font-size: 1.05rem;
+    }
     .reward-card .reward-cost {
-      font-size: 0.95rem;
+      font-size: 1.1rem;
       color: #a29bfe;
-      margin-top: 0.2rem;
+      margin-top: auto;
       background: #fff6e0;
       border-radius: 6px;
-      padding: 0.1rem 0.7rem;
+      padding: 0.2rem 1.1rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       gap: 0.3rem;
       position: absolute;
-      bottom: 10px;
+      bottom: 12px;
       left: 50%;
       transform: translateX(-50%);
     }
@@ -978,6 +991,7 @@
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">Habits</span>
+            <button class="add-btn" title="Add Habit" onclick="openHabitModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
           <div class="habits-block">
             <div class="habits-tabs">
@@ -1007,6 +1021,7 @@
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">To-Dos</span>
+            <button class="add-btn" title="Add To-Do" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
           <div class="todos-block">
             <div class="todos-tabs">
@@ -1021,6 +1036,7 @@
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">Rewards</span>
+            <button class="add-btn" title="Add Reward" onclick="openRewardModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
           <div class="rewards-block">
             <div class="rewards-tabs">
