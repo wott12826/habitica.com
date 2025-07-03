@@ -1783,7 +1783,7 @@
         filtered = gameState.dailies.filter(d => !d.completed);
       } else if (currentDailiesTab === 'other') {
         filtered = gameState.dailies.filter(d => d.completed);
-      }
+      } // 'all' — все
       if (filtered.length === 0) {
         dailiesList.innerHTML = '<div class="empty-state">No dailies yet</div>';
         return;
