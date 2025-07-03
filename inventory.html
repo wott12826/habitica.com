@@ -261,6 +261,20 @@
     @media (max-width: 1100px) {
       .footer-inner { padding: 0 0.5rem; }
     }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(108, 92, 231, 0.97);
+      z-index: 10000;
+      display: none !important;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-width: 100vw;
+    }
+    .modal-overlay.active {
+      display: flex !important;
+    }
   </style>
 </head>
 <body>
