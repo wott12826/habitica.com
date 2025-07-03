@@ -632,25 +632,43 @@
       });
     });
 
-    // --- Категории и иконки ---
-    const inventoryIcons = [
-      // Eggs
-      { src: 'static/icons/imgi_10_default.svg', name: 'Wolf Egg', desc: 'A mysterious egg. What will hatch?', category: 'Eggs' },
-      { src: 'static/icons/imgi_11_default.svg', name: 'Tiger Cub Egg', desc: 'A rare egg. Maybe a tiger cub?', category: 'Eggs' },
-      { src: 'static/icons/imgi_12_default.svg', name: 'Panda Egg', desc: 'A cute panda is waiting inside!', category: 'Eggs' },
-      // Hatching Potions
-      { src: 'static/icons/imgi_10_shop_potion.png', name: 'Base Potion', desc: 'Hatches a pet from an egg.', category: 'Hatching Potions' },
-      // Food & Saddles
-      { src: 'static/icons/imgi_48_slim_shirt_green.png', name: 'Meat', desc: 'Feed to pets to grow them.', category: 'Food & Saddles' },
-      { src: 'static/icons/imgi_27_chair_handleless_yellow.png', name: 'Saddle', desc: 'Turn a pet into a mount.', category: 'Food & Saddles' },
-      // Special
-      { src: 'static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png', name: 'Spear of Destiny', desc: 'Special event item.', category: 'Special' },
-      { src: 'static/icons/imgi_3_shop_armor_special_summer2025Warrior.png', name: 'Pink Bow', desc: 'Special event item.', category: 'Special' },
-      // Quests
-      { src: 'static/icons/imgi_11_shop_armoire.gif', name: 'Treasure Chest', desc: 'Quest reward.', category: 'Quests' },
-      { src: 'static/icons/imgi_9_shop_head_warrior_1.png', name: 'Viking Helm', desc: 'Quest reward.', category: 'Quests' },
+    // --- Автоматическое распределение иконок по категориям ---
+    const iconFiles = [
+      'imgi_3_shop_armor_special_summer2025Warrior.png',
+      'imgi_2_shop_weapon_special_summer2025Warrior.png',
+      'imgi_1_swords-CvGDZwaq.png',
+      'imgi_54_default.svg','imgi_52_default.svg','imgi_51_default.svg','imgi_50_default.svg','imgi_49_default.svg','imgi_48_default.svg','imgi_47_default.svg','imgi_46_default.svg','imgi_45_default.svg','imgi_44_default.svg','imgi_43_default.svg','imgi_42_default.svg','imgi_41_default.svg','imgi_40_default.svg','imgi_39_default.svg','imgi_38_default.svg','imgi_37_default.svg','imgi_36_default.svg','imgi_35_default.svg','imgi_34_default.svg','imgi_33_default.svg','imgi_32_default.svg','imgi_31_default.svg','imgi_30_default.svg','imgi_29_default.svg','imgi_28_default.svg','imgi_27_default.svg','imgi_26_default.svg','imgi_25_default.svg','imgi_24_default.svg','imgi_23_default.svg','imgi_22_default.svg','imgi_21_default.svg','imgi_20_default.svg','imgi_19_default.svg','imgi_18_default.svg','imgi_17_default.svg',
+      'imgi_11_shop_armoire.gif','imgi_10_shop_potion.png','imgi_9_shop_head_warrior_1.png','imgi_8_shop_shield_warrior_1.png','imgi_7_shop_armor_warrior_1.png','imgi_6_shop_weapon_warrior_0.png','imgi_5_shop_shield_special_summer2025Warrior.png','imgi_4_shop_head_special_summer2025Warrior.png',
+      'imgi_66_swords@3x-Ba5Csmf-.png','imgi_65_swords@2x-DEGP_Poy.png','imgi_63_eyewear_special_greenTopFrame.png','imgi_64_headAccessory_special_pinkHeadband.png','imgi_62_hair_base_3_white.png','imgi_60_head_0.png','imgi_61_hair_bangs_4_white.png','imgi_59_slim_shirt_green.png','imgi_58_skin_ea8349.png','imgi_57_chair_red.png','imgi_56_hair_flower_6.png','imgi_55_background_purple.png','imgi_53_bits-CS-bYJ6e.svg',
+      'imgi_15_icon_hair_bangs_4_white.png','imgi_14_icon_hair_bangs_3_white.png','imgi_13_icon_hair_bangs_2_white.png','imgi_12_icon_hair_bangs_1_white.png','imgi_16_default.svg','imgi_15_default.svg','imgi_14_default.svg','imgi_13_default.svg','imgi_53_swords@3x-Ba5Csmf-.png','imgi_52_swords@2x-DEGP_Poy.png','imgi_50_hair_bangs_1_black.png','imgi_51_hair_base_3_black.png','imgi_49_head_0.png','imgi_48_slim_shirt_green.png','imgi_46_chair_handleless_yellow.png','imgi_47_skin_98461a.png','imgi_45_hair_flower_1.png','imgi_44_background_violet.png','imgi_42_bits-CS-bYJ6e.svg','imgi_38_swords@3x-Ba5Csmf-.png','imgi_37_swords@2x-DEGP_Poy.png','imgi_12_default.svg','imgi_11_default.svg','imgi_10_default.svg','imgi_9_default.svg','imgi_8_default.svg','imgi_7_default.svg','imgi_36_bot-right@3x-K991s10t.png','imgi_35_bot-left@3x-0KihHbVu.png','imgi_34_top-right@3x-wPRHZ84x.png','imgi_33_top-left@3x-D1aL29BF.png','imgi_32_hair_base_3_black.png','imgi_31_hair_bangs_1_black.png','imgi_30_head_0.png','imgi_28_skin_98461a.png','imgi_29_slim_shirt_green.png','imgi_27_chair_handleless_yellow.png','imgi_26_hair_flower_1.png','imgi_25_background_violet.png'
     ];
-    // --- Фильтрация ---
+    const categoryMap = [
+      { key: 'egg', label: 'Eggs' },
+      { key: 'potion', label: 'Hatching Potions' },
+      { key: 'food', label: 'Food & Saddles' },
+      { key: 'saddle', label: 'Food & Saddles' },
+      { key: 'special', label: 'Special' },
+      { key: 'quest', label: 'Quests' },
+      { key: 'armoire', label: 'Quests' },
+    ];
+    function guessCategory(filename) {
+      const lower = filename.toLowerCase();
+      for (const cat of categoryMap) {
+        if (lower.includes(cat.key)) return cat.label;
+      }
+      return 'Other';
+    }
+    const inventoryIcons = iconFiles.map(f => {
+      const category = guessCategory(f);
+      let name = f.replace(/^imgi_\d+_?/, '').replace(/[-_.@].*$/, '').replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim();
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      return {
+        src: 'static/icons/' + f,
+        name,
+        desc: category + ' item',
+        category
+      };
+    });
     function getActiveFilters() {
       return Array.from(document.querySelectorAll('.filter-group input[type=checkbox]:checked')).map(cb => cb.value);
     }
@@ -678,8 +696,6 @@
       });
     }
     document.addEventListener('DOMContentLoaded', function() {
-      // ... (существующий код)
-      // Слушатели фильтров
       document.querySelectorAll('.filter-group input[type=checkbox]').forEach(cb => {
         cb.addEventListener('change', renderInventoryItems);
       });
