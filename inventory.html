@@ -421,6 +421,155 @@
       .party-modal .group-img { width: 60px; }
     }
     .item-icon img { display:block; margin:0 auto; }
+    .pet-section-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin: 1.2rem 0 0.5rem 0;
+    }
+    .pet-section {
+      margin-bottom: 1.5rem;
+      border-bottom: 1.5px solid #ececec;
+      padding-bottom: 1.2rem;
+    }
+    .pet-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    .pet-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .pet-group {
+      margin-right: 0.5rem;
+    }
+    .pet-slot {
+      width: 60px;
+      height: 60px;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f8f9fa;
+      position: relative;
+      transition: all 0.2s;
+    }
+    .pet-slot:hover {
+      border-color: #6c5ce7;
+      background: #f3f0ff;
+    }
+    .pet-slot img {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+    .pet-slot.item-empty {
+      background: #f8f9fa;
+      border-style: dashed;
+    }
+    .pet-slot.item-empty img {
+      opacity: 0.3;
+    }
+    .pet-slot.owned {
+      background: #e9e6fa;
+      border-color: #6c5ce7;
+    }
+    .expand-btn {
+      display: block;
+      margin: 0.7rem auto 0 auto;
+      background: #f3f0ff;
+      color: #6c5ce7;
+      border: none;
+      border-radius: 8px;
+      padding: 0.5rem 1.2rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.2s, color 0.2s;
+    }
+    .expand-btn:hover {
+      background: #e9e6fa;
+      color: #5a4fd8;
+    }
+    .item-card .item-title {
+      margin-top: 0.5rem;
+      font-size: 0.98rem;
+    }
+    .item-card.paw-missing img { opacity: 0.3; }
+    .item-wrapper {
+      display: inline-block;
+    }
+    .item {
+      position: relative;
+      cursor: pointer;
+    }
+    .transition {
+      transition: all 0.2s ease;
+    }
+    .GreyedOut {
+      opacity: 0.3;
+    }
+    .pixel-art {
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+    .item-content {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .d-inline-flex {
+      display: inline-flex;
+    }
+    .flex-column {
+      flex-direction: column;
+    }
+    .d-flex {
+      display: flex;
+    }
+    .btn {
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      border-radius: 0.25rem;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .btn-flat {
+      background-color: transparent;
+      border-color: transparent;
+    }
+    .btn-show-more {
+      background-color: #f8f9fa;
+      border-color: #dee2e6;
+      color: #6c757d;
+    }
+    .btn-show-more:hover {
+      background-color: #e2e6ea;
+      border-color: #dae0e5;
+      color: #495057;
+    }
+    .mt-2 {
+      margin-top: 0.5rem;
+    }
+    .mb-3 {
+      margin-bottom: 1rem;
+    }
+    .button-text {
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -476,6 +625,7 @@
         <label><input type="checkbox" value="Base_mount" checked> Base</label>
         <label><input type="checkbox" value="Magic_mount" checked> Magic</label>
         <label><input type="checkbox" value="Quest_mount" checked> Quest</label>
+        <label><input type="checkbox" value="Wacky_mount" checked> Wacky</label>
         <label><input type="checkbox" value="Special_mount" checked> Special</label>
         <div style="margin-top:1rem">
           <label style="font-weight:600"><input type="checkbox" id="hide-missing"> Hide missing</label>
@@ -752,6 +902,179 @@
       { name: 'Lion', type: 'Quest', owned: true },
       { name: 'Fox', type: 'Wacky', owned: false },
       { name: 'Bear', type: 'Special', owned: true },
+      { name: 'Dragon', type: 'Base', owned: false },
+      { name: 'Unicorn', type: 'Magic', owned: false },
+      { name: 'Phoenix', type: 'Quest', owned: false },
+      { name: 'Gryphon', type: 'Wacky', owned: false },
+      { name: 'Kraken', type: 'Special', owned: false },
+      { name: 'Hydra', type: 'Base', owned: false },
+      { name: 'Minotaur', type: 'Magic', owned: false },
+      { name: 'Centaur', type: 'Quest', owned: false },
+      { name: 'Pegasus', type: 'Wacky', owned: false },
+      { name: 'Chimera', type: 'Special', owned: false },
+      // Adding more Wacky pets to match the user's HTML
+      { name: 'Wacky Pet 1', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 2', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 3', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 4', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 5', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 6', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 7', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 8', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 9', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 10', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 11', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 12', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 13', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 14', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 15', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 16', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 17', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 18', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 19', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 20', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 21', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 22', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 23', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 24', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 25', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 26', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 27', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 28', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 29', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 30', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 31', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 32', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 33', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 34', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 35', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 36', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 37', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 38', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 39', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 40', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 41', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 42', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 43', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 44', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 45', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 46', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 47', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 48', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 49', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 50', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 51', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 52', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 53', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 54', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 55', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 56', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 57', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 58', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 59', type: 'Wacky', owned: false },
+      { name: 'Wacky Pet 60', type: 'Wacky', owned: false },
+      // Adding more Special pets to match the user's HTML
+      { name: 'Special Pet 1', type: 'Special', owned: false },
+      { name: 'Special Pet 2', type: 'Special', owned: false },
+      { name: 'Special Pet 3', type: 'Special', owned: false },
+      { name: 'Special Pet 4', type: 'Special', owned: false },
+      { name: 'Special Pet 5', type: 'Special', owned: false },
+      { name: 'Special Pet 6', type: 'Special', owned: false },
+      { name: 'Special Pet 7', type: 'Special', owned: false },
+      { name: 'Special Pet 8', type: 'Special', owned: false },
+      { name: 'Special Pet 9', type: 'Special', owned: false },
+      { name: 'Special Pet 10', type: 'Special', owned: false },
+      { name: 'Special Pet 11', type: 'Special', owned: false },
+      { name: 'Special Pet 12', type: 'Special', owned: false },
+      { name: 'Special Pet 13', type: 'Special', owned: false },
+      { name: 'Special Pet 14', type: 'Special', owned: false },
+      { name: 'Special Pet 15', type: 'Special', owned: false },
+      { name: 'Special Pet 16', type: 'Special', owned: false },
+      { name: 'Special Pet 17', type: 'Special', owned: false },
+      { name: 'Special Pet 18', type: 'Special', owned: false },
+      { name: 'Special Pet 19', type: 'Special', owned: false },
+      { name: 'Special Pet 20', type: 'Special', owned: false },
+      { name: 'Special Pet 21', type: 'Special', owned: false },
+      { name: 'Special Pet 22', type: 'Special', owned: false },
+      { name: 'Special Pet 23', type: 'Special', owned: false },
+      { name: 'Special Pet 24', type: 'Special', owned: false },
+      { name: 'Special Pet 25', type: 'Special', owned: false },
+      { name: 'Special Pet 26', type: 'Special', owned: false },
+      { name: 'Special Pet 27', type: 'Special', owned: false },
+      { name: 'Special Pet 28', type: 'Special', owned: false },
+      { name: 'Special Pet 29', type: 'Special', owned: false },
+      { name: 'Special Pet 30', type: 'Special', owned: false },
+      { name: 'Special Pet 31', type: 'Special', owned: false },
+      { name: 'Special Pet 32', type: 'Special', owned: false },
+      { name: 'Special Pet 33', type: 'Special', owned: false },
+      { name: 'Special Pet 34', type: 'Special', owned: false },
+      { name: 'Special Pet 35', type: 'Special', owned: false },
+      { name: 'Special Pet 36', type: 'Special', owned: false },
+      { name: 'Special Pet 37', type: 'Special', owned: false },
+      { name: 'Special Pet 38', type: 'Special', owned: false },
+      { name: 'Special Pet 39', type: 'Special', owned: false },
+      { name: 'Special Pet 40', type: 'Special', owned: false },
+      { name: 'Special Pet 41', type: 'Special', owned: false },
+      { name: 'Special Pet 42', type: 'Special', owned: false },
+      { name: 'Special Pet 43', type: 'Special', owned: false },
+      { name: 'Special Pet 44', type: 'Special', owned: false },
+      { name: 'Special Pet 45', type: 'Special', owned: false },
+      { name: 'Special Pet 46', type: 'Special', owned: false },
+      { name: 'Special Pet 47', type: 'Special', owned: false },
+      { name: 'Special Pet 48', type: 'Special', owned: false },
+      { name: 'Special Pet 49', type: 'Special', owned: false },
+      { name: 'Special Pet 50', type: 'Special', owned: false },
+      // Adding more Base pets to match the user's HTML
+      { name: 'Base Pet 1', type: 'Base', owned: false },
+      { name: 'Base Pet 2', type: 'Base', owned: false },
+      { name: 'Base Pet 3', type: 'Base', owned: false },
+      { name: 'Base Pet 4', type: 'Base', owned: false },
+      { name: 'Base Pet 5', type: 'Base', owned: false },
+      { name: 'Base Pet 6', type: 'Base', owned: false },
+      { name: 'Base Pet 7', type: 'Base', owned: false },
+      { name: 'Base Pet 8', type: 'Base', owned: false },
+      { name: 'Base Pet 9', type: 'Base', owned: false },
+      { name: 'Base Pet 10', type: 'Base', owned: false },
+      { name: 'Base Pet 11', type: 'Base', owned: false },
+      { name: 'Base Pet 12', type: 'Base', owned: false },
+      { name: 'Base Pet 13', type: 'Base', owned: false },
+      { name: 'Base Pet 14', type: 'Base', owned: false },
+      { name: 'Base Pet 15', type: 'Base', owned: false },
+      { name: 'Base Pet 16', type: 'Base', owned: false },
+      { name: 'Base Pet 17', type: 'Base', owned: false },
+      { name: 'Base Pet 18', type: 'Base', owned: false },
+      { name: 'Base Pet 19', type: 'Base', owned: false },
+      { name: 'Base Pet 20', type: 'Base', owned: false },
+      { name: 'Base Pet 21', type: 'Base', owned: false },
+      { name: 'Base Pet 22', type: 'Base', owned: false },
+      { name: 'Base Pet 23', type: 'Base', owned: false },
+      { name: 'Base Pet 24', type: 'Base', owned: false },
+      { name: 'Base Pet 25', type: 'Base', owned: false },
+      { name: 'Base Pet 26', type: 'Base', owned: false },
+      { name: 'Base Pet 27', type: 'Base', owned: false },
+      { name: 'Base Pet 28', type: 'Base', owned: false },
+      { name: 'Base Pet 29', type: 'Base', owned: false },
+      { name: 'Base Pet 30', type: 'Base', owned: false },
+      { name: 'Base Pet 31', type: 'Base', owned: false },
+      { name: 'Base Pet 32', type: 'Base', owned: false },
+      { name: 'Base Pet 33', type: 'Base', owned: false },
+      { name: 'Base Pet 34', type: 'Base', owned: false },
+      { name: 'Base Pet 35', type: 'Base', owned: false },
+      { name: 'Base Pet 36', type: 'Base', owned: false },
+      { name: 'Base Pet 37', type: 'Base', owned: false },
+      { name: 'Base Pet 38', type: 'Base', owned: false },
+      { name: 'Base Pet 39', type: 'Base', owned: false },
+      { name: 'Base Pet 40', type: 'Base', owned: false },
+      { name: 'Base Pet 41', type: 'Base', owned: false },
+      { name: 'Base Pet 42', type: 'Base', owned: false },
+      { name: 'Base Pet 43', type: 'Base', owned: false },
+      { name: 'Base Pet 44', type: 'Base', owned: false },
+      { name: 'Base Pet 45', type: 'Base', owned: false },
+      { name: 'Base Pet 46', type: 'Base', owned: false },
+      { name: 'Base Pet 47', type: 'Base', owned: false },
+      { name: 'Base Pet 48', type: 'Base', owned: false },
+      { name: 'Base Pet 49', type: 'Base', owned: false },
+      { name: 'Base Pet 50', type: 'Base', owned: false },
     ];
     const mountsData = [
       { name: 'Wolf Mount', type: 'Base_mount', owned: true },
@@ -759,57 +1082,164 @@
       { name: 'Panda Mount', type: 'Magic_mount', owned: false },
       { name: 'Lion Mount', type: 'Quest_mount', owned: true },
       { name: 'Fox Mount', type: 'Special_mount', owned: false },
+      { name: 'Dragon Mount', type: 'Base_mount', owned: false },
+      { name: 'Unicorn Mount', type: 'Magic_mount', owned: false },
+      { name: 'Phoenix Mount', type: 'Quest_mount', owned: false },
+      { name: 'Gryphon Mount', type: 'Wacky_mount', owned: false },
+      { name: 'Kraken Mount', type: 'Special_mount', owned: false },
+      { name: 'Hydra Mount', type: 'Base_mount', owned: false },
+      { name: 'Minotaur Mount', type: 'Magic_mount', owned: false },
+      { name: 'Centaur Mount', type: 'Quest_mount', owned: false },
+      { name: 'Pegasus Mount', type: 'Wacky_mount', owned: false },
+      { name: 'Chimera Mount', type: 'Special_mount', owned: false },
     ];
     function getActivePetsFilters() {
       const filters = Array.from(document.querySelectorAll('#pets-filters input[type=checkbox]:checked')).map(cb => cb.value);
       return filters;
     }
+    // --- Expand/Collapse logic ---
+    const PETS_SHOWN = 60; // Increased to show more pets before expand button
+    let expandedSections = {};
     function renderPetsAndMounts() {
       const filters = getActivePetsFilters();
       const hideMissing = document.getElementById('hide-missing')?.checked;
       const petsSection = document.getElementById('pets-section');
       petsSection.innerHTML = '';
+      
       // --- Pets ---
       const petTypes = ['Base', 'Magic', 'Quest', 'Wacky', 'Special'];
       petTypes.forEach(type => {
         if (!filters.includes(type)) return;
         const group = petsData.filter(p => p.type === type && (!hideMissing || p.owned));
         if (group.length === 0) return;
-        const block = document.createElement('div');
-        block.innerHTML = `<div style="font-weight:700;font-size:1.1rem;margin:1.2rem 0 0.5rem 0;">${type}</div>`;
-        const list = document.createElement('div');
-        list.className = 'items-list';
-        group.forEach(pet => {
-          const card = document.createElement('div');
-          card.className = 'item-card';
-          card.innerHTML = pet.owned
-            ? `<div class="item-icon"><img src="static/icons/imgi_11_default.svg" style="width:40px;height:40px;"></div><div class="item-title">${pet.name}</div>`
-            : `<div class="item-icon"><img src="static/icons/paw-missing.png" style="width:40px;height:40px;opacity:0.3;"></div><div class="item-title">${pet.name}</div>`;
-          list.appendChild(card);
+        
+        const section = document.createElement('div');
+        section.className = 'pet-section';
+        
+        // Use Russian titles to match the user's HTML
+        let title = type;
+        if (type === 'Wacky') title = 'Дурацкие';
+        else if (type === 'Base') title = 'Обычные';
+        else if (type === 'Magic') title = 'Из Волшебного эликсира';
+        else if (type === 'Quest') title = 'Квестовые';
+        else if (type === 'Special') title = 'Особые';
+        
+        section.innerHTML = `<div class='pet-section-title'>${title}</div>`;
+        
+        const container = document.createElement('div');
+        container.className = 'd-inline-flex flex-column';
+        
+        const row = document.createElement('div');
+        row.className = 'pet-row d-flex';
+        
+        let showAll = expandedSections['pet_'+type];
+        const toShow = showAll ? group : group.slice(0, PETS_SHOWN);
+        
+        toShow.forEach(pet => {
+          const groupDiv = document.createElement('div');
+          groupDiv.className = 'pet-group';
+          
+          const wrapper = document.createElement('div');
+          wrapper.className = 'item-wrapper';
+          wrapper.id = crypto.randomUUID();
+          
+          const slot = document.createElement('div');
+          slot.className = `item pet-slot transition ${pet.owned ? 'owned' : 'item-empty'}`;
+          
+          if (pet.owned) {
+            slot.innerHTML = `<img src="static/icons/imgi_11_default.svg" alt="${pet.name}" class="pixel-art item-content">`;
+          } else {
+            slot.innerHTML = `<img src="https://habitica-assets.s3.amazonaws.com/mobileApp/images/PixelPaw.png" alt="${pet.name}" class="pixel-art item-content GreyedOut">`;
+          }
+          
+          wrapper.appendChild(slot);
+          groupDiv.appendChild(wrapper);
+          row.appendChild(groupDiv);
         });
-        block.appendChild(list);
-        petsSection.appendChild(block);
+        
+        container.appendChild(row);
+        section.appendChild(container);
+        
+        if (group.length > PETS_SHOWN) {
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-flat btn-show-more mt-2 mb-3 expand-btn';
+          btn.innerHTML = `<span class="button-text">${showAll ? 'свернуть' : 'развернуть'}</span>`;
+          btn.onclick = () => { 
+            expandedSections['pet_'+type] = !showAll; 
+            renderPetsAndMounts(); 
+          };
+          section.appendChild(btn);
+        }
+        
+        petsSection.appendChild(section);
       });
+      
       // --- Mounts ---
-      const mountTypes = ['Base_mount', 'Magic_mount', 'Quest_mount', 'Special_mount'];
+      const mountTypes = ['Base_mount', 'Magic_mount', 'Quest_mount', 'Wacky_mount', 'Special_mount'];
       mountTypes.forEach(type => {
         if (!filters.includes(type)) return;
         const group = mountsData.filter(m => m.type === type && (!hideMissing || m.owned));
         if (group.length === 0) return;
-        const block = document.createElement('div');
-        block.innerHTML = `<div style="font-weight:700;font-size:1.1rem;margin:1.2rem 0 0.5rem 0;">${type.replace('_mount','')}</div>`;
-        const list = document.createElement('div');
-        list.className = 'items-list';
-        group.forEach(mount => {
-          const card = document.createElement('div');
-          card.className = 'item-card';
-          card.innerHTML = mount.owned
-            ? `<div class="item-icon"><img src="static/icons/imgi_12_default.svg" style="width:40px;height:40px;"></div><div class="item-title">${mount.name}</div>`
-            : `<div class="item-icon"><img src="static/icons/paw-missing.png" style="width:40px;height:40px;opacity:0.3;"></div><div class="item-title">${mount.name}</div>`;
-          list.appendChild(card);
+        
+        const section = document.createElement('div');
+        section.className = 'pet-section';
+        
+        // Use Russian titles for mounts too
+        let title = type.replace('_mount','');
+        if (title === 'Wacky') title = 'Дурацкие';
+        else if (title === 'Base') title = 'Обычные';
+        else if (title === 'Magic') title = 'Из Волшебного эликсира';
+        else if (title === 'Quest') title = 'Квестовые';
+        else if (title === 'Special') title = 'Особые';
+        
+        section.innerHTML = `<div class='pet-section-title'>${title}</div>`;
+        
+        const container = document.createElement('div');
+        container.className = 'd-inline-flex flex-column';
+        
+        const row = document.createElement('div');
+        row.className = 'pet-row d-flex';
+        
+        let showAll = expandedSections['mount_'+type];
+        const toShow = showAll ? group : group.slice(0, PETS_SHOWN);
+        
+        toShow.forEach(mount => {
+          const groupDiv = document.createElement('div');
+          groupDiv.className = 'pet-group';
+          
+          const wrapper = document.createElement('div');
+          wrapper.className = 'item-wrapper';
+          wrapper.id = crypto.randomUUID();
+          
+          const slot = document.createElement('div');
+          slot.className = `item pet-slot transition ${mount.owned ? 'owned' : 'item-empty'}`;
+          
+          if (mount.owned) {
+            slot.innerHTML = `<img src="static/icons/imgi_12_default.svg" alt="${mount.name}" class="pixel-art item-content">`;
+          } else {
+            slot.innerHTML = `<img src="https://habitica-assets.s3.amazonaws.com/mobileApp/images/PixelPaw.png" alt="${mount.name}" class="pixel-art item-content GreyedOut">`;
+          }
+          
+          wrapper.appendChild(slot);
+          groupDiv.appendChild(wrapper);
+          row.appendChild(groupDiv);
         });
-        block.appendChild(list);
-        petsSection.appendChild(block);
+        
+        container.appendChild(row);
+        section.appendChild(container);
+        
+        if (group.length > PETS_SHOWN) {
+          const btn = document.createElement('button');
+          btn.className = 'btn btn-flat btn-show-more mt-2 mb-3 expand-btn';
+          btn.innerHTML = `<span class="button-text">${showAll ? 'свернуть' : 'развернуть'}</span>`;
+          btn.onclick = () => { 
+            expandedSections['mount_'+type] = !showAll; 
+            renderPetsAndMounts(); 
+          };
+          section.appendChild(btn);
+        }
+        
+        petsSection.appendChild(section);
       });
     }
     document.addEventListener('DOMContentLoaded', function() {
