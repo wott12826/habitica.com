@@ -162,14 +162,13 @@
     .profile .bar-inner {
       height: 100%;
       border-radius: 6px;
+      transition: width 0.3s ease;
     }
     .profile .bar-inner.xp {
       background: linear-gradient(90deg, #6c5ce7, #a29bfe);
-      width: 50%;
     }
     .profile .bar-inner.hp {
       background: linear-gradient(90deg, #00b894, #00cec9);
-      width: 100%;
     }
     .profile .bar-label span {
       float: right;
@@ -279,6 +278,13 @@
       font-size: 0.98rem;
       border-left: 4px solid #6c5ce7;
       position: relative;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .task-card:hover {
+      background: #f0f2f5;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
     .task-card.negative { border-left-color: #e17055; }
     .task-card .task-title { font-weight: 600; }
@@ -287,6 +293,41 @@
       margin-left: auto;
       display: flex;
       gap: 0.5rem;
+    }
+    .task-card .habit-buttons {
+      display: flex;
+      gap: 0.3rem;
+      margin-left: auto;
+    }
+    .task-card .habit-btn {
+      background: none;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+    .task-card .habit-btn.plus {
+      color: #00b894;
+      border-color: #00b894;
+    }
+    .task-card .habit-btn.plus:hover {
+      background: #00b894;
+      color: white;
+    }
+    .task-card .habit-btn.minus {
+      color: #e17055;
+      border-color: #e17055;
+    }
+    .task-card .habit-btn.minus:hover {
+      background: #e17055;
+      color: white;
     }
     .task-card .icon-btn {
       background: none;
@@ -400,7 +441,7 @@
     .modal-overlay.active {
       display: flex;
     }
-    .party-modal {
+    .party-modal, .habit-modal {
       background: #fff;
       border-radius: 18px;
       box-shadow: 0 8px 40px rgba(76,56,133,0.18);
@@ -412,11 +453,15 @@
       animation: fadeIn 0.4s cubic-bezier(.4,0,.2,1);
       overflow: hidden;
     }
+    .habit-modal {
+      max-width: 500px;
+      text-align: left;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: scale(0.95); }
       to { opacity: 1; transform: scale(1); }
     }
-    .party-modal .close-btn {
+    .modal .close-btn {
       position: absolute;
       top: 18px;
       right: 18px;
@@ -428,15 +473,19 @@
       transition: color 0.2s;
       z-index: 2;
     }
-    .party-modal .close-btn:hover {
+    .modal .close-btn:hover {
       color: #6c5ce7;
     }
-    .party-modal .modal-content {
+    .modal .modal-content {
       padding: 2.2rem 2rem 2rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1.5rem;
+    }
+    .habit-modal .modal-content {
+      align-items: stretch;
+      gap: 1.2rem;
     }
     .party-modal .party-img {
       width: 100%;
@@ -451,13 +500,17 @@
       box-shadow: 0 2px 12px rgba(108,92,231,0.08);
       background: #e9e6fa;
     }
-    .party-modal .modal-title {
+    .modal .modal-title {
       font-size: 1.18rem;
       font-weight: 800;
       color: #6c5ce7;
       margin-bottom: 0.5rem;
     }
-    .party-modal .modal-desc {
+    .habit-modal .modal-title {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    .modal .modal-desc {
       color: #444;
       font-size: 1.01rem;
       margin-bottom: 1.1rem;
@@ -524,10 +577,91 @@
       border: 2px solid #a29bfe;
       transition: background 0.2s, color 0.2s;
     }
+    .habit-modal .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .habit-modal .form-group label {
+      font-weight: 600;
+      color: #333;
+      font-size: 0.95rem;
+    }
+    .habit-modal .form-group input,
+    .habit-modal .form-group textarea,
+    .habit-modal .form-group select {
+      padding: 0.8rem;
+      border: 2px solid #e9ecef;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+    .habit-modal .form-group input:focus,
+    .habit-modal .form-group textarea:focus,
+    .habit-modal .form-group select:focus {
+      outline: none;
+      border-color: #6c5ce7;
+    }
+    .habit-modal .form-group textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+    .habit-modal .checkbox-group {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .habit-modal .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .habit-modal .checkbox-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #6c5ce7;
+    }
+    .habit-modal .modal-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .habit-modal .btn {
+      flex: 1;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .habit-modal .btn-primary {
+      background: #6c5ce7;
+      color: white;
+    }
+    .habit-modal .btn-primary:hover {
+      background: #5a4fd8;
+    }
+    .habit-modal .btn-secondary {
+      background: #f8f9fa;
+      color: #666;
+      border: 2px solid #e9ecef;
+    }
+    .habit-modal .btn-secondary:hover {
+      background: #e9ecef;
+    }
+    .habit-modal .btn-danger {
+      background: #e17055;
+      color: white;
+    }
+    .habit-modal .btn-danger:hover {
+      background: #d15a3f;
+    }
     @media (max-width: 500px) {
       .party-modal .modal-content { padding: 1.2rem 0.5rem; }
       .party-modal .party-img img { max-width: 180px; }
-      .party-modal { max-width: 98vw; }
+      .party-modal, .habit-modal { max-width: 98vw; }
+      .habit-modal .modal-actions { flex-direction: column; }
     }
   </style>
 </head>
@@ -544,8 +678,8 @@
         <a href="challenges.html">Challenges</a>
       </nav>
       <div class="header-actions">
-        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
-        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
         <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
         <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
         <span class="avatar"><i class="fa-solid fa-user"></i></span>
@@ -558,14 +692,14 @@
       <div>
         <div class="username">Arubi Kuroko</div>
         <div class="userid">@hb-3b3fc7b8d4ewmgmttr</div>
-        <div class="level">Level 1 Warrior</div>
-        <div class="bar-label">XP <span>50 / 50</span></div>
-        <div class="bar"><div class="bar-inner xp"></div></div>
-        <div class="bar-label">HP <span>50 / 50</span></div>
-        <div class="bar"><div class="bar-inner hp"></div></div>
+        <div class="level">Level <span id="level">1</span> Warrior</div>
+        <div class="bar-label">XP <span id="xpDisplay">50 / 100</span></div>
+        <div class="bar"><div class="bar-inner xp" id="xpBar"></div></div>
+        <div class="bar-label">HP <span id="hpDisplay">50 / 50</span></div>
+        <div class="bar"><div class="bar-inner hp" id="hpBar"></div></div>
         <div class="stats">
-          <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
-          <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+          <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gemsProfile">0</span></span>
+          <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coinsProfile">0</span></span>
         </div>
       </div>
     </aside>
@@ -582,27 +716,27 @@
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">Habits</span>
-            <button class="add-btn" title="Add Habit"><i class="fa-solid fa-plus"></i></button>
+            <button class="add-btn" title="Add Habit" onclick="openHabitModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div class="task-list">
-            <div class="task-card negative">
-              <div>
+          <div class="task-list" id="habitsList">
+            <div class="task-card negative" data-id="1">
+              <div onclick="openHabitModal(1)">
                 <div class="task-title">Click to mark this as a bad habit you want to break</div>
                 <div class="task-desc">Or edit or delete this habit</div>
               </div>
-              <div class="task-actions">
-                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              <div class="habit-buttons">
+                <button class="habit-btn plus" onclick="updateHabit(1, 'plus')" title="Good habit (+XP)">+</button>
+                <button class="habit-btn minus" onclick="updateHabit(1, 'minus')" title="Bad habit (-HP)">−</button>
               </div>
             </div>
-            <div class="task-card">
-              <div>
+            <div class="task-card" data-id="2">
+              <div onclick="openHabitModal(2)">
                 <div class="task-title">Add a Habit in Habitica</div>
                 <div class="task-desc">Either a positive, negative, or both habit</div>
               </div>
-              <div class="task-actions">
-                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
+              <div class="habit-buttons">
+                <button class="habit-btn plus" onclick="updateHabit(2, 'plus')" title="Good habit (+XP)">+</button>
+                <button class="habit-btn minus" onclick="updateHabit(2, 'minus')" title="Bad habit (-HP)">−</button>
               </div>
             </div>
           </div>
@@ -718,10 +852,11 @@
       &copy; 2025 Habitica. All rights reserved.
     </div>
   </footer>
-  <!-- Party Modal (вставить перед </body>) -->
+  
+  <!-- Party Modal -->
   <div class="modal-overlay" id="partyModal">
     <div class="party-modal">
-      <button class="close-btn" onclick="closeModal()" title="Close">&times;</button>
+      <button class="close-btn" onclick="closeModal('partyModal')" title="Close">&times;</button>
       <div class="modal-content">
         <div class="party-img">
           <img src="static/icons/group@3x-BRelOOPS.png" alt="Party Pixel Art">
@@ -741,25 +876,330 @@
       </div>
     </div>
   </div>
+
+  <!-- Habit Edit Modal -->
+  <div class="modal-overlay" id="habitModal">
+    <div class="habit-modal">
+      <button class="close-btn" onclick="closeModal('habitModal')" title="Close">&times;</button>
+      <div class="modal-content">
+        <div class="modal-title">Edit Habit</div>
+        <form id="habitForm">
+          <div class="form-group">
+            <label for="habitTitle">Title</label>
+            <input type="text" id="habitTitle" name="title" placeholder="Enter habit title" required>
+          </div>
+          <div class="form-group">
+            <label for="habitNotes">Notes</label>
+            <textarea id="habitNotes" name="notes" placeholder="Add notes about this habit"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="habitDifficulty">Difficulty</label>
+            <select id="habitDifficulty" name="difficulty">
+              <option value="trivial">Trivial</option>
+              <option value="easy">Easy</option>
+              <option value="medium" selected>Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="habitTags">Tags</label>
+            <input type="text" id="habitTags" name="tags" placeholder="Enter tags separated by commas">
+          </div>
+          <div class="form-group">
+            <label>Habit Type</label>
+            <div class="checkbox-group">
+              <div class="checkbox-item">
+                <input type="checkbox" id="positiveHabit" name="positive" checked>
+                <label for="positiveHabit">Positive habit (+XP)</label>
+              </div>
+              <div class="checkbox-item">
+                <input type="checkbox" id="negativeHabit" name="negative">
+                <label for="negativeHabit">Negative habit (-HP)</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn btn-danger" onclick="deleteHabit()">Delete</button>
+            <button type="button" class="btn btn-secondary" onclick="closeModal('habitModal')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <script>
-    function closeModal() {
-      document.getElementById('partyModal').classList.remove('active');
+    // Game state
+    let gameState = {
+      xp: 50,
+      maxXp: 100,
+      hp: 50,
+      maxHp: 50,
+      level: 1,
+      gems: 0,
+      coins: 0,
+      habits: [
+        {
+          id: 1,
+          title: "Click to mark this as a bad habit you want to break",
+          notes: "Or edit or delete this habit",
+          difficulty: "medium",
+          tags: "",
+          positive: false,
+          negative: true
+        },
+        {
+          id: 2,
+          title: "Add a Habit in Habitica",
+          notes: "Either a positive, negative, or both habit",
+          difficulty: "medium",
+          tags: "",
+          positive: true,
+          negative: false
+        }
+      ]
+    };
+
+    let editingHabitId = null;
+
+    // Initialize game
+    function initGame() {
+      updateDisplay();
     }
-    function openModal() {
-      document.getElementById('partyModal').classList.add('active');
+
+    // Update all displays
+    function updateDisplay() {
+      // Update XP bar
+      const xpPercent = (gameState.xp / gameState.maxXp) * 100;
+      document.getElementById('xpBar').style.width = xpPercent + '%';
+      document.getElementById('xpDisplay').textContent = `${gameState.xp} / ${gameState.maxXp}`;
+      
+      // Update HP bar
+      const hpPercent = (gameState.hp / gameState.maxHp) * 100;
+      document.getElementById('hpBar').style.width = hpPercent + '%';
+      document.getElementById('hpDisplay').textContent = `${gameState.hp} / ${gameState.maxHp}`;
+      
+      // Update level
+      document.getElementById('level').textContent = gameState.level;
+      
+      // Update gems and coins
+      document.getElementById('gems').textContent = gameState.gems;
+      document.getElementById('gemsProfile').textContent = gameState.gems;
+      document.getElementById('coins').textContent = gameState.coins;
+      document.getElementById('coinsProfile').textContent = gameState.coins;
     }
+
+    // Update habit (plus/minus buttons)
+    function updateHabit(habitId, action) {
+      event.stopPropagation();
+      
+      const habit = gameState.habits.find(h => h.id === habitId);
+      if (!habit) return;
+
+      if (action === 'plus' && habit.positive) {
+        gameState.xp += 10;
+        gameState.coins += 5;
+        showNotification('+10 XP, +5 coins!', 'success');
+      } else if (action === 'minus' && habit.negative) {
+        gameState.hp = Math.max(0, gameState.hp - 5);
+        showNotification('-5 HP', 'warning');
+      }
+
+      // Check for level up
+      if (gameState.xp >= gameState.maxXp) {
+        gameState.level++;
+        gameState.xp = 0;
+        gameState.maxXp = Math.floor(gameState.maxXp * 1.2);
+        gameState.maxHp += 10;
+        gameState.hp = gameState.maxHp;
+        gameState.gems += 1;
+        showNotification(`Level up! You're now level ${gameState.level}!`, 'success');
+      }
+
+      updateDisplay();
+    }
+
+    // Show notification
+    function showNotification(message, type) {
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${type === 'success' ? '#00b894' : '#e17055'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        z-index: 10001;
+        animation: slideIn 0.3s ease;
+      `;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+      }, 2000);
+    }
+
+    // Modal functions
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+      if (modalId === 'habitModal') {
+        editingHabitId = null;
+        document.getElementById('habitForm').reset();
+      }
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+
+    // Habit modal functions
+    function openHabitModal(habitId = null) {
+      editingHabitId = habitId;
+      const form = document.getElementById('habitForm');
+      
+      if (habitId) {
+        // Edit existing habit
+        const habit = gameState.habits.find(h => h.id === habitId);
+        if (habit) {
+          document.getElementById('habitTitle').value = habit.title;
+          document.getElementById('habitNotes').value = habit.notes;
+          document.getElementById('habitDifficulty').value = habit.difficulty;
+          document.getElementById('habitTags').value = habit.tags;
+          document.getElementById('positiveHabit').checked = habit.positive;
+          document.getElementById('negativeHabit').checked = habit.negative;
+        }
+      } else {
+        // New habit
+        form.reset();
+        document.getElementById('habitTitle').value = '';
+        document.getElementById('habitNotes').value = '';
+        document.getElementById('habitDifficulty').value = 'medium';
+        document.getElementById('habitTags').value = '';
+        document.getElementById('positiveHabit').checked = true;
+        document.getElementById('negativeHabit').checked = false;
+      }
+      
+      openModal('habitModal');
+    }
+
+    // Save habit
+    document.getElementById('habitForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = new FormData(this);
+      const habitData = {
+        title: formData.get('title'),
+        notes: formData.get('notes'),
+        difficulty: formData.get('difficulty'),
+        tags: formData.get('tags'),
+        positive: formData.get('positive') === 'on',
+        negative: formData.get('negative') === 'on'
+      };
+
+      if (editingHabitId) {
+        // Update existing habit
+        const habitIndex = gameState.habits.findIndex(h => h.id === editingHabitId);
+        if (habitIndex !== -1) {
+          gameState.habits[habitIndex] = { ...gameState.habits[habitIndex], ...habitData };
+          updateHabitsList();
+        }
+      } else {
+        // Add new habit
+        const newHabit = {
+          id: Date.now(),
+          ...habitData
+        };
+        gameState.habits.push(newHabit);
+        updateHabitsList();
+      }
+
+      closeModal('habitModal');
+      showNotification('Habit saved successfully!', 'success');
+    });
+
+    // Delete habit
+    function deleteHabit() {
+      if (!editingHabitId) return;
+      
+      if (confirm('Are you sure you want to delete this habit?')) {
+        gameState.habits = gameState.habits.filter(h => h.id !== editingHabitId);
+        updateHabitsList();
+        closeModal('habitModal');
+        showNotification('Habit deleted successfully!', 'success');
+      }
+    }
+
+    // Update habits list display
+    function updateHabitsList() {
+      const habitsList = document.getElementById('habitsList');
+      habitsList.innerHTML = '';
+      
+      gameState.habits.forEach(habit => {
+        const habitCard = document.createElement('div');
+        habitCard.className = `task-card ${habit.negative ? 'negative' : ''}`;
+        habitCard.setAttribute('data-id', habit.id);
+        
+        habitCard.innerHTML = `
+          <div onclick="openHabitModal(${habit.id})">
+            <div class="task-title">${habit.title}</div>
+            <div class="task-desc">${habit.notes || 'No notes'}</div>
+          </div>
+          <div class="habit-buttons">
+            ${habit.positive ? `<button class="habit-btn plus" onclick="updateHabit(${habit.id}, 'plus')" title="Good habit (+XP)">+</button>` : ''}
+            ${habit.negative ? `<button class="habit-btn minus" onclick="updateHabit(${habit.id}, 'minus')" title="Bad habit (-HP)">−</button>` : ''}
+          </div>
+        `;
+        
+        habitsList.appendChild(habitCard);
+      });
+    }
+
+    // Party modal event listeners
     document.getElementById('openPartyModal').addEventListener('click', function(e) {
       e.preventDefault();
-      openModal();
+      openModal('partyModal');
     });
-    // Закрытие по Esc
+
+    // Close modals with Escape key
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape') closeModal();
+      if (e.key === 'Escape') {
+        closeModal('partyModal');
+        closeModal('habitModal');
+      }
     });
-    // Закрытие по клику вне окна
-    document.getElementById('partyModal').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
+
+    // Close modals by clicking outside
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeModal(this.id);
+        }
+      });
+    });
+
+    // Add CSS animations for notifications
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Initialize the game when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initGame();
+      updateHabitsList();
     });
   </script>
 </body>
-</html> 
+</html>
