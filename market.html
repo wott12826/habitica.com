@@ -652,6 +652,21 @@
       left: 0; top: 0;
       z-index: 1;
     }
+    .market-npc {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .market-npc .npc {
+      width: 100%;
+      height: 100%;
+      background: url('static/npc/summer/market_banner_npc.png') no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
     .market-featured-items {
       position: relative;
       z-index: 2;
@@ -710,6 +725,35 @@
       .market-featured-items { padding-right: 0.5rem; }
       .market-featured-label { margin-right: 0.5rem; }
     }
+    .market-npc .featured-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      left: 20px;
+      top: 62px;
+      z-index: 3;
+    }
+    .market-npc .rectangle {
+      display: inline-block;
+      width: 12px;
+      height: 24px;
+      background: #d4842a;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+    .market-npc .featured-label .text {
+      background: #d4842a;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 6px;
+      padding: 0.2rem 1.1rem;
+      margin: 0 2px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px #0001;
+      line-height: 24px;
+    }
   </style>
 </head>
 <body>
@@ -738,6 +782,11 @@
   <div class="market-pixel-banner">
     <div class="market-pixel-bg">
       <img src="static/icons/imgi_83_market_background.png" alt="market-bg" style="width:100%;height:80px;object-fit:cover;">
+    </div>
+    <div class="market-npc">
+      <div class="npc" style="background: url('static/npc/summer/market_banner_npc.png') no-repeat;">
+        <div class="featured-label"><span class="rectangle"></span><span class="text">Alex</span><span class="rectangle"></span></div>
+      </div>
     </div>
     <div class="market-featured-items">
       <span class="market-featured-label">Featured Items!</span>
