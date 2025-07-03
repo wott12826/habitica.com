@@ -1346,7 +1346,9 @@
           difficulty: "medium",
           tags: "",
           positive: false,
-          negative: true
+          negative: true,
+          lastPlusClick: 0,
+          lastMinusClick: 0
         },
         {
           id: 2,
@@ -1355,7 +1357,9 @@
           difficulty: "medium",
           tags: "",
           positive: true,
-          negative: false
+          negative: false,
+          lastPlusClick: 0,
+          lastMinusClick: 0
         }
       ],
       dailies: [
@@ -1530,12 +1534,22 @@
       
       const habit = gameState.habits.find(h => h.id === habitId);
       if (!habit) return;
-
+      const now = Date.now();
       if (action === 'plus' && habit.positive) {
+        if (habit.lastPlusClick && now - habit.lastPlusClick < 2 * 60 * 60 * 1000) {
+          showNotification('You can only use this button once every 2 hours!', 'warning');
+          return;
+        }
+        habit.lastPlusClick = now;
         gameState.xp += 10;
         gameState.coins += 5;
         showNotification('+10 XP, +5 coins!', 'success');
       } else if (action === 'minus' && habit.negative) {
+        if (habit.lastMinusClick && now - habit.lastMinusClick < 2 * 60 * 60 * 1000) {
+          showNotification('You can only use this button once every 2 hours!', 'warning');
+          return;
+        }
+        habit.lastMinusClick = now;
         gameState.hp = Math.max(0, gameState.hp - 5);
         showNotification('-5 HP', 'warning');
       }
