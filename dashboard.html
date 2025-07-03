@@ -2092,6 +2092,13 @@
       updateTodosList();
       updateRewardsList();
       updateSpecialRewardsList();
+      // Открытие partyModal по кнопке Start
+      var startBtn = document.querySelector('.cta-btn');
+      if(startBtn) {
+        startBtn.addEventListener('click', function() {
+          openModal('partyModal');
+        });
+      }
     });
 
     let currentRewardsTab = 'all';
