@@ -876,6 +876,176 @@
       margin: 0 auto;
       padding: 0 2rem;
     }
+    /* FEATURED ITEMS BANNER (ORIGINAL HABITICA STYLES) */
+    .featuredItems {
+      width: 100%;
+      height: 120px;
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .featuredItems .background {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .featuredItems .background:first-child {
+      background: #f3f0ff;
+    }
+    .featuredItems .npc {
+      position: absolute;
+      left: 20px;
+      top: 10px;
+      width: 80px;
+      height: 80px;
+      background-size: contain !important;
+      background-position: center !important;
+    }
+    .featuredItems .npc .featured-label {
+      position: absolute;
+      left: -10px;
+      top: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .featuredItems .featured-label .rectangle {
+      width: 12px;
+      height: 24px;
+      background: #d4842a;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+    .featuredItems .featured-label .text {
+      background: #d4842a;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 6px;
+      padding: 0.2rem 1.1rem;
+      margin: 0 2px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px #0001;
+      line-height: 24px;
+    }
+    .featuredItems .content {
+      position: absolute;
+      right: 20px;
+      top: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content: flex-end;
+    }
+    .featuredItems .content .featured-label.with-border {
+      background: #ffb300;
+      border-radius: 8px 8px 0 0;
+      padding: 0.4rem 1.2rem;
+      margin-bottom: 0.5rem;
+      box-shadow: 0 2px 8px rgba(255,179,0,0.10);
+    }
+    .featuredItems .content .featured-label.with-border .text {
+      background: transparent;
+      color: #fff;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+    }
+    .featuredItems .items {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-end;
+    }
+    .featuredItems .item-wrapper {
+      position: relative;
+    }
+    .featuredItems .item {
+      background: #fff;
+      border-radius: 12px 12px 10px 10px;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.10);
+      padding: 0.7rem 1.1rem 0.5rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 64px;
+      min-height: 90px;
+      position: relative;
+    }
+    .featuredItems .item.suggested {
+      border: 2px solid #ffb300;
+    }
+    .featuredItems .badge-top {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      z-index: 2;
+    }
+    .featuredItems .badge {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #6c5ce7;
+      color: #fff;
+    }
+    .featuredItems .badge.pinned {
+      background: #ffb300;
+    }
+    .featuredItems .svg-icon {
+      width: 16px;
+      height: 16px;
+    }
+    .featuredItems .svg-icon.color svg {
+      width: 100%;
+      height: 100%;
+      fill: #fff;
+    }
+    .featuredItems .suggestedDot {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 8px;
+      height: 8px;
+      background: #ffb300;
+      border-radius: 50%;
+    }
+    .featuredItems .image {
+      margin-bottom: 0.3rem;
+    }
+    .featuredItems .image img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+    .featuredItems .price {
+      color: #ffb300;
+      font-weight: 700;
+      font-size: 1.08rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .featuredItems .price.gold {
+      color: #ffb300;
+    }
+    .featuredItems .svg-icon.inline {
+      width: 16px;
+      height: 16px;
+    }
+    .featuredItems .svg-icon.inline svg {
+      width: 100%;
+      height: 100%;
+    }
+    .featuredItems .price-label {
+      font-weight: 700;
+    }
+    .featuredItems .price-label.gold {
+      color: #ffb300;
+    }
   </style>
 </head>
 <body>
@@ -900,21 +1070,117 @@
       </div>
     </div>
   </header>
-  <!-- MARKET BANNER (NEW STRUCTURE) -->
-  <div class="market-banner-flex">
-    <div class="market-banner-bg"></div>
-    <div class="market-banner-content">
-      <div class="market-banner-npc">
-        <div class="npc-img"></div>
-        <div class="npc-label"><span class="npc-label-rect"></span><span class="npc-label-text">Alex</span><span class="npc-label-rect"></span></div>
+  <!-- FEATURED ITEMS BANNER (ORIGINAL STRUCTURE) -->
+  <div class="featuredItems">
+    <div class="background"></div>
+    <div class="background" style="background: url('static/icons/imgi_83_market_background.png') repeat-x;">
+      <div class="npc" style="background: url('static/npc/summer/market_banner_npc.png') no-repeat;">
+        <div class="featured-label">
+          <span class="rectangle"></span>
+          <span class="text">Alex</span>
+          <span class="rectangle"></span>
+        </div>
       </div>
-      <div class="market-banner-featured">
-        <span class="market-featured-label">Featured Items!</span>
-        <div class="market-featured-list">
-          <div class="market-featured-card"><img src="static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
-          <div class="market-featured-card"><img src="static/icons/imgi_3_shop_armor_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
-          <div class="market-featured-card"><img src="static/icons/imgi_1_swords-CvGDZwaq.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 60</div></div>
-          <div class="market-featured-card"><img src="static/icons/imgi_8_shop_shield_warrior_1.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 70</div></div>
+      <div class="content">
+        <div class="featured-label with-border">
+          <span class="rectangle"></span>
+          <span class="text">Featured Items!</span>
+          <span class="rectangle"></span>
+        </div>
+        <div class="items margin-center">
+          <div class="item-wrapper">
+            <div class="item suggested">
+              <span class="badge-top">
+                <div class="badge badge-round badge-pin align-items-center justify-content-center pinned">
+                  <div class="svg-icon color">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-2 -1.5 16 16">
+                      <path id="prefix__a" d="M9.748 4.127l-3.27 4.205-2.31-2.31 4.205-3.27 1.375 1.375zm2.484-.091l-.554-.554V3.43l-.102-.051L8.463.267C8.293.095 8.063 0 7.82 0c-.244 0-.472.095-.644.267-.173.172-.267.401-.267.644 0 .195.061.382.174.536L2.87 4.724l-.06-.06c-.355-.354-.932-.354-1.288 0-.355.356-.355.933 0 1.288l1.87 1.869-3.126 3.125c-.355.355-.355.933 0 1.286.17.173.4.268.643.268.244 0 .474-.095.645-.267L4.68 9.108l1.87 1.87c.342.343.94.344 1.287 0 .355-.356.355-.933 0-1.289l-.06-.06 3.277-4.212c.345.252.87.215 1.18-.093.354-.356.354-.933 0-1.288z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </span>
+              <span class="suggestedDot"></span>
+              <div class="image">
+                <img src="static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png" class="pixel-art">
+              </div>
+              <div class="price d-flex align-items-center justify-content-center gold">
+                <span class="svg-icon inline icon-16 mr-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g fill="none" fill-rule="evenodd">
+                      <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
+                      <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
+                      <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
+                      <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
+                      <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="price-label gold">90</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-wrapper">
+            <div class="item suggested">
+              <span class="badge-top">
+                <div class="badge badge-round badge-pin align-items-center justify-content-center pinned">
+                  <div class="svg-icon color">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-2 -1.5 16 16">
+                      <path id="prefix__a" d="M9.748 4.127l-3.27 4.205-2.31-2.31 4.205-3.27 1.375 1.375zm2.484-.091l-.554-.554V3.43l-.102-.051L8.463.267C8.293.095 8.063 0 7.82 0c-.244 0-.472.095-.644.267-.173.172-.267.401-.267.644 0 .195.061.382.174.536L2.87 4.724l-.06-.06c-.355-.354-.932-.354-1.288 0-.355.356-.355.933 0 1.288l1.87 1.869-3.126 3.125c-.355.355-.355.933 0 1.286.17.173.4.268.643.268.244 0 .474-.095.645-.267L4.68 9.108l1.87 1.87c.342.343.94.344 1.287 0 .355-.356.355-.933 0-1.289l-.06-.06 3.277-4.212c.345.252.87.215 1.18-.093.354-.356.354-.933 0-1.288z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </span>
+              <span class="suggestedDot"></span>
+              <div class="image">
+                <img src="static/icons/imgi_3_shop_armor_special_summer2025Warrior.png" class="pixel-art">
+              </div>
+              <div class="price d-flex align-items-center justify-content-center gold">
+                <span class="svg-icon inline icon-16 mr-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g fill="none" fill-rule="evenodd">
+                      <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
+                      <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
+                      <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
+                      <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
+                      <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="price-label gold">90</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-wrapper">
+            <div class="item suggested">
+              <span class="badge-top">
+                <div class="badge badge-round badge-pin align-items-center justify-content-center pinned">
+                  <div class="svg-icon color">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="-2 -1.5 16 16">
+                      <path id="prefix__a" d="M9.748 4.127l-3.27 4.205-2.31-2.31 4.205-3.27 1.375 1.375zm2.484-.091l-.554-.554V3.43l-.102-.051L8.463.267C8.293.095 8.063 0 7.82 0c-.244 0-.472.095-.644.267-.173.172-.267.401-.267.644 0 .195.061.382.174.536L2.87 4.724l-.06-.06c-.355-.354-.932-.354-1.288 0-.355.356-.355.933 0 1.288l1.87 1.869-3.126 3.125c-.355.355-.355.933 0 1.286.17.173.4.268.643.268.244 0 .474-.095.645-.267L4.68 9.108l1.87 1.87c.342.343.94.344 1.287 0 .355-.356.355-.933 0-1.289l-.06-.06 3.277-4.212c.345.252.87.215 1.18-.093.354-.356.354-.933 0-1.288z"></path>
+                    </svg>
+                  </div>
+                </div>
+              </span>
+              <span class="suggestedDot"></span>
+              <div class="image">
+                <img src="static/icons/imgi_8_shop_shield_warrior_1.png" class="pixel-art">
+              </div>
+              <div class="price d-flex align-items-center justify-content-center gold">
+                <span class="svg-icon inline icon-16 mr-1">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <g fill="none" fill-rule="evenodd">
+                      <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
+                      <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
+                      <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
+                      <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
+                      <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
+                    </g>
+                  </svg>
+                </span>
+                <span class="price-label gold">70</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
