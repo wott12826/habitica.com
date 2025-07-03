@@ -239,6 +239,10 @@
       flex-direction: column;
       min-width: 0;
     }
+    .task-col:last-child {
+      min-width: 340px;
+      max-width: 480px;
+    }
     .task-col .col-header {
       display: flex;
       align-items: center;
@@ -416,14 +420,20 @@
       .dashboard { flex-direction: column; }
       .profile { width: 100%; flex-direction: row; gap: 2rem; justify-content: flex-start; }
       .main { width: 100%; }
+      .rewards-special-list { grid-template-columns: repeat(3, 1fr); }
+      .task-col:last-child { min-width: 260px; }
     }
     @media (max-width: 900px) {
       .tasks-grid { grid-template-columns: 1fr 1fr; }
+      .rewards-special-list { grid-template-columns: repeat(2, 1fr); }
+      .task-col:last-child { min-width: 200px; }
     }
     @media (max-width: 600px) {
       .header-inner, .dashboard, .footer-inner { padding: 0 0.5rem; }
       .tasks-grid { grid-template-columns: 1fr; }
       .profile { flex-direction: column; align-items: center; }
+      .rewards-special-list { grid-template-columns: 1fr; }
+      .task-col:last-child { min-width: 0; }
     }
   </style>
   <style>
@@ -700,7 +710,7 @@
       background: #f8f9fa;
       border-radius: 18px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-      padding: 1.5rem 1.2rem 1.5rem 1.2rem;
+      padding: 1.5rem 1.5rem 1.5rem 1.5rem;
       margin-top: 0.5rem;
       overflow: hidden;
       box-sizing: border-box;
