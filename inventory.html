@@ -420,6 +420,7 @@
       .party-modal .party-img img { max-width: 140px; }
       .party-modal .group-img { width: 60px; }
     }
+    .item-icon img { display:block; margin:0 auto; }
   </style>
 </head>
 <body>
@@ -629,6 +630,60 @@
           document.getElementById('tab-' + this.dataset.tab).style.display = '';
         });
       });
+    });
+
+    // --- Категории и иконки ---
+    const inventoryIcons = [
+      // Eggs
+      { src: 'static/icons/imgi_10_default.svg', name: 'Wolf Egg', desc: 'A mysterious egg. What will hatch?', category: 'Eggs' },
+      { src: 'static/icons/imgi_11_default.svg', name: 'Tiger Cub Egg', desc: 'A rare egg. Maybe a tiger cub?', category: 'Eggs' },
+      { src: 'static/icons/imgi_12_default.svg', name: 'Panda Egg', desc: 'A cute panda is waiting inside!', category: 'Eggs' },
+      // Hatching Potions
+      { src: 'static/icons/imgi_10_shop_potion.png', name: 'Base Potion', desc: 'Hatches a pet from an egg.', category: 'Hatching Potions' },
+      // Food & Saddles
+      { src: 'static/icons/imgi_48_slim_shirt_green.png', name: 'Meat', desc: 'Feed to pets to grow them.', category: 'Food & Saddles' },
+      { src: 'static/icons/imgi_27_chair_handleless_yellow.png', name: 'Saddle', desc: 'Turn a pet into a mount.', category: 'Food & Saddles' },
+      // Special
+      { src: 'static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png', name: 'Spear of Destiny', desc: 'Special event item.', category: 'Special' },
+      { src: 'static/icons/imgi_3_shop_armor_special_summer2025Warrior.png', name: 'Pink Bow', desc: 'Special event item.', category: 'Special' },
+      // Quests
+      { src: 'static/icons/imgi_11_shop_armoire.gif', name: 'Treasure Chest', desc: 'Quest reward.', category: 'Quests' },
+      { src: 'static/icons/imgi_9_shop_head_warrior_1.png', name: 'Viking Helm', desc: 'Quest reward.', category: 'Quests' },
+    ];
+    // --- Фильтрация ---
+    function getActiveFilters() {
+      return Array.from(document.querySelectorAll('.filter-group input[type=checkbox]:checked')).map(cb => cb.value);
+    }
+    function renderInventoryItems() {
+      const filters = getActiveFilters();
+      const list = document.querySelector('#tab-items .items-list');
+      list.innerHTML = '';
+      let filtered = inventoryIcons;
+      if (filters.length > 0) {
+        filtered = inventoryIcons.filter(item => filters.includes(item.category));
+      }
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
+        return;
+      }
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // ... (существующий код)
+      // Слушатели фильтров
+      document.querySelectorAll('.filter-group input[type=checkbox]').forEach(cb => {
+        cb.addEventListener('change', renderInventoryItems);
+      });
+      renderInventoryItems();
     });
   </script>
 </body>
