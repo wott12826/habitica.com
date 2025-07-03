@@ -400,17 +400,7 @@
       &copy; 2025 Habitica. All rights reserved.
     </div>
   </footer>
-  <script>
-    // Simple tab switcher
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
-        document.getElementById('tab-' + this.dataset.tab).style.display = '';
-      });
-    });
-  </script>
+
   <!-- Party Modal -->
   <div class="modal-overlay" id="partyModal">
     <div class="party-modal">
