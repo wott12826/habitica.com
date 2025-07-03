@@ -1793,7 +1793,7 @@
         dailyCard.className = 'task-card';
         dailyCard.setAttribute('data-id', daily.id);
         dailyCard.innerHTML = `
-          <input type="checkbox" class="daily-checkbox" ${daily.completed ? 'checked' : ''} onclick="toggleDailyComplete(${daily.id}, event)">
+          <input type="checkbox" class="daily-checkbox" ${daily.completed ? 'checked disabled' : ''} onclick="toggleDailyComplete(${daily.id}, event)">
           <div style="flex:1;cursor:pointer;" onclick="openDailyModal(${daily.id})">
             <div class="task-title">${daily.title}</div>
             <div class="task-desc">${daily.notes || ''}</div>
@@ -1811,15 +1811,11 @@
       e.stopPropagation();
       const daily = gameState.dailies.find(d => d.id === dailyId);
       if (!daily) return;
-      daily.completed = !daily.completed;
-      if (daily.completed) {
-        gameState.xp += 15;
-        gameState.coins += 7;
-        showNotification('+15 XP, +7 coins!', 'success');
-        // Удаляем DOM-элемент задачи сразу (визуально)
-        const card = e.target.closest('.task-card');
-        if (card) card.remove();
-      }
+      if (daily.completed) return; // нельзя повторно
+      daily.completed = true;
+      gameState.xp += 15;
+      gameState.coins += 7;
+      showNotification('+15 XP, +7 coins!', 'success');
       updateDailiesList();
       updateDisplay();
     }
