@@ -394,7 +394,7 @@
         <a href="dashboard.html" class="active">Tasks</a>
         <a href="inventory.html">Inventory</a>
         <a href="market.html">Shops</a>
-        <a href="party.html">Party</a>
+        <a href="#" id="openPartyModal">Party</a>
         <a href="guild.html">Guild</a>
         <a href="challenges.html">Challenges</a>
       </nav>
@@ -573,5 +573,44 @@
       &copy; 2025 Habitica. All rights reserved.
     </div>
   </footer>
+  <!-- Party Modal (вставить перед </body>) -->
+<div class="modal-overlay" id="partyModal" style="display:none;">
+  <div class="party-modal">
+    <button class="close-btn" onclick="closeModal()" title="Close"><i class="fa-solid fa-xmark"></i></button>
+    <div class="party-art">
+      <img src="https://habitica.com/static/home/img/party.png" alt="Party Pixel Art" onerror="this.style.display='none'">
+    </div>
+    <h2>Play Habitica in a Party!</h2>
+    <p>Go on amazing Quests with friends or solo. Battle monsters, create challenges, and help each other stay accountable with a party!</p>
+    <button class="party-btn">Create Party</button>
+    <div class="party-avatars">
+      <span class="avatar"><i class="fa-solid fa-user-ninja"></i></span>
+      <span class="avatar"><i class="fa-solid fa-hat-wizard"></i></span>
+      <span class="avatar"><i class="fa-solid fa-dog"></i></span>
+      <span class="avatar"><i class="fa-solid fa-user-astronaut"></i></span>
+    </div>
+    <button class="party-btn secondary">Find Party</button>
+  </div>
+</div>
+<script>
+  function closeModal() {
+    document.getElementById('partyModal').style.display = 'none';
+  }
+  function openModal() {
+    document.getElementById('partyModal').style.display = 'flex';
+  }
+  document.getElementById('openPartyModal').addEventListener('click', function(e) {
+    e.preventDefault();
+    openModal();
+  });
+  // Для демо: закрытие по Esc
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+  // Для демо: закрытие по клику вне окна
+  document.querySelector('.modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+</script>
 </body>
 </html> 
