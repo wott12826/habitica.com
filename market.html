@@ -754,6 +754,125 @@
       box-shadow: 0 2px 8px #0001;
       line-height: 24px;
     }
+    /* MARKET BANNER (NEW STRUCTURE) */
+    .market-banner-flex {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    .market-banner-bg {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    }
+    .market-banner-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem;
+    }
+    .market-banner-npc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .npc-img {
+      width: 100%;
+      height: 100%;
+      background: url('static/npc/summer/market_banner_npc.png') no-repeat;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 0.5rem;
+    }
+    .npc-label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .npc-label-rect {
+      width: 12px;
+      height: 24px;
+      background: #d4842a;
+      border-radius: 4px;
+      margin: 0 2px;
+    }
+    .npc-label-text {
+      background: #d4842a;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 6px;
+      padding: 0.2rem 1.1rem;
+      margin: 0 2px;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px #0001;
+      line-height: 24px;
+    }
+    .market-banner-featured {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    .market-featured-label {
+      background: #ffb300;
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.05rem;
+      border-radius: 8px 8px 0 0;
+      padding: 0.4rem 1.2rem;
+      margin-right: 1.2rem;
+      box-shadow: 0 2px 8px rgba(255,179,0,0.10);
+      position: relative;
+      top: -12px;
+      letter-spacing: 0.5px;
+    }
+    .market-featured-list {
+      display: flex;
+      gap: 1.2rem;
+      align-items: flex-end;
+    }
+    .market-featured-card {
+      background: #fff;
+      border-radius: 12px 12px 10px 10px;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.10);
+      padding: 0.7rem 1.1rem 0.5rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 64px;
+      min-height: 90px;
+      position: relative;
+    }
+    .market-featured-card img {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+      margin-bottom: 0.3rem;
+    }
+    .market-featured-price {
+      color: #ffb300;
+      font-weight: 700;
+      font-size: 1.08rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .market-main-container {
+      flex: 1;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
   </style>
 </head>
 <body>
@@ -778,138 +897,136 @@
       </div>
     </div>
   </header>
-  <!-- БАННЕР -->
-  <div class="market-pixel-banner">
-    <div class="market-pixel-bg">
-      <img src="static/icons/imgi_83_market_background.png" alt="market-bg" style="width:100%;height:80px;object-fit:cover;">
-    </div>
-    <div class="market-npc">
-      <div class="npc" style="background: url('static/npc/summer/market_banner_npc.png') no-repeat;">
-        <div class="featured-label"><span class="rectangle"></span><span class="text">Alex</span><span class="rectangle"></span></div>
+  <!-- MARKET BANNER (NEW STRUCTURE) -->
+  <div class="market-banner-flex">
+    <div class="market-banner-bg"></div>
+    <div class="market-banner-content">
+      <div class="market-banner-npc">
+        <div class="npc-img"></div>
+        <div class="npc-label"><span class="npc-label-rect"></span><span class="npc-label-text">Alex</span><span class="npc-label-rect"></span></div>
       </div>
-    </div>
-    <div class="market-featured-items">
-      <span class="market-featured-label">Featured Items!</span>
-      <div class="market-featured-list">
-        <div class="market-featured-card"><img src="static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
-        <div class="market-featured-card"><img src="static/icons/imgi_3_shop_armor_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
-        <div class="market-featured-card"><img src="static/icons/imgi_1_swords-CvGDZwaq.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 60</div></div>
-        <div class="market-featured-card"><img src="static/icons/imgi_8_shop_shield_warrior_1.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 70</div></div>
+      <div class="market-banner-featured">
+        <span class="market-featured-label">Featured Items!</span>
+        <div class="market-featured-list">
+          <div class="market-featured-card"><img src="static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
+          <div class="market-featured-card"><img src="static/icons/imgi_3_shop_armor_special_summer2025Warrior.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 90</div></div>
+          <div class="market-featured-card"><img src="static/icons/imgi_1_swords-CvGDZwaq.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 60</div></div>
+          <div class="market-featured-card"><img src="static/icons/imgi_8_shop_shield_warrior_1.png"><div class="market-featured-price"><i class="fa-solid fa-coins"></i> 70</div></div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="market-container">
-    <aside class="sidebar">
-      <input type="text" class="market-search" placeholder="Search" style="margin-bottom:1.2rem;width:100%;padding:0.5rem 0.7rem;border-radius:8px;border:1.5px solid #e9ecef;font-size:1rem;">
-      <h4>Filters</h4>
-      <div class="filter-group">
-        <label><input type="checkbox" class="filter-checkbox" value="equipment" checked> Equipment</label>
-        <label><input type="checkbox" class="filter-checkbox" value="eggs"> Eggs</label>
-        <label><input type="checkbox" class="filter-checkbox" value="hatching"> Hatching Potions</label>
-        <label><input type="checkbox" class="filter-checkbox" value="magic"> Magic Hatching Potions</label>
-        <label><input type="checkbox" class="filter-checkbox" value="food"> Food & Saddles</label>
-        <label><input type="checkbox" class="filter-checkbox" value="cards"> Cards</label>
-        <label><input type="checkbox" class="filter-checkbox" value="special"> Special</label>
-      </div>
-      <div class="filter-toggles">
-        <label class="toggle-label">
-          <input type="checkbox" class="toggle-input" id="hide-locked">
-          <span class="toggle-slider"></span>
-          Hide locked
-        </label>
-        <label class="toggle-label">
-          <input type="checkbox" class="toggle-input" id="hide-pinned">
-          <span class="toggle-slider"></span>
-          Hide pinned
-        </label>
-      </div>
-    </aside>
-    <main class="main-market">
-      <div class="tabs">
-        <button class="tab active" data-tab="market">Market</button>
-        <button class="tab" data-tab="quests">Quests</button>
-        <button class="tab" data-tab="styles">Styles</button>
-        <button class="tab" data-tab="seasonal">Seasonal Shop</button>
-        <button class="tab" data-tab="timetravelers">Time Travelers</button>
-      </div>
-      <div class="market-banner">
-        <span class="banner-pixelart"><i class="fa-solid fa-store"></i></span>
-        Welcome to the Market! Buy equipment, pets, and more.
-        <span class="banner-pixelart banner-pixelart-right"><i class="fa-solid fa-dragon"></i></span>
-      </div>
-      <div class="tab-content" id="tab-market">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-hat-wizard"></i></div>
-            <div class="item-title">Wizard Hat</div>
-            <div class="item-cost"><i class="fa-solid fa-coins"></i> 90</div>
-            <div class="item-badge">Featured</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-shield-halved"></i></div>
-            <div class="item-title">Warrior Shield</div>
-            <div class="item-cost"><i class="fa-solid fa-coins"></i> 70</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-            <div class="item-title">Magic Wand</div>
-            <div class="item-cost"><i class="fa-solid fa-coins"></i> 60</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
-            <div class="item-title">Food</div>
-            <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
-            <div class="item-title">Wolf Egg</div>
-            <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <div class="market-main-container">
+    <div class="market-container">
+      <aside class="sidebar">
+        <input type="text" class="market-search" placeholder="Search" style="margin-bottom:1.2rem;width:100%;padding:0.5rem 0.7rem;border-radius:8px;border:1.5px solid #e9ecef;font-size:1rem;">
+        <h4>Filters</h4>
+        <div class="filter-group">
+          <label><input type="checkbox" class="filter-checkbox" value="equipment" checked> Equipment</label>
+          <label><input type="checkbox" class="filter-checkbox" value="eggs"> Eggs</label>
+          <label><input type="checkbox" class="filter-checkbox" value="hatching"> Hatching Potions</label>
+          <label><input type="checkbox" class="filter-checkbox" value="magic"> Magic Hatching Potions</label>
+          <label><input type="checkbox" class="filter-checkbox" value="food"> Food & Saddles</label>
+          <label><input type="checkbox" class="filter-checkbox" value="cards"> Cards</label>
+          <label><input type="checkbox" class="filter-checkbox" value="special"> Special</label>
+        </div>
+        <div class="filter-toggles">
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input" id="hide-locked">
+            <span class="toggle-slider"></span>
+            Hide locked
+          </label>
+          <label class="toggle-label">
+            <input type="checkbox" class="toggle-input" id="hide-pinned">
+            <span class="toggle-slider"></span>
+            Hide pinned
+          </label>
+        </div>
+      </aside>
+      <main class="main-market">
+        <div class="tabs">
+          <button class="tab active" data-tab="market">Market</button>
+          <button class="tab" data-tab="quests">Quests</button>
+          <button class="tab" data-tab="styles">Styles</button>
+          <button class="tab" data-tab="seasonal">Seasonal Shop</button>
+          <button class="tab" data-tab="timetravelers">Time Travelers</button>
+        </div>
+        <div class="tab-content" id="tab-market">
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-hat-wizard"></i></div>
+              <div class="item-title">Wizard Hat</div>
+              <div class="item-cost"><i class="fa-solid fa-coins"></i> 90</div>
+              <div class="item-badge">Featured</div>
+            </div>
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="item-title">Warrior Shield</div>
+              <div class="item-cost"><i class="fa-solid fa-coins"></i> 70</div>
+            </div>
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+              <div class="item-title">Magic Wand</div>
+              <div class="item-cost"><i class="fa-solid fa-coins"></i> 60</div>
+            </div>
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-drumstick-bite"></i></div>
+              <div class="item-title">Food</div>
+              <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
+            </div>
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-egg"></i></div>
+              <div class="item-title">Wolf Egg</div>
+              <div class="item-cost"><i class="fa-solid fa-coins"></i> 3</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tab-content" id="tab-quests" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
-            <div class="item-title">Quest: Defeat the Skeleton</div>
-            <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
-          </div>
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
-            <div class="item-title">Quest: Find the Lost Pet</div>
-            <div class="item-cost"><i class="fa-solid fa-gem"></i> 2</div>
-          </div>
-        </div>
-      </div>
-      <div class="tab-content" id="tab-styles" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-hat-cowboy"></i></div>
-            <div class="item-title">Cowboy Hat</div>
-            <div class="item-cost"><i class="fa-solid fa-gem"></i> 5</div>
+        <div class="tab-content" id="tab-quests" style="display:none">
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+              <div class="item-title">Quest: Defeat the Skeleton</div>
+              <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+            </div>
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
+              <div class="item-title">Quest: Find the Lost Pet</div>
+              <div class="item-cost"><i class="fa-solid fa-gem"></i> 2</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tab-content" id="tab-seasonal" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-crown"></i></div>
-            <div class="item-title">Royal Crown</div>
-            <div class="item-cost"><i class="fa-solid fa-gem"></i> 10</div>
-            <div class="item-badge">Seasonal</div>
+        <div class="tab-content" id="tab-styles" style="display:none">
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-hat-cowboy"></i></div>
+              <div class="item-title">Cowboy Hat</div>
+              <div class="item-cost"><i class="fa-solid fa-gem"></i> 5</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="tab-content" id="tab-timetravelers" style="display:none">
-        <div class="items-list">
-          <div class="item-card">
-            <div class="item-icon"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div class="item-title">Time Traveler's Watch</div>
-            <div class="item-cost"><i class="fa-solid fa-gem"></i> 20</div>
+        <div class="tab-content" id="tab-seasonal" style="display:none">
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-crown"></i></div>
+              <div class="item-title">Royal Crown</div>
+              <div class="item-cost"><i class="fa-solid fa-gem"></i> 10</div>
+              <div class="item-badge">Seasonal</div>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+        <div class="tab-content" id="tab-timetravelers" style="display:none">
+          <div class="items-list">
+            <div class="item-card">
+              <div class="item-icon"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div class="item-title">Time Traveler's Watch</div>
+              <div class="item-cost"><i class="fa-solid fa-gem"></i> 20</div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
   </div>
   <footer class="footer">
     <div class="footer-inner">
