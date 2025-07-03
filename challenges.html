@@ -225,6 +225,20 @@
     @media (max-width: 600px) {
       .header-inner, .challenges-container { padding: 0 0.5rem; }
     }
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(108, 92, 231, 0.97);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      min-width: 100vw;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
   </style>
 </head>
 <body>
@@ -364,7 +378,7 @@
     }
   </script>
   <!-- Party Modal (скопировано с market.html) -->
-  <div class="modal-overlay" id="partyModal" style="display:none;">
+  <div class="modal-overlay" id="partyModal">
     <div class="party-modal">
       <button class="close-btn" onclick="closeModal('partyModal')" title="Close">&times;</button>
       <div class="modal-content">
