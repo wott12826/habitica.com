@@ -695,6 +695,230 @@
       transition: background 0.2s, color 0.2s;
     }
   </style>
+  <style>
+    .rewards-block {
+      background: #f8f9fa;
+      border-radius: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      padding: 1.2rem 1rem 1.5rem 1rem;
+      margin-top: 0.5rem;
+    }
+    .rewards-tabs {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.1rem;
+      border-bottom: 2px solid #ececec;
+    }
+    .rewards-tab {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #6c5ce7;
+      padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .rewards-tab.active {
+      color: #2d1436;
+      border-bottom: 3px solid #6c5ce7;
+    }
+    .rewards-add-row {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.2rem;
+    }
+    .rewards-add-input {
+      flex: 1;
+      padding: 0.7rem 1rem;
+      border-radius: 8px;
+      border: 2px solid #e9ecef;
+      font-size: 1rem;
+      background: #fff;
+      transition: border-color 0.2s;
+    }
+    .rewards-add-input:focus {
+      border-color: #6c5ce7;
+      outline: none;
+    }
+    .rewards-add-btn {
+      background: #6c5ce7;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      padding: 0 1.1rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .rewards-add-btn:hover {
+      background: #a29bfe;
+    }
+    .rewards-user-list {
+      margin-bottom: 1.2rem;
+    }
+    .rewards-self-block {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(108,92,231,0.04);
+      padding: 0.8rem 1rem 0.8rem 1rem;
+      margin-bottom: 1.1rem;
+    }
+    .rewards-self-title {
+      font-weight: 700;
+      color: #6c5ce7;
+      font-size: 1.08rem;
+      margin-bottom: 0.2rem;
+    }
+    .rewards-self-desc {
+      color: #888;
+      font-size: 0.97rem;
+    }
+    .rewards-special-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+    }
+    .reward-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 1px 4px rgba(108,92,231,0.04);
+      padding: 0.7rem 0.5rem 0.9rem 0.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.97rem;
+      border: 1.5px solid #e9ecef;
+      position: relative;
+      min-height: 120px;
+      cursor: pointer;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .reward-card:hover {
+      box-shadow: 0 4px 16px rgba(108,92,231,0.10);
+      border-color: #a29bfe;
+    }
+    .reward-card .reward-icon {
+      font-size: 1.3rem;
+      margin-bottom: 0.3rem;
+      color: #6c5ce7;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reward-card .reward-cost {
+      font-size: 0.95rem;
+      color: #a29bfe;
+      margin-top: 0.2rem;
+      background: #fff6e0;
+      border-radius: 6px;
+      padding: 0.1rem 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .reward-card .reward-dot {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: #a29bfe;
+      border-radius: 50%;
+    }
+    @media (max-width: 900px) {
+      .rewards-special-list { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .rewards-special-list { grid-template-columns: 1fr; }
+    }
+  </style>
+  <style>
+    .habits-block {
+      margin-top: 0.5rem;
+    }
+    .habits-tabs {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.1rem;
+      border-bottom: 2px solid #ececec;
+    }
+    .habits-tab {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #6c5ce7;
+      padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .habits-tab.active {
+      color: #2d1436;
+      border-bottom: 3px solid #6c5ce7;
+    }
+  </style>
+  <style>
+    .dailies-block {
+      margin-top: 0.5rem;
+    }
+    .dailies-tabs {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.1rem;
+      border-bottom: 2px solid #ececec;
+    }
+    .dailies-tab {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #6c5ce7;
+      padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .dailies-tab.active {
+      color: #2d1436;
+      border-bottom: 3px solid #6c5ce7;
+    }
+  </style>
+  <style>
+    .todos-block {
+      margin-top: 0.5rem;
+    }
+    .todos-tabs {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.1rem;
+      border-bottom: 2px solid #ececec;
+    }
+    .todos-tab {
+      background: none;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: #6c5ce7;
+      padding: 0.7rem 0.5rem 0.5rem 0.5rem;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .todos-tab.active {
+      color: #2d1436;
+      border-bottom: 3px solid #6c5ce7;
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -747,29 +971,14 @@
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">Habits</span>
-            <button class="add-btn" title="Add Habit" onclick="openHabitModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div class="task-list" id="habitsList">
-            <div class="task-card negative" data-id="1">
-              <div onclick="openHabitModal(1)">
-                <div class="task-title">Click to mark this as a bad habit you want to break</div>
-                <div class="task-desc">Or edit or delete this habit</div>
-              </div>
-              <div class="habit-buttons">
-                <button class="habit-btn plus" onclick="updateHabit(1, 'plus')" title="Good habit (+XP)">+</button>
-                <button class="habit-btn minus" onclick="updateHabit(1, 'minus')" title="Bad habit (-HP)">−</button>
-              </div>
+          <div class="habits-block">
+            <div class="habits-tabs">
+              <button class="habits-tab active" id="tabHabitsAll" onclick="switchHabitsTab('all')">All</button>
+              <button class="habits-tab" id="tabHabitsWeak" onclick="switchHabitsTab('weak')">Weak</button>
+              <button class="habits-tab" id="tabHabitsStrong" onclick="switchHabitsTab('strong')">Strong</button>
             </div>
-            <div class="task-card" data-id="2">
-              <div onclick="openHabitModal(2)">
-                <div class="task-title">Add a Habit in Habitica</div>
-                <div class="task-desc">Either a positive, negative, or both habit</div>
-              </div>
-              <div class="habit-buttons">
-                <button class="habit-btn plus" onclick="updateHabit(2, 'plus')" title="Good habit (+XP)">+</button>
-                <button class="habit-btn minus" onclick="updateHabit(2, 'minus')" title="Bad habit (-HP)">−</button>
-              </div>
-            </div>
+            <div class="task-list" id="habitsList"></div>
           </div>
         </div>
         <!-- Dailies -->
@@ -778,63 +987,50 @@
             <span class="col-title">Dailies</span>
             <button class="add-btn" title="Add Daily" onclick="openDailyModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div class="task-list" id="dailiesList">
-            <div class="empty-state">No dailies yet</div>
+          <div class="dailies-block">
+            <div class="dailies-tabs">
+              <button class="dailies-tab active" id="tabDailiesAll" onclick="switchDailiesTab('all')">All</button>
+              <button class="dailies-tab" id="tabDailiesCurrent" onclick="switchDailiesTab('current')">Current</button>
+              <button class="dailies-tab" id="tabDailiesOther" onclick="switchDailiesTab('other')">Other</button>
+            </div>
+            <div class="task-list" id="dailiesList"></div>
           </div>
         </div>
         <!-- To-Dos -->
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">To-Dos</span>
-            <button class="add-btn" title="Add To-Do" onclick="openTodoModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div class="task-list" id="todosList">
-            <div class="task-card">
-              <div>
-                <div class="task-title">Join Habitica (Check me off!)</div>
-                <div class="task-desc">You can complete, edit, or delete this task</div>
-              </div>
-              <div class="task-actions">
-                <button class="icon-btn" title="Edit"><i class="fa-solid fa-pen"></i></button>
-                <button class="icon-btn" title="Delete"><i class="fa-solid fa-trash"></i></button>
-              </div>
+          <div class="todos-block">
+            <div class="todos-tabs">
+              <button class="todos-tab active" id="tabTodosActive" onclick="switchTodosTab('active')">Active</button>
+              <button class="todos-tab" id="tabTodosDated" onclick="switchTodosTab('dated')">With Date</button>
+              <button class="todos-tab" id="tabTodosDone" onclick="switchTodosTab('done')">Done</button>
             </div>
+            <div class="task-list" id="todosList"></div>
           </div>
         </div>
         <!-- Rewards -->
         <div class="task-col">
           <div class="col-header">
             <span class="col-title">Rewards</span>
-            <button class="add-btn" title="Add Reward" onclick="openRewardModal()"><i class="fa-solid fa-plus"></i></button>
           </div>
-          <div class="reward-list" id="rewardsList">
-            <div class="reward-card">
-              <div class="reward-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-              <div>Watch TV</div>
-              <div class="reward-cost">10</div>
+          <div class="rewards-block">
+            <div class="rewards-tabs">
+              <button class="rewards-tab active" id="tabAll" onclick="switchRewardsTab('all')">All</button>
+              <button class="rewards-tab" id="tabSeasonal" onclick="switchRewardsTab('seasonal')">Seasonal</button>
+              <button class="rewards-tab" id="tabDelayed" onclick="switchRewardsTab('delayed')">Delayed</button>
             </div>
-            <div class="reward-card">
-              <div class="reward-icon"><i class="fa-solid fa-gamepad"></i></div>
-              <div>Play a game</div>
-              <div class="reward-cost">20</div>
+            <div class="rewards-add-row">
+              <input type="text" id="addRewardInput" class="rewards-add-input" placeholder="Add a reward...">
+              <button class="rewards-add-btn" onclick="quickAddReward()"><i class="fa-solid fa-plus"></i></button>
             </div>
-            <div class="reward-card">
-              <div class="reward-icon"><i class="fa-solid fa-cookie-bite"></i></div>
-              <div>Eat a treat</div>
-              <div class="reward-cost">15</div>
+            <div class="rewards-user-list" id="rewardsList"></div>
+            <div class="rewards-self-block">
+              <div class="rewards-self-title">Reward Yourself</div>
+              <div class="rewards-self-desc">Watch TV, play games, eat treats, it's up to you!</div>
             </div>
-            <div class="reward-card">
-              <div class="reward-icon"><i class="fa-solid fa-crown"></i></div>
-              <div>Special reward</div>
-              <div class="reward-cost">100</div>
-            </div>
-          </div>
-          <div class="reward-list" id="specialRewardsList">
-            <div class="reward-card">
-              <div class="reward-icon"><img src="static/icons/scallop-helm.png" alt="Scallop Helm" style="width:40px;height:40px;"></div>
-              <div>Scallop Helm</div>
-              <div class="reward-cost"><i class="fa-solid fa-coins"></i> 60</div>
-            </div>
+            <div class="rewards-special-list" id="specialRewardsList"></div>
           </div>
         </div>
       </div>
@@ -1464,12 +1660,20 @@
     function updateHabitsList() {
       const habitsList = document.getElementById('habitsList');
       habitsList.innerHTML = '';
-      
-      gameState.habits.forEach(habit => {
+      let filtered = gameState.habits;
+      if (currentHabitsTab === 'weak') {
+        filtered = gameState.habits.filter(h => h.difficulty === 'trivial' || h.difficulty === 'easy');
+      } else if (currentHabitsTab === 'strong') {
+        filtered = gameState.habits.filter(h => h.difficulty === 'medium' || h.difficulty === 'hard');
+      }
+      if (filtered.length === 0) {
+        habitsList.innerHTML = '<div class="empty-state">No habits yet</div>';
+        return;
+      }
+      filtered.forEach(habit => {
         const habitCard = document.createElement('div');
         habitCard.className = `task-card ${habit.negative ? 'negative' : ''}`;
         habitCard.setAttribute('data-id', habit.id);
-        
         habitCard.innerHTML = `
           <div onclick="openHabitModal(${habit.id})">
             <div class="task-title">${habit.title}</div>
@@ -1480,7 +1684,6 @@
             ${habit.negative ? `<button class="habit-btn minus" onclick="updateHabit(${habit.id}, 'minus')" title="Bad habit (-HP)">−</button>` : ''}
           </div>
         `;
-        
         habitsList.appendChild(habitCard);
       });
     }
@@ -1530,11 +1733,17 @@
     function updateDailiesList() {
       const dailiesList = document.getElementById('dailiesList');
       dailiesList.innerHTML = '';
-      if (gameState.dailies.length === 0) {
+      let filtered = gameState.dailies;
+      if (currentDailiesTab === 'current') {
+        filtered = gameState.dailies.filter(d => !d.completed);
+      } else if (currentDailiesTab === 'other') {
+        filtered = gameState.dailies.filter(d => d.completed);
+      }
+      if (filtered.length === 0) {
         dailiesList.innerHTML = '<div class="empty-state">No dailies yet</div>';
         return;
       }
-      gameState.dailies.forEach(daily => {
+      filtered.forEach(daily => {
         const dailyCard = document.createElement('div');
         dailyCard.className = 'task-card';
         dailyCard.setAttribute('data-id', daily.id);
@@ -1631,11 +1840,19 @@
     function updateTodosList() {
       const todosList = document.getElementById('todosList');
       todosList.innerHTML = '';
-      if (gameState.todos.length === 0) {
+      let filtered = gameState.todos;
+      if (currentTodosTab === 'active') {
+        filtered = gameState.todos.filter(t => !t.completed);
+      } else if (currentTodosTab === 'done') {
+        filtered = gameState.todos.filter(t => t.completed);
+      } else if (currentTodosTab === 'dated') {
+        filtered = gameState.todos.filter(t => t.date); // если появится поле date
+      }
+      if (filtered.length === 0) {
         todosList.innerHTML = '<div class="empty-state">No to-dos yet</div>';
         return;
       }
-      gameState.todos.forEach(todo => {
+      filtered.forEach(todo => {
         const todoCard = document.createElement('div');
         todoCard.className = 'task-card';
         todoCard.setAttribute('data-id', todo.id);
@@ -1881,6 +2098,73 @@
       updateRewardsList();
       updateSpecialRewardsList();
     });
+
+    let currentRewardsTab = 'all';
+    function switchRewardsTab(tab) {
+      currentRewardsTab = tab;
+      document.getElementById('tabAll').classList.remove('active');
+      document.getElementById('tabSeasonal').classList.remove('active');
+      document.getElementById('tabDelayed').classList.remove('active');
+      if(tab==='all') document.getElementById('tabAll').classList.add('active');
+      if(tab==='seasonal') document.getElementById('tabSeasonal').classList.add('active');
+      if(tab==='delayed') document.getElementById('tabDelayed').classList.add('active');
+      updateRewardsList();
+      updateSpecialRewardsList();
+    }
+    function quickAddReward() {
+      const input = document.getElementById('addRewardInput');
+      const value = input.value.trim();
+      if(value) {
+        gameState.rewards.push({ id: Date.now(), title: value, notes: '', price: 10, tags: '' });
+        input.value = '';
+        updateRewardsList();
+      }
+    }
+    // ...
+    // В updateRewardsList и updateSpecialRewardsList добавить фильтрацию по currentRewardsTab
+    // В specialRewards карточки добавлять .reward-dot
+  </script>
+  <script>
+    let currentHabitsTab = 'all';
+    function switchHabitsTab(tab) {
+      currentHabitsTab = tab;
+      document.getElementById('tabHabitsAll').classList.remove('active');
+      document.getElementById('tabHabitsWeak').classList.remove('active');
+      document.getElementById('tabHabitsStrong').classList.remove('active');
+      if(tab==='all') document.getElementById('tabHabitsAll').classList.add('active');
+      if(tab==='weak') document.getElementById('tabHabitsWeak').classList.add('active');
+      if(tab==='strong') document.getElementById('tabHabitsStrong').classList.add('active');
+      updateHabitsList();
+    }
+    // В updateHabitsList добавить фильтрацию по currentHabitsTab
+  </script>
+  <script>
+    let currentDailiesTab = 'all';
+    function switchDailiesTab(tab) {
+      currentDailiesTab = tab;
+      document.getElementById('tabDailiesAll').classList.remove('active');
+      document.getElementById('tabDailiesCurrent').classList.remove('active');
+      document.getElementById('tabDailiesOther').classList.remove('active');
+      if(tab==='all') document.getElementById('tabDailiesAll').classList.add('active');
+      if(tab==='current') document.getElementById('tabDailiesCurrent').classList.add('active');
+      if(tab==='other') document.getElementById('tabDailiesOther').classList.add('active');
+      updateDailiesList();
+    }
+    // В updateDailiesList добавить фильтрацию по currentDailiesTab
+  </script>
+  <script>
+    let currentTodosTab = 'active';
+    function switchTodosTab(tab) {
+      currentTodosTab = tab;
+      document.getElementById('tabTodosActive').classList.remove('active');
+      document.getElementById('tabTodosDated').classList.remove('active');
+      document.getElementById('tabTodosDone').classList.remove('active');
+      if(tab==='active') document.getElementById('tabTodosActive').classList.add('active');
+      if(tab==='dated') document.getElementById('tabTodosDated').classList.add('active');
+      if(tab==='done') document.getElementById('tabTodosDone').classList.add('active');
+      updateTodosList();
+    }
+    // В updateTodosList добавить фильтрацию по currentTodosTab
   </script>
 </body>
 </html>
