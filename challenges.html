@@ -238,8 +238,6 @@
         <a href="#" id="openPartyModal">Party</a>
         <a href="group-plans.html">Guild</a>
         <a href="challenges.html" class="active">Challenges</a>
-
-
       </nav>
       <div class="header-actions">
         <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
@@ -341,6 +339,52 @@
         document.getElementById('tab-' + this.dataset.tab).style.display = '';
       });
     });
+    // Открытие Party Modal по клику на Party в меню (как на market.html)
+    document.addEventListener('DOMContentLoaded', function() {
+      var partyMenu = document.querySelector('a#openPartyModal');
+      if(partyMenu) {
+        partyMenu.addEventListener('click', function(e) {
+          e.preventDefault();
+          document.getElementById('partyModal').classList.add('active');
+        });
+      }
+      // Закрытие по Esc
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') document.getElementById('partyModal').classList.remove('active');
+      });
+      // Клик вне модалки
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === this) document.getElementById('partyModal').classList.remove('active');
+        });
+      });
+    });
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
   </script>
+  <!-- Party Modal (скопировано с market.html) -->
+  <div class="modal-overlay" id="partyModal">
+    <div class="party-modal">
+      <button class="close-btn" onclick="closeModal('partyModal')" title="Close">&times;</button>
+      <div class="modal-content">
+        <div class="party-img">
+          <img src="static/icons/group@3x-BRelOOPS.png" alt="Party Pixel Art">
+        </div>
+        <div class="modal-title">Play Habitica in a Party!</div>
+        <div class="modal-desc">Go on amazing Quests with friends or solo. Battle monsters, create challenges, and help each other stay accountable with a party!</div>
+        <button class="party-btn">Create Party</button>
+        <div class="divider"></div>
+        <div class="group-block">
+          <div class="group-img">
+            <img src="static/icons/party-BBgVse-q.png" alt="Group Pixel Art">
+          </div>
+          <div class="group-title">Looking for a Party?</div>
+          <div class="group-desc">Want to join a party but don't know other players? Let party leaders know you want to get invited!</div>
+          <button class="group-btn">Find Party</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html> 
