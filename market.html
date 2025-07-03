@@ -1253,17 +1253,108 @@
           </div>
         </div>
         <div class="tab-content" id="tab-quests" style="display:none">
-          <div class="items-list">
-            <div class="item-card">
-              <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
-              <div class="item-title">Quest: Defeat the Skeleton</div>
-              <div class="item-cost"><i class="fa-solid fa-gem"></i> 4</div>
+          <!-- QUESTS BANNER -->
+          <div class="featuredItems">
+            <div class="background"></div>
+            <div class="background" style="background: url('static/icons/imgi_83_market_background.png') repeat-x;">
+              <div class="npc" style="background: url('static/icons/imgi_85_quests_banner_npc_ian.png') no-repeat;">
+                <div class="featured-label">
+                  <span class="rectangle"></span>
+                  <span class="text">Ian</span>
+                  <span class="rectangle"></span>
+                </div>
+              </div>
+              <div class="content">
+                <div class="featured-label with-border">
+                  <span class="rectangle"></span>
+                  <span class="text">Featured Quests!</span>
+                  <span class="rectangle"></span>
+                </div>
+                <div class="items margin-center">
+                  <div class="item-wrapper">
+                    <div class="item suggested">
+                      <div class="image">
+                        <img src="static/icons/imgi_2_shop_quest_special_summer2025.png" class="pixel-art">
+                      </div>
+                      <div class="price d-flex align-items-center justify-content-center gold">
+                        <span class="svg-icon inline icon-16 mr-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g fill="none" fill-rule="evenodd">
+                              <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
+                              <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
+                              <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
+                              <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
+                              <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="price-label gold">7</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item-wrapper">
+                    <div class="item suggested">
+                      <div class="image">
+                        <img src="static/icons/imgi_3_shop_quest_special_summer2025.png" class="pixel-art">
+                      </div>
+                      <div class="price d-flex align-items-center justify-content-center gold">
+                        <span class="svg-icon inline icon-16 mr-1">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g fill="none" fill-rule="evenodd">
+                              <circle cx="12" cy="12" r="12" fill="#FFA623"></circle>
+                              <path fill="#FFF" d="M6.3 17.7c-3.1-3.1-3.1-8.2 0-11.3 3.1-3.1 8.2-3.1 11.3 0" opacity=".5"></path>
+                              <path fill="#FFF" d="M17.7 6.3c3.1 3.1 3.1 8.2 0 11.3-3.1 3.1-8.2 3.1-11.3 0" opacity=".25"></path>
+                              <path fill="#BF7D1A" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z" opacity=".5"></path>
+                              <path fill="#BF7D1A" d="M13 9v2h-2V9H9v6h2v-2h2v2h2V9z" opacity=".75"></path>
+                            </g>
+                          </svg>
+                        </span>
+                        <span class="price-label gold">7</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="item-card">
-              <div class="item-icon"><i class="fa-solid fa-scroll"></i></div>
-              <div class="item-title">Quest: Find the Lost Pet</div>
-              <div class="item-cost"><i class="fa-solid fa-gem"></i> 2</div>
-            </div>
+          </div>
+          <!-- QUESTS FILTERS AND GRID (заглушка, далее можно доработать) -->
+          <div class="market-container">
+            <aside class="sidebar">
+              <input type="text" class="market-search" placeholder="Search Quests">
+              <h4>Filters</h4>
+              <div class="filter-group">
+                <label><input type="checkbox" class="filter-checkbox" value="discount" checked> Discounted quest bundles</label>
+                <label><input type="checkbox" class="filter-checkbox" value="main"> Main questlines</label>
+                <label><input type="checkbox" class="filter-checkbox" value="order"> Order of the Masters</label>
+                <label><input type="checkbox" class="filter-checkbox" value="incubation"> Incubation elixirs</label>
+                <label><input type="checkbox" class="filter-checkbox" value="pet"> Pet & mount quests</label>
+              </div>
+              <div class="filter-toggles">
+                <label class="toggle-label">
+                  <input type="checkbox" class="toggle-input" id="hide-locked-quests">
+                  <span class="toggle-slider"></span>
+                  Hide locked
+                </label>
+                <label class="toggle-label">
+                  <input type="checkbox" class="toggle-input" id="hide-pinned-quests">
+                  <span class="toggle-slider"></span>
+                  Hide pinned
+                </label>
+              </div>
+            </aside>
+            <main class="main-market">
+              <div class="quests-section">
+                <h2>Quest Bundles with Discount</h2>
+                <div class="items-list">
+                  <!-- Quest cards here -->
+                </div>
+                <h2>Main Questlines</h2>
+                <div class="items-list">
+                  <!-- Quest cards here -->
+                </div>
+                <!-- ...добавить остальные секции как на скрине... -->
+              </div>
+            </main>
           </div>
         </div>
         <div class="tab-content" id="tab-styles" style="display:none">
