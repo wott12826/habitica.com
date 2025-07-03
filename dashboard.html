@@ -1816,6 +1816,9 @@
         gameState.xp += 15;
         gameState.coins += 7;
         showNotification('+15 XP, +7 coins!', 'success');
+        // Удаляем DOM-элемент задачи сразу (визуально)
+        const card = e.target.closest('.task-card');
+        if (card) card.remove();
       }
       updateDailiesList();
       updateDisplay();
