@@ -1,4 +1,4 @@
-# Habitica - Gamify Your Life
+# Magic - Gamify Your Life
 
 Веб-приложение для геймификации жизни с системой аутентификации Firebase.
 
