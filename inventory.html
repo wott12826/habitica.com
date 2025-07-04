@@ -1084,7 +1084,14 @@
       }
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'item-card locked';
+        // Check if item is owned by comparing with special rewards
+        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
+          // Check if this inventory item corresponds to a special reward
+          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
+          return specialReward && specialReward.icon === item.src;
+        });
+        
+        card.className = isOwned ? 'item-card' : 'item-card locked';
         card.innerHTML = `
           <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
           <div class="item-title">${item.name}</div>
@@ -1128,7 +1135,13 @@
       }
       filtered.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'item-card locked';
+        // Check if item is owned by comparing with special rewards
+        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
+          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
+          return specialReward && specialReward.icon === item.src;
+        });
+        
+        card.className = isOwned ? 'item-card' : 'item-card locked';
         card.innerHTML = `
           <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
           <div class="item-title">${item.name}</div>
@@ -1621,6 +1634,160 @@
         settingsBtn.onclick = openProfileModal;
       }
     });
+
+    // Firebase initialization and user data loading
+    let userGameData = {
+      ownedItems: []
+    };
+
+    // Load user game data from Firebase
+    async function loadUserGameData(userId) {
+      try {
+        const doc = await firestore.collection('users').doc(userId).get();
+        if (doc.exists) {
+          const data = doc.data();
+          if (data.gameData) {
+            userGameData = data.gameData;
+            // Update inventory display with owned items
+            renderInventoryItems();
+            renderEquipment();
+          }
+        }
+      } catch (error) {
+        console.error('Error loading user data:', error);
+      }
+    }
+
+    // Check authentication state and load data
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User authenticated in inventory:', user.email);
+        loadUserGameData(user.uid);
+      } else {
+        console.log('User not authenticated in inventory');
+        // Use default empty data
+        userGameData = { ownedItems: [] };
+        renderInventoryItems();
+        renderEquipment();
+      }
+    });
+
+    // Update renderInventoryItems to check owned items
+    function renderInventoryItems() {
+      const filters = getActiveFilters();
+      const list = document.querySelector('#tab-items .items-list');
+      list.innerHTML = '';
+      let filtered = inventoryIcons;
+      if (filters.length > 0) {
+        filtered = inventoryIcons.filter(item => filters.includes(item.category));
+      }
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
+        return;
+      }
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        // Check if item is owned by comparing with special rewards
+        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
+          // Check if this inventory item corresponds to a special reward
+          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
+          return specialReward && specialReward.icon === item.src;
+        });
+        
+        card.className = isOwned ? 'item-card' : 'item-card locked';
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Update renderEquipment to check owned items
+    function renderEquipment() {
+      const filters = getActiveEquipmentFilters();
+      const list = document.getElementById('equipment-list');
+      list.innerHTML = '';
+      let filtered = equipmentData;
+      if (filters.length > 0) {
+        filtered = equipmentData.filter(item => filters.includes(item.type));
+      }
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">Нет предметов для выбранных фильтров.</div>';
+        return;
+      }
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        // Check if item is owned by comparing with special rewards
+        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
+          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
+          return specialReward && specialReward.icon === item.src;
+        });
+        
+        card.className = isOwned ? 'item-card' : 'item-card locked';
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.type}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Special rewards data for comparison (same as in dashboard.html)
+    const specialRewardsData = [
+      {
+        id: 101,
+        title: "Spear of Destiny",
+        icon: "static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png"
+      },
+      {
+        id: 102,
+        title: "Pink Bow",
+        icon: "static/icons/imgi_3_shop_armor_special_summer2025Warrior.png"
+      },
+      {
+        id: 103,
+        title: "Scallop Helm",
+        icon: "static/icons/imgi_4_shop_head_special_summer2025Warrior.png"
+      },
+      {
+        id: 104,
+        title: "Blue Shell",
+        icon: "static/icons/imgi_5_shop_shield_special_summer2025Warrior.png"
+      },
+      {
+        id: 105,
+        title: "Magic Wand",
+        icon: "static/icons/imgi_6_shop_weapon_warrior_0.png"
+      },
+      {
+        id: 106,
+        title: "Crab Mount",
+        icon: "static/icons/imgi_7_shop_armor_warrior_1.png"
+      },
+      {
+        id: 107,
+        title: "Wooden Shield",
+        icon: "static/icons/imgi_8_shop_shield_warrior_1.png"
+      },
+      {
+        id: 108,
+        title: "Viking Helm",
+        icon: "static/icons/imgi_9_shop_head_warrior_1.png"
+      },
+      {
+        id: 109,
+        title: "Potion of Wisdom",
+        icon: "static/icons/imgi_10_shop_potion.png"
+      },
+      {
+        id: 110,
+        title: "Treasure Chest",
+        icon: "static/icons/imgi_11_shop_armoire.gif"
+      }
+    ];
   </script>
 </body>
 </html> 

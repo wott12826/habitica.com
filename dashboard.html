@@ -1467,6 +1467,7 @@
       level: 1,
       gems: 0,
       coins: 0,
+      ownedItems: [], // Array to track purchased items
       habits: [
         {
           id: 1,
@@ -2267,8 +2268,14 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
       if (!reward) return;
       if (gameState.coins >= reward.price) {
         gameState.coins -= reward.price;
-        showNotification('Reward purchased!', 'success');
+        
+        // Add to owned items and remove from rewards
+        gameState.ownedItems.push(reward.id);
+        gameState.rewards = gameState.rewards.filter(r => r.id !== rewardId);
+        
+        showNotification('Reward purchased! Item unlocked in inventory.', 'success');
         updateDisplay();
+        updateRewardsList(); // Update the rewards list to remove the purchased item
         
         // Save to Firebase
         const user = firebase.auth().currentUser;
@@ -2317,10 +2324,16 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
       if (!item) return;
       if (gameState.coins >= item.price) {
         gameState.coins -= item.price;
+        
+        // Add to owned items and remove from special rewards
+        gameState.ownedItems.push(item.id);
+        gameState.specialRewards = gameState.specialRewards.filter(i => i.id !== viewingSpecialRewardId);
+        
         // Применить бонусы к персонажу (например, увеличить силу)
         // ...
-        showNotification('Item purchased! Bonuses applied.', 'success');
+        showNotification('Item purchased! Bonuses applied. Item unlocked in inventory.', 'success');
         updateDisplay();
+        updateSpecialRewardsList(); // Update the special rewards list to remove the purchased item
         closeModal('specialRewardModal');
         
         // Save to Firebase
