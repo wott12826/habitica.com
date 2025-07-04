@@ -572,6 +572,138 @@
     .button-text {
       font-weight: 600;
     }
+    .profile-modal {
+      background: #fff;
+      border-radius: 18px;
+      box-shadow: 0 8px 40px rgba(76,56,133,0.18);
+      max-width: 420px;
+      width: 100%;
+      padding: 2rem;
+      position: relative;
+      text-align: center;
+      animation: modalPop 0.35s cubic-bezier(.4,0,.2,1);
+      overflow: hidden;
+    }
+    @keyframes modalPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .profile-modal .modal-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #222;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-modal .form-group {
+      margin-bottom: 1.2rem;
+      text-align: left;
+    }
+    .profile-modal .form-group label {
+      display: block;
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+    }
+    .profile-modal input[type="text"],
+    .profile-modal input[type="email"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1.5px solid #d1d8e6;
+      font-size: 1.05rem;
+      background: #f6f7fb;
+      color: #222;
+      margin-top: 2px;
+      box-shadow: 0 1px 2px rgba(108,92,231,0.04);
+      transition: border 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .profile-modal input[type="text"]:focus,
+    .profile-modal input[type="email"]:focus {
+      border: 1.5px solid #6c5ce7;
+      background: #fff;
+      outline: none;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.08);
+    }
+    .profile-modal input[readonly] {
+      background: #f1f3f4;
+      color: #666;
+      cursor: not-allowed;
+    }
+    .profile-modal .avatar-group {
+      text-align: center;
+    }
+    .profile-modal .avatar-upload {
+      position: relative;
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+    .profile-modal .avatar-upload img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e9e6fa;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.10);
+    }
+    .profile-modal .avatar-upload input[type="file"] {
+      display: none;
+    }
+    .profile-modal .upload-btn {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 28px;
+      height: 28px;
+      background: #6c5ce7;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(108,92,231,0.20);
+      transition: background 0.2s;
+    }
+    .profile-modal .upload-btn:hover {
+      background: #5a4fd8;
+    }
+    .profile-modal .form-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+    .profile-modal .btn {
+      flex: 1;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .profile-modal .btn-primary {
+      background: linear-gradient(90deg, #6c5ce7 0%, #a29bfe 100%);
+      color: #fff;
+      box-shadow: 0 2px 8px rgba(108,92,231,0.15);
+    }
+    .profile-modal .btn-primary:hover {
+      background: linear-gradient(90deg, #5a4fd8 0%, #6c5ce7 100%);
+      box-shadow: 0 4px 12px rgba(108,92,231,0.25);
+    }
+    .profile-modal .btn-secondary {
+      background: #f1f3f4;
+      color: #666;
+      border: 1px solid #d1d8e6;
+    }
+    .profile-modal .btn-secondary:hover {
+      background: #e8eaed;
+      color: #444;
+    }
   </style>
 </head>
 <body>
@@ -723,6 +855,43 @@
           <div class="group-desc">Want to join a party but don't know other players? Let party leaders know you want to get invited!</div>
           <button class="group-btn">Find Party</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Edit Modal -->
+  <div class="modal-overlay" id="profileModal" style="display:none;">
+    <div class="profile-modal">
+      <button class="close-btn" onclick="closeProfileModal()" title="Close">&times;</button>
+      <div class="modal-content">
+        <div class="modal-title">
+          <i class="fa-solid fa-pen" style="color:#6c5ce7;margin-right:8px;"></i>
+          Edit Profile
+        </div>
+        <form id="profileForm" onsubmit="saveProfile(event)">
+          <div class="form-group avatar-group">
+            <label>Profile Picture</label>
+            <div class="avatar-upload">
+              <img id="profileAvatarPreview" src="https://www.gravatar.com/avatar/?d=mp" alt="Avatar">
+              <input type="file" id="profileAvatar" accept="image/*" onchange="previewAvatar(event)">
+              <label for="profileAvatar" class="upload-btn">
+                <i class="fa-solid fa-camera"></i>
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="profileDisplayName">Display Name</label>
+            <input type="text" id="profileDisplayName" required>
+          </div>
+          <div class="form-group">
+            <label for="profileEmail">Email</label>
+            <input type="email" id="profileEmail" readonly>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -1360,6 +1529,91 @@
       });
     }
     document.addEventListener('DOMContentLoaded', setupSoonButtons);
+
+    // Profile modal functions
+    function openProfileModal() {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        document.getElementById('profileDisplayName').value = user.displayName || '';
+        document.getElementById('profileEmail').value = user.email || '';
+        if (user.photoURL) {
+          document.getElementById('profileAvatarPreview').src = user.photoURL;
+        }
+      }
+      document.getElementById('profileModal').style.display = 'flex';
+    }
+
+    function closeProfileModal() {
+      document.getElementById('profileModal').style.display = 'none';
+    }
+
+    function previewAvatar(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('profileAvatarPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    async function saveProfile(event) {
+      event.preventDefault();
+      
+      const user = firebase.auth().currentUser;
+      if (!user) {
+        alert('No user logged in');
+        return;
+      }
+
+      const displayName = document.getElementById('profileDisplayName').value;
+      const avatarFile = document.getElementById('profileAvatar').files[0];
+
+      try {
+        let photoURL = user.photoURL;
+
+        // Upload avatar if selected
+        if (avatarFile) {
+          const storageRef = firebase.storage().ref();
+          const avatarRef = storageRef.child(`avatars/${user.uid}/${Date.now()}_${avatarFile.name}`);
+          const snapshot = await avatarRef.put(avatarFile);
+          photoURL = await snapshot.ref.getDownloadURL();
+        }
+
+        // Update profile
+        await user.updateProfile({
+          displayName: displayName,
+          photoURL: photoURL
+        });
+
+        // Update sidebar avatar if exists
+        const sidebarAvatar = document.getElementById('sidebarAvatar');
+        if (sidebarAvatar && photoURL) {
+          sidebarAvatar.innerHTML = `<img src="${photoURL}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+        }
+
+        // Save to Firestore
+        await firestore.collection('users').doc(user.uid).update({
+          displayName: displayName,
+          photoURL: photoURL
+        });
+
+        closeProfileModal();
+        alert('Profile updated successfully!');
+      } catch (error) {
+        console.error('Error updating profile:', error);
+        alert('Error updating profile: ' + error.message);
+      }
+    }
+
+    // Add click handler to settings button
+    document.addEventListener('DOMContentLoaded', function() {
+      const settingsBtn = document.querySelector('.icon-btn i.fa-cog').parentElement;
+      if (settingsBtn) {
+        settingsBtn.onclick = openProfileModal;
+      }
+    });
   </script>
 </body>
 </html> 
