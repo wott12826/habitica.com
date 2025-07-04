@@ -1138,7 +1138,7 @@
     <aside class="profile">
       <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>      <div>
         <div class="username" id="userDisplayName">Guest</div>
-        <div class="userid" id="userEmail">guest@habitica.com</div>
+        <div class="userid" id="userEmail">guest@magic.com</div>
         <div class="level">Level <span id="level">1</span> Warrior</div>
         <div class="bar-label">XP <span id="xpDisplay">50 / 100</span></div>
         <div class="bar"><div class="bar-inner xp" id="xpBar"></div></div>
@@ -2484,7 +2484,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
 
   if (user) {
     const displayName = user.displayName || 'Guest';
-    const email = user.email || 'guest@habitica.com';
+    const email = user.email || 'guest@magic.com';
     const photoURL = user.photoURL || null;
 
     displayNameElement.textContent = displayName;
@@ -2498,7 +2498,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     }
   } else {
     displayNameElement.textContent = 'Guest';
-    userEmailElement.textContent = 'guest@habitica.com';
+    userEmailElement.textContent = 'guest@magic.com';
     sidebarAvatar.innerHTML = `<i class="fa-solid fa-user"></i>`;
   }
 }
