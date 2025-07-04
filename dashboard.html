@@ -950,6 +950,11 @@
       border-bottom: 3px solid #6c5ce7;
     }
   </style>
+  
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
 </head>
 <body>
   <header class="header">
@@ -976,8 +981,8 @@
     <aside class="profile">
       <div class="avatar"><i class="fa-solid fa-user"></i></div>
       <div>
-        <div class="username">Arubi Kuroko</div>
-        <div class="userid">@hb-3b3fc7b8d4ewmgmttr</div>
+        <div class="username" id="userDisplayName">Guest</div>
+        <div class="userid" id="userEmail">guest@habitica.com</div>
         <div class="level">Level <span id="level">1</span> Warrior</div>
         <div class="bar-label">XP <span id="xpDisplay">50 / 100</span></div>
         <div class="bar"><div class="bar-inner xp" id="xpBar"></div></div>
@@ -2135,12 +2140,7 @@
 
     // Initialize the game when page loads
     document.addEventListener('DOMContentLoaded', function() {
-      initGame();
-      updateHabitsList();
-      updateDailiesList();
-      updateTodosList();
-      updateRewardsList();
-      updateSpecialRewardsList();
+      // Game will be initialized after authentication check
       // Открытие partyModal по кнопке Start
       var startBtn = document.querySelector('.cta-btn');
       if(startBtn) {
@@ -2216,6 +2216,75 @@
       updateTodosList();
     }
     // В updateTodosList добавить фильтрацию по currentTodosTab
+  </script>
+  
+  <!-- Firebase Authentication Script -->
+  <script>
+    // Check authentication state
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // User is signed in
+        updateUserDisplay(user);
+        console.log('User is signed in:', user.email);
+        
+        // Initialize game after successful authentication
+        initGame();
+        updateHabitsList();
+        updateDailiesList();
+        updateTodosList();
+        updateRewardsList();
+        updateSpecialRewardsList();
+      } else {
+        // User is signed out
+        updateUserDisplay(null);
+        console.log('User is signed out');
+        // Redirect to signin page if not authenticated
+        window.location.href = 'signin.html';
+      }
+    });
+
+    // Update user display
+    function updateUserDisplay(user) {
+      const displayNameElement = document.getElementById('userDisplayName');
+      const userEmailElement = document.getElementById('userEmail');
+      
+      if (user) {
+        // User is signed in
+        const displayName = user.displayName || 'Guest';
+        const email = user.email || 'guest@habitica.com';
+        
+        displayNameElement.textContent = displayName;
+        userEmailElement.textContent = email;
+      } else {
+        // User is signed out - show default values
+        displayNameElement.textContent = 'Guest';
+        userEmailElement.textContent = 'guest@habitica.com';
+      }
+    }
+
+    // Sign out function
+    function signOut() {
+      firebase.auth().signOut().then(() => {
+        console.log('User signed out successfully');
+        window.location.href = 'signin.html';
+      }).catch((error) => {
+        console.error('Sign out error:', error);
+      });
+    }
+
+    // Add sign out button to header actions
+    document.addEventListener('DOMContentLoaded', function() {
+      const headerActions = document.querySelector('.header-actions');
+      if (headerActions) {
+        // Add sign out button
+        const signOutBtn = document.createElement('button');
+        signOutBtn.className = 'icon-btn';
+        signOutBtn.innerHTML = '<i class="fa-solid fa-sign-out-alt"></i>';
+        signOutBtn.title = 'Sign Out';
+        signOutBtn.onclick = signOut;
+        headerActions.appendChild(signOutBtn);
+      }
+    });
   </script>
 </body>
 </html>
