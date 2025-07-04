@@ -429,11 +429,12 @@
 
       </nav>
       <div class="header-actions">
-        <span class="stat"><i class="fa-solid fa-gem"></i> 0</span>
-        <span class="stat"><i class="fa-solid fa-coins"></i> 0</span>
+        <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
         <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
         <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
         <span class="avatar"><i class="fa-solid fa-user"></i></span>
+        <button class="icon-btn" id="signOutBtn" title="Sign Out"><i class="fa-solid fa-sign-out-alt"></i></button>
       </div>
     </div>
   </header>
@@ -595,7 +596,23 @@ document.addEventListener('DOMContentLoaded', function() {
       if (e.target === this) closeModal(this.id);
     });
   });
+  const signOutBtn = document.getElementById('signOutBtn');
+  if (signOutBtn) signOutBtn.onclick = signOut;
 });
+function signOut() {
+  localStorage.setItem('manualSignOut', 'true');
+  if (window.firebase && firebase.auth) {
+    firebase.auth().signOut().then(() => {
+      localStorage.removeItem('userData');
+      sessionStorage.clear();
+      window.location.replace('signin.html');
+    }).catch(() => {
+      window.location.replace('signin.html');
+    });
+  } else {
+    window.location.replace('signin.html');
+  }
+}
 </script>
 </body>
 </html> 

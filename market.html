@@ -1063,11 +1063,12 @@
         <a href="challenges.html">Challenges</a>
       </nav>
       <div class="header-actions">
-        <span class="stat"><i class="fa-solid fa-gem"></i> 10</span>
-        <span class="stat"><i class="fa-solid fa-coins"></i> 81</span>
+        <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
         <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
         <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
         <span class="avatar"><i class="fa-solid fa-user"></i></span>
+        <button class="icon-btn" id="signOutBtn" title="Sign Out"><i class="fa-solid fa-sign-out-alt"></i></button>
       </div>
     </div>
   </header>
@@ -1631,6 +1632,26 @@
     });
   }
   document.addEventListener('DOMContentLoaded', setupSoonButtons);
+  </script>
+  <script>
+  function signOut() {
+    localStorage.setItem('manualSignOut', 'true');
+    if (window.firebase && firebase.auth) {
+      firebase.auth().signOut().then(() => {
+        localStorage.removeItem('userData');
+        sessionStorage.clear();
+        window.location.replace('signin.html');
+      }).catch(() => {
+        window.location.replace('signin.html');
+      });
+    } else {
+      window.location.replace('signin.html');
+    }
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    const signOutBtn = document.getElementById('signOutBtn');
+    if (signOutBtn) signOutBtn.onclick = signOut;
+  });
   </script>
 </body>
 </html> 
