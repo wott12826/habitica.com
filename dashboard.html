@@ -2396,7 +2396,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     // В specialRewards карточки добавлять .reward-dot
   </script>
   <script>
-    let currentHabitsTab = 'all';
+    let currentHabitsTab = 'current';
     function switchHabitsTab(tab) {
       currentHabitsTab = tab;
       document.getElementById('tabHabitsAll').classList.remove('active');
@@ -2410,7 +2410,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     // В updateHabitsList добавить фильтрацию по currentHabitsTab
   </script>
   <script>
-    let currentDailiesTab = 'all';
+    let currentDailiesTab = 'current';
     function switchDailiesTab(tab) {
       currentDailiesTab = tab;
       document.getElementById('tabDailiesCurrent').classList.remove('active');
