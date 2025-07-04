@@ -79,6 +79,14 @@
       align-items: center;
       gap: 1.2rem;
     }
+    .header-actions .stat {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 1.1rem;
+      color: #fff;
+      font-weight: 600;
+    }
     .header-actions .icon-btn {
       background: none;
       border: none;
@@ -920,9 +928,25 @@
 
     // Update balance display
     function updateDisplay() {
-      document.getElementById('gems').textContent = gameState.gems;
-      document.getElementById('coins').textContent = gameState.coins;
+      const gemsElement = document.getElementById('gems');
+      const coinsElement = document.getElementById('coins');
+      
+      if (gemsElement && coinsElement) {
+        gemsElement.textContent = gameState.gems;
+        coinsElement.textContent = gameState.coins;
+        console.log('Balance updated - Gems:', gameState.gems, 'Coins:', gameState.coins);
+      } else {
+        console.error('Balance elements not found!');
+        console.log('gems element:', gemsElement);
+        console.log('coins element:', coinsElement);
+      }
     }
+
+    // Initialize display when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded, initializing balance display');
+      updateDisplay();
+    });
 
     // Load user data from Firebase
     function loadUserGameData(userId) {
