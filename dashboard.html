@@ -2293,23 +2293,31 @@
   
   <!-- Firebase Authentication Script -->
   <script>
-    // Check authentication state
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        // User is signed in
-        updateUserDisplay(user);
-        console.log('User is signed in:', user.email);
-        
-        // Load user data from Firebase
-        loadUserGameData(user.uid);
-      } else {
-        // User is signed out
-        updateUserDisplay(null);
-        console.log('User is signed out');
-        // Redirect to signin page if not authenticated
-        window.location.href = 'signin.html';
-      }
-    });
+    // Wait for Firebase to be fully initialized
+    setTimeout(() => {
+      // Check authentication state
+      let redirecting = false;
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in
+          updateUserDisplay(user);
+          console.log('User is signed in:', user.email);
+          
+          // Load user data from Firebase
+          loadUserGameData(user.uid);
+        } else {
+          // User is signed out
+          updateUserDisplay(null);
+          console.log('User is signed out');
+          // Redirect to signin page if not authenticated (only once)
+          if (!redirecting) {
+            redirecting = true;
+            console.log('Redirecting to signin page...');
+            window.location.href = 'signin.html';
+          }
+        }
+      });
+    }, 1000); // Wait 1 second for Firebase to initialize
 
     // Update user display
     function updateUserDisplay(user) {
