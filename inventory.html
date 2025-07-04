@@ -795,6 +795,7 @@
   </header>
   <div class="inventory-container">
     <aside class="sidebar">
+      <button class="close-sidebar" aria-label="Close">&times;</button>
       <h4>Filters</h4>
       <div class="filter-group" id="items-filters">
         <label><input type="checkbox" value="Eggs"> Eggs</label>
@@ -831,6 +832,7 @@
         </div>
       </div>
     </aside>
+    <div class="sidebar-backdrop"></div>
     <main class="main-inventory">
       <div class="tabs">
         <button class="tab active" data-tab="items">Items</button>
@@ -1794,5 +1796,32 @@
     ];
   </script>
 <script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+  const burger = document.getElementById("burgerBtn");
+  const header = document.querySelector(".header");
+  const sidebar = document.querySelector(".sidebar");
+  const backdrop = document.querySelector(".sidebar-backdrop");
+  const closeBtn = document.querySelector(".sidebar .close-sidebar");
+
+  function openSidebar() {
+    header.classList.add("nav-open");
+    document.body.style.overflow = "hidden";
+  }
+  function closeSidebar() {
+    header.classList.remove("nav-open");
+    document.body.style.overflow = "";
+  }
+
+  if (burger) burger.addEventListener("click", openSidebar);
+  if (backdrop) backdrop.addEventListener("click", closeSidebar);
+  if (closeBtn) closeBtn.addEventListener("click", closeSidebar);
+
+  // Закрытие по Esc
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeSidebar();
+  });
+});
+</script>
 </body>
 </html> 
