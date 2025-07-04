@@ -14,8 +14,18 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase Realtime Database
-const database = firebase.database();
+// Initialize Firebase Realtime Database (only if available)
+let database = null;
+try {
+    if (firebase.database) {
+        database = firebase.database();
+        console.log('Firebase Database initialized successfully');
+    } else {
+        console.warn('Firebase Database not available');
+    }
+} catch (error) {
+    console.warn('Firebase Database initialization failed:', error);
+}
 
 // Export for use in other files
 window.firebaseConfig = firebaseConfig;
