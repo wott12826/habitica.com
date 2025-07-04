@@ -1095,26 +1095,16 @@
     }
   </style>
   <style>
-.buy-habitica-btn-nav {
-  background: none;
-  border: none;
-  color: #ffe082;
-  font-weight: 700;
-  font-size: 1rem;
-  padding: 0.2rem 1rem;
-  margin-left: 1.1rem;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: color 0.18s, background 0.18s;
-  outline: none;
-  box-shadow: none;
-  display: inline-block;
-  vertical-align: middle;
-}
-.buy-habitica-btn-nav:hover,
-.buy-habitica-btn-nav:focus {
+.nav a {
   color: #fff;
-  background: rgba(255, 179, 0, 0.13);
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+  position: relative;
+}
+.nav a.active, .nav a:hover {
+  opacity: 1;
 }
   </style>
   <!-- Firebase SDK -->
@@ -1134,9 +1124,7 @@
         <a href="inventory.html">Inventory</a>
         <a href="#" id="openPartyModal">Party</a>
         <a href="group-plans.html">Guild</a>
-        <button class="buy-habitica-btn-nav" onclick="window.open('https://dexscreener.com/', '_blank')">
-          Buy $HABITICA
-        </button>     </nav>
+        <a href="https://dexscreener.com/" target="_blank" class="nav-link buy-habitica-link">Buy $HABITICA</a>     </nav>
       <div class="header-actions">
         <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
         <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
