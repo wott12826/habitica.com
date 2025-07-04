@@ -1076,8 +1076,7 @@
   </header>
   <div class="dashboard">
     <aside class="profile">
-      <div class="avatar"><i class="fa-solid fa-user"></i></div>
-      <div>
+      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>      <div>
         <div class="username" id="userDisplayName">Guest</div>
         <div class="userid" id="userEmail">guest@habitica.com</div>
         <div class="level">Level <span id="level">1</span> Warrior</div>
@@ -2435,22 +2434,30 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
 
     // Update user display
     function updateUserDisplay(user) {
-      const displayNameElement = document.getElementById('userDisplayName');
-      const userEmailElement = document.getElementById('userEmail');
-      
-      if (user) {
-        // User is signed in
-        const displayName = user.displayName || 'Guest';
-        const email = user.email || 'guest@habitica.com';
-        
-        displayNameElement.textContent = displayName;
-        userEmailElement.textContent = email;
-      } else {
-        // User is signed out - show default values
-        displayNameElement.textContent = 'Guest';
-        userEmailElement.textContent = 'guest@habitica.com';
-      }
+  const displayNameElement = document.getElementById('userDisplayName');
+  const userEmailElement = document.getElementById('userEmail');
+  const sidebarAvatar = document.getElementById('sidebarAvatar');
+
+  if (user) {
+    const displayName = user.displayName || 'Guest';
+    const email = user.email || 'guest@habitica.com';
+    const photoURL = user.photoURL || null;
+
+    displayNameElement.textContent = displayName;
+    userEmailElement.textContent = email;
+
+    // Обновляем аватар
+    if (photoURL) {
+      sidebarAvatar.innerHTML = `<img src="${photoURL}" alt="Avatar" style="width:72px;height:72px;border-radius:50%;object-fit:cover;">`;
+    } else {
+      sidebarAvatar.innerHTML = `<i class="fa-solid fa-user"></i>`;
     }
+  } else {
+    displayNameElement.textContent = 'Guest';
+    userEmailElement.textContent = 'guest@habitica.com';
+    sidebarAvatar.innerHTML = `<i class="fa-solid fa-user"></i>`;
+  }
+}
 
     // Sign out function
     function signOut() {
