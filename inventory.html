@@ -727,7 +727,87 @@
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
   <script>
+    // Game state for balance display
+    let gameState = { gems: 0, coins: 0 };
+
+    // Update balance display
+    function updateDisplay() {
+      document.getElementById('gems').textContent = gameState.gems;
+      document.getElementById('coins').textContent = gameState.coins;
+    }
+
+    // Load user data from Firebase
+    function loadUserGameData(userId) {
+      if (!userId || !window.firestore) {
+        console.log('No user ID or firestore available, using default values');
+        updateDisplay();
+        return;
+      }
+      
+      console.log('Loading user data for:', userId);
+      
+      return firestore.collection('users').doc(userId).get()
+        .then((doc) => {
+          const data = doc.exists ? doc.data() : null;
+          if (data && data.gameState) {
+            console.log('User data found:', data);
+            gameState.gems = data.gameState.gems || 0;
+            gameState.coins = data.gameState.coins || 0;
+            console.log('Balance loaded - Gems:', gameState.gems, 'Coins:', gameState.coins);
+          } else {
+            console.log('No saved data found for user, using defaults');
+          }
+          updateDisplay();
+        })
+        .catch((error) => {
+          console.error('Error loading game data:', error);
+          console.log('Using default values due to error');
+          updateDisplay();
+        });
+    }
+
+    // Check authentication state and load balance
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User authenticated:', user.email, 'UID:', user.uid);
+        if (user.uid) {
+          loadUserGameData(user.uid);
+        } else {
+          console.error('No user UID available');
+          updateDisplay();
+        }
+      } else {
+        console.log('User is signed out - showing default balance');
+        updateDisplay();
+      }
+    });
+
+    function signOut() {
+      localStorage.setItem('manualSignOut', 'true');
+      if (window.firebase && firebase.auth) {
+        firebase.auth().signOut().then(() => {
+          localStorage.removeItem('userData');
+          sessionStorage.clear();
+          window.location.replace('signin.html');
+        }).catch(() => {
+          window.location.replace('signin.html');
+        });
+      } else {
+        window.location.replace('signin.html');
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      const signOutBtn = document.getElementById('signOutBtn');
+      if (signOutBtn) signOutBtn.onclick = signOut;
+    });
+
     function openModal(modalId) {
       document.getElementById(modalId).classList.add('active');
     }
@@ -1263,53 +1343,23 @@
       renderPetsAndMounts();
     });
 
-    function signOut() {
-      localStorage.setItem('manualSignOut', 'true');
-      if (window.firebase && firebase.auth) {
-        firebase.auth().signOut().then(() => {
-          localStorage.removeItem('userData');
-          sessionStorage.clear();
-          window.location.replace('signin.html');
-        }).catch(() => {
-          window.location.replace('signin.html');
-        });
-      } else {
-        window.location.replace('signin.html');
-      }
+    // Модалка 'Soon'
+    function openSoonModal() {
+      document.getElementById('soonModal').style.display = 'flex';
     }
-    document.addEventListener('DOMContentLoaded', function() {
-      const signOutBtn = document.getElementById('signOutBtn');
-      if (signOutBtn) signOutBtn.onclick = signOut;
-    });
-  </script>
-  <!-- Модалка 'Soon' -->
-<div class="modal-overlay" id="soonModal" style="display:none;">
-  <div class="profile-modal" style="max-width:340px;align-items:center;">
-    <button class="close-btn" onclick="closeSoonModal()" title="Close">&times;</button>
-    <div class="modal-content" style="text-align:center;">
-      <div class="modal-title" style="font-size:1.5rem;color:#6c5ce7;">🚧 Soon</div>
-      <div style="font-size:1.08rem;color:#888;margin:18px 0 8px 0;">This feature is coming soon!</div>
-      <button class="btn btn-primary" style="margin-top:10px;" onclick="closeSoonModal()">OK</button>
-    </div>
-  </div>
-</div>
-<script>
-  function openSoonModal() {
-    document.getElementById('soonModal').style.display = 'flex';
-  }
-  function closeSoonModal() {
-    document.getElementById('soonModal').style.display = 'none';
-  }
-  // Навесить обработчики на party-btn и group-btn
-  function setupSoonButtons() {
-    document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
-      btn.onclick = function(e) {
-        e.preventDefault();
-        openSoonModal();
-      };
-    });
-  }
-  document.addEventListener('DOMContentLoaded', setupSoonButtons);
+    function closeSoonModal() {
+      document.getElementById('soonModal').style.display = 'none';
+    }
+    // Навесить обработчики на party-btn и group-btn
+    function setupSoonButtons() {
+      document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
+        btn.onclick = function(e) {
+          e.preventDefault();
+          openSoonModal();
+        };
+      });
+    }
+    document.addEventListener('DOMContentLoaded', setupSoonButtons);
   </script>
 </body>
 </html> 

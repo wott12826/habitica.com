@@ -491,39 +491,68 @@
       &copy; 2025 Habitica. All rights reserved.
     </div>
   </footer>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
   <script>
-    // Simple tab switcher
-    document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-        this.classList.add('active');
-        document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
-        document.getElementById('tab-' + this.dataset.tab).style.display = '';
-      });
-    });
-    // Открытие Party Modal по клику на Party в меню (как на market.html)
-    document.addEventListener('DOMContentLoaded', function() {
-      var partyMenu = document.querySelector('a#openPartyModal');
-      if(partyMenu) {
-        partyMenu.addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('partyModal').classList.add('active');
-        });
-      }
-      // Закрытие по Esc
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') document.getElementById('partyModal').classList.remove('active');
-      });
-      // Клик вне модалки
-      document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-          if (e.target === this) document.getElementById('partyModal').classList.remove('active');
-        });
-      });
-    });
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
+    // Game state for balance display
+    let gameState = { gems: 0, coins: 0 };
+
+    // Update balance display
+    function updateDisplay() {
+      document.getElementById('gems').textContent = gameState.gems;
+      document.getElementById('coins').textContent = gameState.coins;
     }
+
+    // Load user data from Firebase
+    function loadUserGameData(userId) {
+      if (!userId || !window.firestore) {
+        console.log('No user ID or firestore available, using default values');
+        updateDisplay();
+        return;
+      }
+      
+      console.log('Loading user data for:', userId);
+      
+      return firestore.collection('users').doc(userId).get()
+        .then((doc) => {
+          const data = doc.exists ? doc.data() : null;
+          if (data && data.gameState) {
+            console.log('User data found:', data);
+            gameState.gems = data.gameState.gems || 0;
+            gameState.coins = data.gameState.coins || 0;
+            console.log('Balance loaded - Gems:', gameState.gems, 'Coins:', gameState.coins);
+          } else {
+            console.log('No saved data found for user, using defaults');
+          }
+          updateDisplay();
+        })
+        .catch((error) => {
+          console.error('Error loading game data:', error);
+          console.log('Using default values due to error');
+          updateDisplay();
+        });
+    }
+
+    // Check authentication state and load balance
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('User authenticated:', user.email, 'UID:', user.uid);
+        if (user.uid) {
+          loadUserGameData(user.uid);
+        } else {
+          console.error('No user UID available');
+          updateDisplay();
+        }
+      } else {
+        console.log('User is signed out - showing default balance');
+        updateDisplay();
+      }
+    });
+
     function signOut() {
       localStorage.setItem('manualSignOut', 'true');
       if (window.firebase && firebase.auth) {

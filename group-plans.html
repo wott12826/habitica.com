@@ -552,6 +552,68 @@
     </div>
   </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+  // Game state for balance display
+  let gameState = { gems: 0, coins: 0 };
+
+  // Update balance display
+  function updateDisplay() {
+    document.getElementById('gems').textContent = gameState.gems;
+    document.getElementById('coins').textContent = gameState.coins;
+  }
+
+  // Load user data from Firebase
+  function loadUserGameData(userId) {
+    if (!userId || !window.firestore) {
+      console.log('No user ID or firestore available, using default values');
+      updateDisplay();
+      return;
+    }
+    
+    console.log('Loading user data for:', userId);
+    
+    return firestore.collection('users').doc(userId).get()
+      .then((doc) => {
+        const data = doc.exists ? doc.data() : null;
+        if (data && data.gameState) {
+          console.log('User data found:', data);
+          gameState.gems = data.gameState.gems || 0;
+          gameState.coins = data.gameState.coins || 0;
+          console.log('Balance loaded - Gems:', gameState.gems, 'Coins:', gameState.coins);
+        } else {
+          console.log('No saved data found for user, using defaults');
+        }
+        updateDisplay();
+      })
+      .catch((error) => {
+        console.error('Error loading game data:', error);
+        console.log('Using default values due to error');
+        updateDisplay();
+      });
+  }
+
+  // Check authentication state and load balance
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log('User authenticated:', user.email, 'UID:', user.uid);
+      if (user.uid) {
+        loadUserGameData(user.uid);
+      } else {
+        console.error('No user UID available');
+        updateDisplay();
+      }
+    } else {
+      console.log('User is signed out - showing default balance');
+      updateDisplay();
+    }
+  });
+</script>
 <script>
 function openModal(modalId) {
   document.getElementById(modalId).classList.add('active');
