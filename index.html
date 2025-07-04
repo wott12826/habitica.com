@@ -460,6 +460,7 @@
 <body>
     <!-- Header -->
     <header class="header">
+        <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
         <nav class="nav-container">
             <a href="#" class="logo">Magic</a>
             <ul class="nav-links">
@@ -751,6 +752,9 @@
                 });
             });
         });
+    </script>
+    <script>
+    document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});
     </script>
 </body>
 </html> 
