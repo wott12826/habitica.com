@@ -6,8 +6,10 @@
 
 /* Мобильная версия: sidebar скрыт, появляется поверх */
 @media (max-width: 900px) {
-  .sidebar {
-    display: none;
+  /* Только если у header есть nav-open — делаем sidebar бургер-меню */
+  .header.nav-open + .dashboard .sidebar,
+  .header.nav-open .sidebar {
+    display: flex !important;
     position: fixed;
     top: 0; left: 0; bottom: 0;
     width: 80vw;
@@ -17,30 +19,65 @@
     box-shadow: 2px 0 16px rgba(44,34,80,0.12);
     overflow-y: auto;
     padding-top: 64px;
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-    transform: translateX(-100%);
     color: #2d1436;
     padding: 32px 20px 20px 20px;
-    display: flex;
     flex-direction: column;
     align-items: flex-start;
-  }
-  .header.nav-open + .dashboard .sidebar,
-  .header.nav-open .sidebar {
-    display: block;
     transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
   }
-  .sidebar-backdrop {
+  /* По умолчанию sidebar скрыт только для бургер-меню */
+  .sidebar {
     display: none;
   }
-  .header.nav-open ~ .sidebar-backdrop,
-  .nav-open .sidebar-backdrop {
-    display: block;
-    position: fixed;
-    z-index: 1100;
-    left: 0; top: 0; right: 0; bottom: 0;
-    background: rgba(44,34,80,0.25);
-    animation: fadeIn 0.2s;
+  /* Стилизация только для бургер-меню */
+  .header.nav-open .sidebar-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .header.nav-open .sidebar .logo {
+    color: #6c5ce7 !important;
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-decoration: none;
+    margin: 0;
+  }
+  .header.nav-open .sidebar .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+  .header.nav-open .sidebar .nav a {
+    color: #6c5ce7 !important;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    opacity: 1;
+    padding: 0.2rem 0;
+  }
+  .header.nav-open .sidebar .header-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+  .header.nav-open .sidebar .header-actions .stat {
+    color: #2d1436;
+    font-size: 1.1rem;
+    font-weight: 600;
+    gap: 0.5rem;
+  }
+  .header.nav-open .sidebar .icon-btn {
+    color: #888;
+    font-size: 1.3rem;
+    background: none;
+    border: none;
+    margin-left: 0.5rem;
   }
   .header-inner {
     opacity: 1;
@@ -56,54 +93,6 @@
     z-index: 2100;
   }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .sidebar-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-  }
-  .sidebar .logo {
-    color: #6c5ce7 !important;
-    font-size: 1.5rem;
-    font-weight: 800;
-    text-decoration: none;
-    margin: 0;
-  }
-  .sidebar .nav {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    width: 100%;
-    margin-bottom: 2rem;
-  }
-  .sidebar .nav a {
-    color: #6c5ce7 !important;
-    font-size: 1.1rem;
-    font-weight: 700;
-    text-decoration: none;
-    opacity: 1;
-    padding: 0.2rem 0;
-  }
-  .sidebar .header-actions {
-    display: flex;
-    flex-direction: row;
-    gap: 1.2rem;
-    margin-bottom: 1.5rem;
-  }
-  .sidebar .header-actions .stat {
-    color: #2d1436;
-    font-size: 1.1rem;
-    font-weight: 600;
-    gap: 0.5rem;
-  }
-  .sidebar .icon-btn {
-    color: #888;
-    font-size: 1.3rem;
-    background: none;
-    border: none;
-    margin-left: 0.5rem;
-  }
 }
 
 /* Бургер всегда поверх */
