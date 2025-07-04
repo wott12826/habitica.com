@@ -2089,7 +2089,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
         todoCard.className = 'task-card';
         todoCard.setAttribute('data-id', todo.id);
         todoCard.innerHTML = `
-          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodoComplete(${todo.id}, event)">
+          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked disabled' : ''} onclick="toggleTodoComplete(${todo.id}, event)">
           <div style="flex:1;cursor:pointer;" onclick="openTodoModal(${todo.id})">
             <div class="task-title">${todo.title}</div>
             <div class="task-desc">${todo.notes || ''}</div>
@@ -2106,16 +2106,13 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     function toggleTodoComplete(todoId, e) {
       e.stopPropagation();
       const todo = gameState.todos.find(t => t.id === todoId);
-      if (!todo) return;
-      todo.completed = !todo.completed;
-      if (todo.completed) {
-        gameState.xp += 20;
-        gameState.coins += 10;
-        showNotification('+20 XP, +10 coins!', 'success');
-      }
+      if (!todo || todo.completed) return; // Если уже выполнено, ничего не делаем
+      todo.completed = true;
+      gameState.xp += 20;
+      gameState.coins += 10;
+      showNotification('+20 XP, +10 coins!', 'success');
       updateDisplay();
       updateTodosList();
-      
       // Save to Firebase
       const user = firebase.auth().currentUser;
       if (user) {
