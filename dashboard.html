@@ -432,7 +432,7 @@
     }
   </style>
   <style>
-   .modal-overlay {
+ .modal-overlay {
   position: fixed;
   z-index: 10000;
   left: 0; top: 0; right: 0; bottom: 0;
@@ -444,9 +444,9 @@
 }
 .profile-modal {
   background: #fff;
-  border-radius: 18px;
+  border-radius: 20px;
   box-shadow: 0 8px 40px 0 rgba(44, 62, 80, 0.18);
-  max-width: 380px;
+  max-width: 370px;
   width: 100%;
   margin: 0 auto;
   padding: 32px 28px 24px 28px;
@@ -475,32 +475,65 @@
   align-items: center;
   justify-content: center;
 }
-.profile-modal .profile-avatar {
-  width: 80px; height: 80px;
+.avatar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 18px;
+}
+.profile-avatar {
+  width: 90px; height: 90px;
   border-radius: 50%;
   object-fit: cover;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   border: 3px solid #eee;
   box-shadow: 0 2px 8px rgba(108,92,231,0.08);
+  transition: box-shadow 0.2s, border 0.2s;
+  cursor: pointer;
+}
+.avatar-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.avatar-edit {
+  font-size: 0.95rem;
+  color: #6c5ce7;
+  background: #f3f0ff;
+  border-radius: 8px;
+  padding: 2px 10px;
+  margin-top: 2px;
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+}
+.avatar-label:hover .profile-avatar {
+  border: 3px solid #6c5ce7;
+  box-shadow: 0 4px 16px rgba(108,92,231,0.18);
+}
+.avatar-label:hover .avatar-edit {
+  background: #6c5ce7;
+  color: #fff;
 }
 .profile-modal .form-group {
   margin-bottom: 18px;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 .profile-modal label {
   font-size: 0.98rem;
   color: #6c5ce7;
   font-weight: 600;
-  margin-bottom: 4px;
-  display: block;
 }
 .profile-modal input[type=\"text\"], .profile-modal input[type=\"email\"] {
   width: 100%;
-  padding: 8px 12px;
+  padding: 9px 12px;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1.5px solid #e9ecef;
   font-size: 1rem;
-  margin-top: 2px;
   background: #f8f9fa;
   transition: border 0.2s;
 }
@@ -512,9 +545,10 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  margin-top: 8px;
 }
 .profile-modal .btn {
-  padding: 8px 18px;
+  padding: 9px 22px;
   border-radius: 8px;
   border: none;
   font-size: 1rem;
@@ -2600,6 +2634,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     setInterval(autoSaveGameData, 30000);
   </script>
 <!-- Profile Edit Modal -->
+<!-- Profile Edit Modal -->
 <div class="modal-overlay" id="profileModal" style="display:none;">
   <div class="profile-modal">
     <button class="close-btn" onclick="closeProfileModal()" title="Close">&times;</button>
@@ -2609,9 +2644,12 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
         Edit Profile
       </div>
       <form id="profileForm" onsubmit="saveProfile(event)">
-        <div class="form-group" style="text-align:center;">
-          <img id="profileAvatarPreview" src="https://www.gravatar.com/avatar/?d=mp" alt="Avatar" class="profile-avatar">
-          <input type="file" id="profileAvatar" accept="image/*" style="display:block;margin:10px auto 0;">
+        <div class="form-group avatar-group">
+          <label for="profileAvatar" class="avatar-label">
+            <img id="profileAvatarPreview" src="https://www.gravatar.com/avatar/?d=mp" alt="Avatar" class="profile-avatar">
+            <span class="avatar-edit">Change</span>
+          </label>
+          <input type="file" id="profileAvatar" accept="image/*" style="display:none;">
         </div>
         <div class="form-group">
           <label for="profileDisplayName">Nickname</label>
