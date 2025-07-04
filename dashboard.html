@@ -528,18 +528,33 @@
   color: #6c5ce7;
   font-weight: 600;
 }
-.profile-modal input[type=\"text\"], .profile-modal input[type=\"email\"] {
+.profile-modal input[type="text"],
+.profile-modal input[type="email"] {
   width: 100%;
-  padding: 9px 12px;
+  padding: 10px 14px;
   border-radius: 8px;
-  border: 1.5px solid #e9ecef;
-  font-size: 1rem;
-  background: #f8f9fa;
-  transition: border 0.2s;
+  border: 1.5px solid #d1d8e6;
+  font-size: 1.05rem;
+  background: #f6f7fb;
+  color: #222;
+  margin-top: 2px;
+  box-shadow: 0 1px 2px rgba(108,92,231,0.04);
+  transition: border 0.2s, box-shadow 0.2s, background 0.2s;
 }
-.profile-modal input[type=\"text\"]:focus, .profile-modal input[type=\"email\"]:focus {
+
+.profile-modal input[type="text"]:focus,
+.profile-modal input[type="email"]:focus {
   border: 1.5px solid #6c5ce7;
+  background: #fff;
   outline: none;
+  box-shadow: 0 2px 8px rgba(108,92,231,0.10);
+}
+
+.profile-modal input[type="email"]:disabled {
+  color: #888;
+  background: #f1f2f6;
+  border-style: dashed;
+  opacity: 1;
 }
 .profile-modal .form-actions {
   display: flex;
