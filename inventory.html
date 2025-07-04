@@ -1732,7 +1732,13 @@
         renderEquipment();
       }
     });
-
+    document.addEventListener('DOMContentLoaded', function() {
+  const headerActions = document.querySelector('.header-actions');
+  if (headerActions) {
+    const settingsBtn = headerActions.querySelector('.fa-cog').parentElement;
+    settingsBtn.onclick = openProfileModal;
+  }
+});
     // Special rewards data for comparison (same as in dashboard.html)
     const specialRewardsData = [
       {
