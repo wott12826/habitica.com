@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="static/icons/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/responsive.css">
     <style>
         :root {
             --main-purple: #6c5ce7;
@@ -218,6 +219,20 @@
         }
         .name-row .form-group {
             flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .auth-container {
+                padding: 2rem;
+            }
+
+            .name-row {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -541,6 +556,7 @@
                     console.log('Popup failed, trying redirect:', popupError);
                     // If popup fails (e.g., blocked by browser), try redirect
                     console.log('Attempting redirect sign in...');
+                    redirecting = true;
                     await firebase.auth().signInWithRedirect(provider);
                     return; // Redirect will happen, so we return here
                 }
@@ -588,7 +604,7 @@
 
         // Handle redirect result (for when popup is blocked)
         firebase.auth().getRedirectResult().then((result) => {
-            if (result) {
+            if (result && result.user) {
                 console.log('Redirect sign up successful:', result.user);
                 window.location.href = 'dashboard.html';
             }

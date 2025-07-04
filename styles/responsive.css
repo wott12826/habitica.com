@@ -1,0 +1,38 @@
+/* Generic responsive adjustments */
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+  .header-inner,
+  .footer-inner,
+  .dashboard,
+  .challenges-container,
+  .inventory-container,
+  .market-container,
+  .group-banner,
+  .group-tasks-section,
+  .auth-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .nav-links {
+    flex-direction: column;
+    align-items: center;
+  }
+  .hero-buttons,
+  .tasks-grid,
+  .features-grid,
+  .pricing-grid,
+  .platforms-grid,
+  .rewards-special-list {
+    grid-template-columns: 1fr;
+  }
+  .btn-hero,
+  .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+  .name-row {
+    flex-direction: column;
+  }
+}
