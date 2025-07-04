@@ -249,6 +249,8 @@
     @media (max-width: 700px) {
       .group-banner, .group-tasks-section { padding: 1.2rem 0.5rem; }
     }
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 10000; align-items: center; justify-content: center; }
+    .modal-overlay.active { display: flex; }
   </style>
 </head>
 <body>
@@ -355,18 +357,18 @@
     </div>
   </footer>
   <!-- Модалка 'Soon' -->
-<div class="modal-overlay" id="soonModal" style="display:none;">
+<div class="modal-overlay" id="soonModal">
   <div class="profile-modal" style="max-width:340px;align-items:center;">
-    <button class="close-btn" onclick="closeSoonModal()" title="Close">&times;</button>
+    <button class="close-btn" onclick="closeModal('soonModal')" title="Close">&times;</button>
     <div class="modal-content" style="text-align:center;">
       <div class="modal-title" style="font-size:1.5rem;color:#6c5ce7;">🚧 Soon</div>
       <div style="font-size:1.08rem;color:#888;margin:18px 0 8px 0;">This feature is coming soon!</div>
-      <button class="btn btn-primary" style="margin-top:10px;" onclick="closeSoonModal()">OK</button>
+      <button class="btn btn-primary" style="margin-top:10px;" onclick="closeModal('soonModal')">OK</button>
     </div>
   </div>
 </div>
 <!-- Party Modal -->
-<div class="modal-overlay" id="partyModal" style="display:none;">
+<div class="modal-overlay" id="partyModal">
   <div class="party-modal">
     <button class="close-btn" onclick="closeModal('partyModal')" title="Close">&times;</button>
     <div class="modal-content">
@@ -389,57 +391,50 @@
   </div>
 </div>
 <script>
-    function openModal(modalId) {
-      document.getElementById(modalId).classList.add('active');
-    }
-    function closeModal(modalId) {
-      document.getElementById(modalId).classList.remove('active');
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      // Открытие partyModal по кнопке Start (если есть)
-      var startBtn = document.querySelector('.cta-btn');
-      if(startBtn) {
-        startBtn.addEventListener('click', function() {
-          openModal('partyModal');
-        });
-      }
-      // Открытие partyModal по пункту меню Party (если есть)
-      var partyMenu = document.querySelector('a[href="party.html"], a#openPartyModal');
-      if(partyMenu) {
-        partyMenu.addEventListener('click', function(e) {
-          e.preventDefault();
-          openModal('partyModal');
-        });
-      }
-      // Закрытие по Esc
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closeModal('partyModal');
-      });
-      // Клик вне модалки
-      document.querySelectorAll('.modal-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function(e) {
-          if (e.target === this) closeModal(this.id);
-        });
-      });
+function openModal(modalId) {
+  document.getElementById(modalId).classList.add('active');
+}
+function closeModal(modalId) {
+  document.getElementById(modalId).classList.remove('active');
+}
+document.addEventListener('DOMContentLoaded', function() {
+  // Открытие partyModal по кнопке Start (если есть)
+  var startBtn = document.querySelector('.cta-btn');
+  if(startBtn) {
+    startBtn.addEventListener('click', function() {
+      openModal('partyModal');
     });
+  }
+  // Открытие partyModal по пункту меню Party (если есть)
+  var partyMenu = document.querySelector('a#openPartyModal');
+  if(partyMenu) {
+    partyMenu.addEventListener('click', function(e) {
+      e.preventDefault();
+      openModal('partyModal');
+    });
+  }
+  // Кнопки внутри Party Modal открывают Soon Modal
+  document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
+    btn.onclick = function(e) {
+      e.preventDefault();
+      closeModal('partyModal');
+      openModal('soonModal');
+    };
+  });
+  // Закрытие по Esc
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeModal('partyModal');
+      closeModal('soonModal');
+    }
+  });
+  // Клик вне модалки
+  document.querySelectorAll('.modal-overlay').forEach(overlay => {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === this) closeModal(this.id);
+    });
+  });
+});
 </script>
-<script>
-  function openSoonModal() {
-    document.getElementById('soonModal').style.display = 'flex';
-  }
-  function closeSoonModal() {
-    document.getElementById('soonModal').style.display = 'none';
-  }
-  // Навесить обработчики на party-btn и group-btn
-  function setupSoonButtons() {
-    document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
-      btn.onclick = function(e) {
-        e.preventDefault();
-        openSoonModal();
-      };
-    });
-  }
-  document.addEventListener('DOMContentLoaded', setupSoonButtons);
-  </script>
 </body>
 </html> 
