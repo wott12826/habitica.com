@@ -240,6 +240,7 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
+      flex: 1 1 0;
     }
     .task-col:last-child {
       min-width: 260px;
@@ -891,6 +892,10 @@
       box-sizing: border-box;
       width: 100%;
       max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .rewards-tabs {
       display: flex;
@@ -968,12 +973,8 @@
       font-size: 0.97rem;
     }
     .rewards-special-list {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.2rem;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
+      flex: 1 1 auto;
+      min-height: 0;
     }
     .reward-card {
       min-width: 140px;
