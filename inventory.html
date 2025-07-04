@@ -743,6 +743,19 @@
       color: #2d1436;
     }
   </style>
+    <style>
+      .nav a {
+        color: #fff;
+        text-decoration: none;
+        font-weight: 600;
+        opacity: 0.9;
+        transition: opacity 0.2s;
+        position: relative;
+      }
+      .nav a.active, .nav a:hover {
+        opacity: 1;
+      }
+        </style>
 </head>
 <body>
   <header class="header">
@@ -754,7 +767,7 @@
         <a href="market.html">Shops</a>
         <a href="#" id="openPartyModal">Party</a>
         <a href="group-plans.html">Guild</a>
-        <button class="buy-habitica-btn" onclick="window.open('https://dexscreener.com/', '_blank')">Buy $HABITICA</button>
+        <a href="https://dexscreener.com/" target="_blank" class="nav-link buy-habitica-link">Buy $HABITICA</a>     </nav>
       </nav>
       <div class="header-actions">
         <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
