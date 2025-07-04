@@ -189,6 +189,13 @@
       position: relative;
       opacity: 0.3;
     }
+    /* Unlocked items - remove opacity and lock icon */
+    .item-card:not(.locked) {
+      opacity: 1;
+    }
+    .item-card:not(.locked) .item-icon::after {
+      display: none;
+    }
     .item-card .item-icon {
       font-size: 2rem;
       margin-bottom: 0.5rem;
@@ -1082,6 +1089,9 @@
         list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
         return;
       }
+      
+      console.log('Rendering inventory items. Total ownedItems:', userGameData.ownedItems);
+      
       filtered.forEach(item => {
         const card = document.createElement('div');
         // Check if item is owned by comparing with special rewards
@@ -1096,6 +1106,8 @@
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';
+        console.log(`Item ${item.name}: isOwned = ${isOwned}, className = ${card.className}`);
+        
         card.innerHTML = `
           <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
           <div class="item-title">${item.name}</div>
@@ -1137,6 +1149,9 @@
         list.innerHTML = '<div class="empty-state">Нет предметов для выбранных фильтров.</div>';
         return;
       }
+      
+      console.log('Rendering equipment. Total ownedItems:', userGameData.ownedItems);
+      
       filtered.forEach(item => {
         const card = document.createElement('div');
         // Check if item is owned by comparing with special rewards
@@ -1150,6 +1165,8 @@
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';
+        console.log(`Equipment ${item.name}: isOwned = ${isOwned}, className = ${card.className}`);
+        
         card.innerHTML = `
           <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
           <div class="item-title">${item.name}</div>
@@ -1651,9 +1668,11 @@
     // Load user game data from Firebase
     async function loadUserGameData(userId) {
       try {
+        console.log('Loading user data for userId:', userId);
         const doc = await firestore.collection('users').doc(userId).get();
         if (doc.exists) {
           const data = doc.data();
+          console.log('Raw data from Firebase:', data);
           if (data.gameState) {
             // Load ownedItems from gameState
             userGameData.ownedItems = data.gameState.ownedItems || [];
@@ -1661,7 +1680,11 @@
             // Update inventory display with owned items
             renderInventoryItems();
             renderEquipment();
+          } else {
+            console.log('No gameState found in data');
           }
+        } else {
+          console.log('No document found for user');
         }
       } catch (error) {
         console.error('Error loading user data:', error);
@@ -1681,77 +1704,6 @@
         renderEquipment();
       }
     });
-
-    // Update renderInventoryItems to check owned items
-    function renderInventoryItems() {
-      const filters = getActiveFilters();
-      const list = document.querySelector('#tab-items .items-list');
-      list.innerHTML = '';
-      let filtered = inventoryIcons;
-      if (filters.length > 0) {
-        filtered = inventoryIcons.filter(item => filters.includes(item.category));
-      }
-      if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
-        return;
-      }
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        // Check if item is owned by comparing with special rewards
-        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
-          // Check if this inventory item corresponds to a special reward
-          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          const matches = specialReward && specialReward.icon === item.src;
-          if (matches) {
-            console.log(`Item ${item.name} is owned (ID: ${ownedId})`);
-          }
-          return matches;
-        });
-        
-        card.className = isOwned ? 'item-card' : 'item-card locked';
-        card.innerHTML = `
-          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
-          <div class="item-title">${item.name}</div>
-          <div class="item-desc">${item.desc}</div>
-        `;
-        list.appendChild(card);
-      });
-    }
-
-    // Update renderEquipment to check owned items
-    function renderEquipment() {
-      const filters = getActiveEquipmentFilters();
-      const list = document.getElementById('equipment-list');
-      list.innerHTML = '';
-      let filtered = equipmentData;
-      if (filters.length > 0) {
-        filtered = equipmentData.filter(item => filters.includes(item.type));
-      }
-      if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state">Нет предметов для выбранных фильтров.</div>';
-        return;
-      }
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        // Check if item is owned by comparing with special rewards
-        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
-          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          const matches = specialReward && specialReward.icon === item.src;
-          if (matches) {
-            console.log(`Equipment ${item.name} is owned (ID: ${ownedId})`);
-          }
-          return matches;
-        });
-        
-        card.className = isOwned ? 'item-card' : 'item-card locked';
-        card.innerHTML = `
-          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
-          <div class="item-title">${item.name}</div>
-          <div class="item-desc">${item.type}</div>
-        `;
-        list.appendChild(card);
-      });
-    }
 
     // Special rewards data for comparison (same as in dashboard.html)
     const specialRewardsData = [
