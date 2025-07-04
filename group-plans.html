@@ -365,6 +365,64 @@
     </div>
   </div>
 </div>
+<!-- Party Modal -->
+<div class="modal-overlay" id="partyModal">
+  <div class="party-modal">
+    <button class="close-btn" onclick="closeModal('partyModal')" title="Close">&times;</button>
+    <div class="modal-content">
+      <div class="party-img">
+        <img src="static/icons/group@3x-BRelOOPS.png" alt="Party Pixel Art">
+      </div>
+      <div class="modal-title">Play Habitica in a Party!</div>
+      <div class="modal-desc">Go on amazing Quests with friends or solo. Battle monsters, create challenges, and help each other stay accountable with a party!</div>
+      <button class="party-btn">Create Party</button>
+      <div class="divider"></div>
+      <div class="group-block">
+        <div class="group-img">
+          <img src="static/icons/party-BBgVse-q.png" alt="Group Pixel Art">
+        </div>
+        <div class="group-title">Looking for a Party?</div>
+        <div class="group-desc">Want to join a party but don't know other players? Let party leaders know you want to get invited!</div>
+        <button class="group-btn">Find Party</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.add('active');
+    }
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      // Открытие partyModal по кнопке Start (если есть)
+      var startBtn = document.querySelector('.cta-btn');
+      if(startBtn) {
+        startBtn.addEventListener('click', function() {
+          openModal('partyModal');
+        });
+      }
+      // Открытие partyModal по пункту меню Party (если есть)
+      var partyMenu = document.querySelector('a[href="party.html"], a#openPartyModal');
+      if(partyMenu) {
+        partyMenu.addEventListener('click', function(e) {
+          e.preventDefault();
+          openModal('partyModal');
+        });
+      }
+      // Закрытие по Esc
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal('partyModal');
+      });
+      // Клик вне модалки
+      document.querySelectorAll('.modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function(e) {
+          if (e.target === this) closeModal(this.id);
+        });
+      });
+    });
+</script>
 <script>
   function openSoonModal() {
     document.getElementById('soonModal').style.display = 'flex';
