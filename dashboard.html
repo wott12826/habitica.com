@@ -954,6 +954,7 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   <script src="firebase-config.js"></script>
 </head>
 <body>
@@ -1571,6 +1572,12 @@
       }
 
       updateDisplay();
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     }
 
     // Show notification
@@ -1692,6 +1699,12 @@
 
       closeModal('habitModal');
       showNotification('Habit saved successfully!', 'success');
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     });
 
     // Delete habit
@@ -1703,6 +1716,12 @@
         updateHabitsList();
         closeModal('habitModal');
         showNotification('Habit deleted successfully!', 'success');
+        
+        // Save to Firebase
+        const user = firebase.auth().currentUser;
+        if (user) {
+          saveUserGameData(user.uid);
+        }
       }
     }
 
@@ -1823,6 +1842,12 @@
       showNotification('+15 XP, +7 coins!', 'success');
       updateDailiesList();
       updateDisplay();
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     }
 
     function openDailyModal(dailyId = null, e) {
@@ -1873,6 +1898,12 @@
       }
       closeModal('dailyModal');
       showNotification('Daily saved successfully!', 'success');
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     });
 
     function deleteDaily(dailyId, e) {
@@ -1882,6 +1913,12 @@
         updateDailiesList();
         closeModal('dailyModal');
         showNotification('Daily deleted successfully!', 'success');
+        
+        // Save to Firebase
+        const user = firebase.auth().currentUser;
+        if (user) {
+          saveUserGameData(user.uid);
+        }
       }
     }
 
@@ -1932,6 +1969,12 @@
       }
       updateDisplay();
       updateTodosList();
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     }
 
     function openTodoModal(todoId = null, e) {
@@ -1982,6 +2025,12 @@
       }
       closeModal('todoModal');
       showNotification('To-Do saved successfully!', 'success');
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     });
 
     function deleteTodo(todoId, e) {
@@ -1991,6 +2040,12 @@
         updateTodosList();
         closeModal('todoModal');
         showNotification('To-Do deleted successfully!', 'success');
+        
+        // Save to Firebase
+        const user = firebase.auth().currentUser;
+        if (user) {
+          saveUserGameData(user.uid);
+        }
       }
     }
 
@@ -2066,6 +2121,12 @@
       }
       closeModal('rewardModal');
       showNotification('Reward saved successfully!', 'success');
+      
+      // Save to Firebase
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
     });
 
     function deleteReward(rewardId, e) {
@@ -2086,6 +2147,12 @@
         gameState.coins -= reward.price;
         showNotification('Reward purchased!', 'success');
         updateDisplay();
+        
+        // Save to Firebase
+        const user = firebase.auth().currentUser;
+        if (user) {
+          saveUserGameData(user.uid);
+        }
       } else {
         showNotification('Not enough coins!', 'warning');
       }
@@ -2133,6 +2200,12 @@
         showNotification('Item purchased! Bonuses applied.', 'success');
         updateDisplay();
         closeModal('specialRewardModal');
+        
+        // Save to Firebase
+        const user = firebase.auth().currentUser;
+        if (user) {
+          saveUserGameData(user.uid);
+        }
       } else {
         showNotification('Not enough coins!', 'warning');
       }
@@ -2227,13 +2300,8 @@
         updateUserDisplay(user);
         console.log('User is signed in:', user.email);
         
-        // Initialize game after successful authentication
-        initGame();
-        updateHabitsList();
-        updateDailiesList();
-        updateTodosList();
-        updateRewardsList();
-        updateSpecialRewardsList();
+        // Load user data from Firebase
+        loadUserGameData(user.uid);
       } else {
         // User is signed out
         updateUserDisplay(null);
@@ -2285,6 +2353,103 @@
         headerActions.appendChild(signOutBtn);
       }
     });
+
+    // Firebase Database Functions
+    function saveUserGameData(userId) {
+      if (!userId) return;
+      
+      const userData = {
+        gameState: {
+          xp: gameState.xp,
+          maxXp: gameState.maxXp,
+          hp: gameState.hp,
+          maxHp: gameState.maxHp,
+          level: gameState.level,
+          gems: gameState.gems,
+          coins: gameState.coins
+        },
+        habits: gameState.habits,
+        dailies: gameState.dailies,
+        todos: gameState.todos,
+        rewards: gameState.rewards,
+        lastUpdated: Date.now()
+      };
+
+      return database.ref(`users/${userId}`).set(userData)
+        .then(() => {
+          console.log('Game data saved successfully');
+        })
+        .catch((error) => {
+          console.error('Error saving game data:', error);
+        });
+    }
+
+    function loadUserGameData(userId) {
+      if (!userId) return;
+      
+      return database.ref(`users/${userId}`).once('value')
+        .then((snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            // Load game state
+            if (data.gameState) {
+              gameState.xp = data.gameState.xp || 50;
+              gameState.maxXp = data.gameState.maxXp || 100;
+              gameState.hp = data.gameState.hp || 50;
+              gameState.maxHp = data.gameState.maxHp || 50;
+              gameState.level = data.gameState.level || 1;
+              gameState.gems = data.gameState.gems || 0;
+              gameState.coins = data.gameState.coins || 0;
+            }
+            
+            // Load tasks
+            if (data.habits) gameState.habits = data.habits;
+            if (data.dailies) gameState.dailies = data.dailies;
+            if (data.todos) gameState.todos = data.todos;
+            if (data.rewards) gameState.rewards = data.rewards;
+            
+            console.log('Game data loaded successfully');
+            
+            // Initialize game after loading data
+            initGame();
+            updateHabitsList();
+            updateDailiesList();
+            updateTodosList();
+            updateRewardsList();
+            updateSpecialRewardsList();
+          } else {
+            // No data found, initialize with default values
+            console.log('No saved data found, using defaults');
+            initGame();
+            updateHabitsList();
+            updateDailiesList();
+            updateTodosList();
+            updateRewardsList();
+            updateSpecialRewardsList();
+          }
+        })
+        .catch((error) => {
+          console.error('Error loading game data:', error);
+          // Initialize with default values on error
+          initGame();
+          updateHabitsList();
+          updateDailiesList();
+          updateTodosList();
+          updateRewardsList();
+          updateSpecialRewardsList();
+        });
+    }
+
+    // Auto-save function
+    function autoSaveGameData() {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
+    }
+
+    // Set up auto-save every 30 seconds
+    setInterval(autoSaveGameData, 30000);
   </script>
 </body>
 </html>

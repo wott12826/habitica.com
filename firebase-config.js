@@ -7,11 +7,16 @@ const firebaseConfig = {
     storageBucket: "post-ad037.firebasestorage.app",
     messagingSenderId: "377312187432",
     appId: "1:377312187432:web:565f47c145e0e73ac0911d",
-    measurementId: "G-T48NR3B9VW"
+    measurementId: "G-T48NR3B9VW",
+    databaseURL: "https://post-ad037-default-rtdb.firebaseio.com"
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
+// Initialize Firebase Realtime Database
+const database = firebase.database();
+
 // Export for use in other files
-window.firebaseConfig = firebaseConfig; 
+window.firebaseConfig = firebaseConfig;
+window.database = database; 
