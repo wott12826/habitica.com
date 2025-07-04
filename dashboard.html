@@ -1137,20 +1137,25 @@
     </div>
   </header>
   <div class="dashboard">
-    <aside class="profile">
-      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>      <div>
-        <div class="username" id="userDisplayName">Guest</div>
-        <div class="userid" id="userEmail">guest@magic.com</div>
-        <div class="level">Level <span id="level">1</span> Warrior</div>
-        <div class="bar-label">XP <span id="xpDisplay">50 / 100</span></div>
-        <div class="bar"><div class="bar-inner xp" id="xpBar"></div></div>
-        <div class="bar-label">HP <span id="hpDisplay">50 / 50</span></div>
-        <div class="bar"><div class="bar-inner hp" id="hpBar"></div></div>
-        <div class="stats">
-          <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gemsProfile">0</span></span>
-          <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coinsProfile">0</span></span>
-        </div>
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <a href="dashboard.html" class="logo">Magic</a>
+        <button class="close-sidebar" id="closeSidebarBtn">&times;</button>
       </div>
+      <nav class="nav">
+        <a href="dashboard.html" class="active">Tasks</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="#" id="openPartyModal">Party</a>
+        <a href="group-plans.html">Guild</a>
+        <a href="https://dexscreener.com/solana/CYNVdwET5AQpVD9zhD2w8HbFxddHqxQoCrPck3DFuiZy" target="_blank" class="nav-link buy-habitica-link">$MAGIC</a>
+      </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+      </div>
+      <!-- Остальное содержимое sidebar (например, профиль) можно оставить ниже -->
     </aside>
     <main class="main">
       <div class="dashboard-header">
