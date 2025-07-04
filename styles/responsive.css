@@ -83,10 +83,10 @@
     opacity: 1;
     pointer-events: auto;
   }
-  .header.nav-open .header-inner {
-    opacity: 0.2;
-    pointer-events: none;
-  }
+.header.nav-open .header-inner {
+  opacity: 1;
+  pointer-events: auto;
+}
   .burger {
     position: static;
     margin-right: 1rem;
