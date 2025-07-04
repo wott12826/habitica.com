@@ -298,11 +298,6 @@
             Continue with Google
         </button>
         
-        <button class="social-btn" id="googleSignupRedirect" style="margin-top: 0.5rem; background: #f8f9fa; border-color: #6c5ce7; color: #6c5ce7;">
-            <i class="fab fa-google"></i>
-            Continue with Google (Alternative)
-        </button>
-        
         <div class="auth-footer">
             Already have an account? <a href="signin.html">Sign in</a>
         </div>
@@ -334,7 +329,6 @@
         const signupBtn = document.getElementById('signupBtn');
         const loading = document.getElementById('loading');
         const googleSignupBtn = document.getElementById('googleSignup');
-        const googleSignupRedirectBtn = document.getElementById('googleSignupRedirect');
 
         // Error elements
         const firstNameError = document.getElementById('firstNameError');
@@ -594,28 +588,6 @@
             console.error('Redirect sign up error:', error);
             hideLoading();
             alert('Google sign up failed. Please try again.');
-        });
-
-        // Alternative Google Sign Up (Direct Redirect)
-        googleSignupRedirectBtn.addEventListener('click', async () => {
-            showLoading();
-            
-            try {
-                console.log('Starting Google sign up with redirect...');
-                
-                const provider = new firebase.auth.GoogleAuthProvider();
-                provider.addScope('email');
-                provider.addScope('profile');
-                provider.addScope('openid');
-                
-                console.log('Redirecting to Google...');
-                await firebase.auth().signInWithRedirect(provider);
-                // Page will redirect to Google, then back to this page
-            } catch (error) {
-                hideLoading();
-                console.error('Google redirect sign up error:', error);
-                alert('Google sign up failed. Please try again. Error: ' + error.message);
-            }
         });
 
         // Check if user is already signed in
