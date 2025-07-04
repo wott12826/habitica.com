@@ -1094,7 +1094,44 @@
       border-bottom: 3px solid #6c5ce7;
     }
   </style>
-  
+  <style>
+    .buy-habitica-btn {
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e42 100%);
+  color: #4b256e;
+  font-weight: 600;
+  font-size: 0.98rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.38rem 1.1rem 0.38rem 0.9rem;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(251,191,36,0.10);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  margin-left: 0.7rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.1;
+  letter-spacing: 0.01em;
+}
+.buy-habitica-btn i {
+  font-size: 1.08em;
+  color: #f59e42;
+  margin-right: 0.2em;
+}
+.buy-habitica-btn:hover, .buy-habitica-btn:focus {
+  background: linear-gradient(90deg, #f59e42 0%, #fbbf24 100%);
+  color: #2d1436;
+  box-shadow: 0 2px 8px rgba(251,191,36,0.18);
+  outline: none;
+}
+@media (max-width: 700px) {
+  .buy-habitica-btn {
+    font-size: 0.93rem;
+    padding: 0.32rem 0.7rem 0.32rem 0.7rem;
+    margin-left: 0.3rem;
+  }
+}
+  </style>
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
@@ -1112,8 +1149,9 @@
         <a href="inventory.html">Inventory</a>
         <a href="#" id="openPartyModal">Party</a>
         <a href="group-plans.html">Guild</a>
-        <button class="buy-habitica-btn" onclick="window.open('https://dexscreener.com/', '_blank')">Buy $HABITICA</button>
-      </nav>
+<button class="buy-habitica-btn" onclick="window.open('https://dexscreener.com/', '_blank')">
+  <i class="fa-solid fa-coins"></i> Buy $HABITICA
+</button>      </nav>
       <div class="header-actions">
         <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
         <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
