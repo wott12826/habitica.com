@@ -801,6 +801,9 @@
       background: #a29bfe;
     }
     .rewards-user-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.2rem;
       margin-bottom: 1.2rem;
     }
     .rewards-self-block {
@@ -861,9 +864,11 @@
       border-radius: 50%;
     }
     @media (max-width: 900px) {
+      .rewards-user-list { grid-template-columns: repeat(2, 1fr); }
       .rewards-special-list { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 600px) {
+      .rewards-user-list { grid-template-columns: 1fr; }
       .rewards-special-list { grid-template-columns: 1fr; }
     }
   </style>
@@ -950,6 +955,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="firebase-config.js"></script>
 </head>
 <body>
@@ -2216,6 +2222,12 @@
           openModal('partyModal');
         });
       }
+      // Ensure lists show default data before auth callback fires
+      updateHabitsList();
+      updateDailiesList();
+      updateTodosList();
+      updateRewardsList();
+      updateSpecialRewardsList();
     });
 
     let currentRewardsTab = 'all';
@@ -2380,7 +2392,7 @@
 
     // Firebase Database Functions
     function saveUserGameData(userId) {
-      if (!userId) return;
+      if (!userId || !firestore) return;
       
       const userData = {
         gameState: {
@@ -2399,7 +2411,7 @@
         lastUpdated: Date.now()
       };
 
-      return database.ref(`users/${userId}`).set(userData)
+      return firestore.collection('users').doc(userId).set(userData)
         .then(() => {
           console.log('Game data saved successfully');
         })
@@ -2409,7 +2421,7 @@
     }
 
     function loadUserGameData(userId) {
-      if (!userId) {
+      if (!userId || !firestore) {
         console.log('No user ID provided, using default values');
         initGame();
         updateHabitsList();
@@ -2422,9 +2434,9 @@
       
       console.log('Loading user data for:', userId);
       
-      return database.ref(`users/${userId}`).once('value')
-        .then((snapshot) => {
-          const data = snapshot.val();
+      return firestore.collection('users').doc(userId).get()
+        .then((doc) => {
+          const data = doc.exists ? doc.data() : null;
           if (data) {
             console.log('User data found:', data);
             
