@@ -239,6 +239,13 @@
         <div class="auth-footer">
             Don't have an account? <a href="signup.html">Sign up</a>
         </div>
+        
+        <!-- Dashboard button for signed in users -->
+        <div id="dashboardButton" style="display: none; margin-top: 1rem;">
+            <a href="dashboard.html" class="btn btn-primary" style="text-align: center;">
+                <i class="fas fa-home"></i> Go to Dashboard
+            </a>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -443,17 +450,22 @@
 
         // Check if user is already signed in
         let redirecting = false;
-        // Wait for Firebase to be fully initialized
-        setTimeout(() => {
-          firebase.auth().onAuthStateChanged((user) => {
-              if (user && !redirecting) {
-                  console.log('User is already signed in, redirecting to dashboard...');
-                  redirecting = true;
-                  // User is already signed in, redirect to dashboard
-                  window.location.href = 'dashboard.html';
-              }
-          });
-        }, 1000); // Wait 1 second for Firebase to initialize
+        const dashboardButton = document.getElementById('dashboardButton');
+        
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user && !redirecting) {
+                console.log('User is already signed in, showing dashboard button');
+                // Show dashboard button for signed in users
+                if (dashboardButton) {
+                    dashboardButton.style.display = 'block';
+                }
+            } else {
+                // Hide dashboard button for non-signed in users
+                if (dashboardButton) {
+                    dashboardButton.style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
 </html> 
