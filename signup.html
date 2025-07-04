@@ -556,6 +556,7 @@
                     console.log('Popup failed, trying redirect:', popupError);
                     // If popup fails (e.g., blocked by browser), try redirect
                     console.log('Attempting redirect sign in...');
+                    redirecting = true;
                     await firebase.auth().signInWithRedirect(provider);
                     return; // Redirect will happen, so we return here
                 }
