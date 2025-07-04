@@ -2298,15 +2298,26 @@
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in
+        console.log('User authenticated:', user.email, 'UID:', user.uid);
         updateUserDisplay(user);
-        console.log('User is signed in:', user.email);
         
         // Load user data from Firebase
-        loadUserGameData(user.uid);
+        if (user.uid) {
+          loadUserGameData(user.uid);
+        } else {
+          console.error('No user UID available');
+          // Initialize with default values
+          initGame();
+          updateHabitsList();
+          updateDailiesList();
+          updateTodosList();
+          updateRewardsList();
+          updateSpecialRewardsList();
+        }
       } else {
         // User is signed out - show guest mode or login prompt
-        updateUserDisplay(null);
         console.log('User is signed out - showing guest mode');
+        updateUserDisplay(null);
         
         // Initialize with default values for guest mode
         initGame();
@@ -2339,11 +2350,22 @@
 
     // Sign out function
     function signOut() {
+      // Set a flag to prevent auto-login
+      localStorage.setItem('manualSignOut', 'true');
+      
       firebase.auth().signOut().then(() => {
         console.log('User signed out successfully');
-        window.location.href = 'signin.html';
+        
+        // Clear any cached user data
+        localStorage.removeItem('userData');
+        sessionStorage.clear();
+        
+        // Force redirect to signin page
+        window.location.replace('signin.html');
       }).catch((error) => {
         console.error('Sign out error:', error);
+        // Even if there's an error, try to redirect
+        window.location.replace('signin.html');
       });
     }
 
@@ -2392,12 +2414,25 @@
     }
 
     function loadUserGameData(userId) {
-      if (!userId) return;
+      if (!userId) {
+        console.log('No user ID provided, using default values');
+        initGame();
+        updateHabitsList();
+        updateDailiesList();
+        updateTodosList();
+        updateRewardsList();
+        updateSpecialRewardsList();
+        return;
+      }
+      
+      console.log('Loading user data for:', userId);
       
       return database.ref(`users/${userId}`).once('value')
         .then((snapshot) => {
           const data = snapshot.val();
           if (data) {
+            console.log('User data found:', data);
+            
             // Load game state
             if (data.gameState) {
               gameState.xp = data.gameState.xp || 50;
@@ -2416,27 +2451,22 @@
             if (data.rewards) gameState.rewards = data.rewards;
             
             console.log('Game data loaded successfully');
-            
-            // Initialize game after loading data
-            initGame();
-            updateHabitsList();
-            updateDailiesList();
-            updateTodosList();
-            updateRewardsList();
-            updateSpecialRewardsList();
           } else {
-            // No data found, initialize with default values
-            console.log('No saved data found, using defaults');
-            initGame();
-            updateHabitsList();
-            updateDailiesList();
-            updateTodosList();
-            updateRewardsList();
-            updateSpecialRewardsList();
+            console.log('No saved data found for user, using defaults');
           }
+          
+          // Always initialize game after loading (or not loading) data
+          initGame();
+          updateHabitsList();
+          updateDailiesList();
+          updateTodosList();
+          updateRewardsList();
+          updateSpecialRewardsList();
         })
         .catch((error) => {
           console.error('Error loading game data:', error);
+          console.log('Using default values due to error');
+          
           // Initialize with default values on error
           initGame();
           updateHabitsList();

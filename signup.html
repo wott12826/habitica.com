@@ -602,8 +602,20 @@
         let redirecting = false;
         const dashboardButton = document.getElementById('dashboardButton');
         
+        // Check if user manually signed out
+        const manualSignOut = localStorage.getItem('manualSignOut');
+        
         firebase.auth().onAuthStateChanged((user) => {
             if (user && !redirecting) {
+                console.log('User is signed in');
+                
+                // If user manually signed out, don't show dashboard button immediately
+                if (manualSignOut === 'true') {
+                    console.log('User manually signed out, not showing dashboard button');
+                    localStorage.removeItem('manualSignOut'); // Clear the flag
+                    return;
+                }
+                
                 console.log('User is already signed in, showing dashboard button');
                 // Show dashboard button for signed in users
                 if (dashboardButton) {
