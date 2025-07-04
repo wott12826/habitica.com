@@ -1088,7 +1088,11 @@
         const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
           // Check if this inventory item corresponds to a special reward
           const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          return specialReward && specialReward.icon === item.src;
+          const matches = specialReward && specialReward.icon === item.src;
+          if (matches) {
+            console.log(`Item ${item.name} is owned (ID: ${ownedId})`);
+          }
+          return matches;
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';
@@ -1138,7 +1142,11 @@
         // Check if item is owned by comparing with special rewards
         const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
           const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          return specialReward && specialReward.icon === item.src;
+          const matches = specialReward && specialReward.icon === item.src;
+          if (matches) {
+            console.log(`Equipment ${item.name} is owned (ID: ${ownedId})`);
+          }
+          return matches;
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';
@@ -1646,8 +1654,10 @@
         const doc = await firestore.collection('users').doc(userId).get();
         if (doc.exists) {
           const data = doc.data();
-          if (data.gameData) {
-            userGameData = data.gameData;
+          if (data.gameState) {
+            // Load ownedItems from gameState
+            userGameData.ownedItems = data.gameState.ownedItems || [];
+            console.log('Loaded ownedItems:', userGameData.ownedItems);
             // Update inventory display with owned items
             renderInventoryItems();
             renderEquipment();
@@ -1691,7 +1701,11 @@
         const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
           // Check if this inventory item corresponds to a special reward
           const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          return specialReward && specialReward.icon === item.src;
+          const matches = specialReward && specialReward.icon === item.src;
+          if (matches) {
+            console.log(`Item ${item.name} is owned (ID: ${ownedId})`);
+          }
+          return matches;
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';
@@ -1722,7 +1736,11 @@
         // Check if item is owned by comparing with special rewards
         const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
           const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          return specialReward && specialReward.icon === item.src;
+          const matches = specialReward && specialReward.icon === item.src;
+          if (matches) {
+            console.log(`Equipment ${item.name} is owned (ID: ${ownedId})`);
+          }
+          return matches;
         });
         
         card.className = isOwned ? 'item-card' : 'item-card locked';

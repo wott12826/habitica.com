@@ -2273,6 +2273,9 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
         gameState.ownedItems.push(reward.id);
         gameState.rewards = gameState.rewards.filter(r => r.id !== rewardId);
         
+        console.log('Purchased reward:', reward.title, 'ID:', reward.id);
+        console.log('Current ownedItems:', gameState.ownedItems);
+        
         showNotification('Reward purchased! Item unlocked in inventory.', 'success');
         updateDisplay();
         updateRewardsList(); // Update the rewards list to remove the purchased item
@@ -2328,6 +2331,9 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
         // Add to owned items and remove from special rewards
         gameState.ownedItems.push(item.id);
         gameState.specialRewards = gameState.specialRewards.filter(i => i.id !== viewingSpecialRewardId);
+        
+        console.log('Purchased special reward:', item.title, 'ID:', item.id);
+        console.log('Current ownedItems:', gameState.ownedItems);
         
         // Применить бонусы к персонажу (например, увеличить силу)
         // ...
@@ -2544,12 +2550,14 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
           maxHp: gameState.maxHp,
           level: gameState.level,
           gems: gameState.gems,
-          coins: gameState.coins
+          coins: gameState.coins,
+          ownedItems: gameState.ownedItems // Add ownedItems to saved data
         },
         habits: gameState.habits,
         dailies: gameState.dailies,
         todos: gameState.todos,
         rewards: gameState.rewards,
+        specialRewards: gameState.specialRewards, // Also save specialRewards
         lastUpdated: Date.now()
       };
 
@@ -2591,6 +2599,8 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
               gameState.level = data.gameState.level || 1;
               gameState.gems = data.gameState.gems || 0;
               gameState.coins = data.gameState.coins || 0;
+              gameState.ownedItems = data.gameState.ownedItems || []; // Load ownedItems
+              console.log('Loaded ownedItems from Firebase:', gameState.ownedItems);
             }
             
             // Load tasks
@@ -2598,6 +2608,7 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
             if (data.dailies) gameState.dailies = data.dailies;
             if (data.todos) gameState.todos = data.todos;
             if (data.rewards) gameState.rewards = data.rewards;
+            if (data.specialRewards) gameState.specialRewards = data.specialRewards; // Load specialRewards
             
             console.log('Game data loaded successfully');
           } else {
