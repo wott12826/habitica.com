@@ -1261,5 +1261,34 @@
       renderPetsAndMounts();
     });
   </script>
+  <!-- Модалка 'Soon' -->
+<div class="modal-overlay" id="soonModal" style="display:none;">
+  <div class="profile-modal" style="max-width:340px;align-items:center;">
+    <button class="close-btn" onclick="closeSoonModal()" title="Close">&times;</button>
+    <div class="modal-content" style="text-align:center;">
+      <div class="modal-title" style="font-size:1.5rem;color:#6c5ce7;">🚧 Soon</div>
+      <div style="font-size:1.08rem;color:#888;margin:18px 0 8px 0;">This feature is coming soon!</div>
+      <button class="btn btn-primary" style="margin-top:10px;" onclick="closeSoonModal()">OK</button>
+    </div>
+  </div>
+</div>
+<script>
+  function openSoonModal() {
+    document.getElementById('soonModal').style.display = 'flex';
+  }
+  function closeSoonModal() {
+    document.getElementById('soonModal').style.display = 'none';
+  }
+  // Навесить обработчики на party-btn и group-btn
+  function setupSoonButtons() {
+    document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
+      btn.onclick = function(e) {
+        e.preventDefault();
+        openSoonModal();
+      };
+    });
+  }
+  document.addEventListener('DOMContentLoaded', setupSoonButtons);
+  </script>
 </body>
 </html> 
