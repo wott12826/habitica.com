@@ -251,12 +251,6 @@
             Don't have an account? <a href="signup.html">Sign up</a>
         </div>
         
-        <!-- Dashboard button for signed in users -->
-        <div id="dashboardButton" style="display: none; margin-top: 1rem;">
-            <a href="dashboard.html" class="btn btn-primary" style="text-align: center;">
-                <i class="fas fa-home"></i> Go to Dashboard
-            </a>
-        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -461,34 +455,19 @@
             alert('Google sign in failed. Please try again.');
         });
 
-        // Check if user is already signed in
+        // Redirect to the dashboard if the user is already signed in
         let redirecting = false;
-        const dashboardButton = document.getElementById('dashboardButton');
-        
-        // Check if user manually signed out
+
+        // Check if the user manually signed out so we don't immediately redirect
         const manualSignOut = localStorage.getItem('manualSignOut');
-        
+
         firebase.auth().onAuthStateChanged((user) => {
             if (user && !redirecting) {
-                console.log('User is signed in');
-                
-                // If user manually signed out, don't show dashboard button immediately
                 if (manualSignOut === 'true') {
-                    console.log('User manually signed out, not showing dashboard button');
-                    localStorage.removeItem('manualSignOut'); // Clear the flag
+                    localStorage.removeItem('manualSignOut');
                     return;
                 }
-                
-                console.log('User is already signed in, showing dashboard button');
-                // Show dashboard button for signed in users
-                if (dashboardButton) {
-                    dashboardButton.style.display = 'block';
-                }
-            } else {
-                // Hide dashboard button for non-signed in users
-                if (dashboardButton) {
-                    dashboardButton.style.display = 'none';
-                }
+                window.location.href = 'dashboard.html';
             }
         });
     </script>
