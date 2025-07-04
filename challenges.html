@@ -407,6 +407,78 @@
       color: #2d1436;
     }
   </style>
+  <style>
+    /* Mobile sidebar styles */
+    #mobileSidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 80vw;
+      max-width: 320px;
+      background: #fff;
+      color: #2d1436;
+      box-shadow: 2px 0 16px rgba(0,0,0,0.12);
+      padding: 80px 20px 20px 20px;
+      display: none;
+      flex-direction: column;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease;
+      pointer-events: none;
+      z-index: 2000;
+    }
+    #mobileSidebar.open {
+      display: flex;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+    #mobileSidebar .close-sidebar {
+      position: absolute;
+      right: 16px;
+      top: 16px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: #888;
+      cursor: pointer;
+    }
+    #mobileSidebar .user-info { display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem; }
+    #mobileSidebar .avatar {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #f1effe;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #8669E1;
+      font-size: 1.5rem;
+    }
+    #mobileSidebar .avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    #mobileSidebar .username { font-weight: 700; }
+    #mobileSidebar .email { font-size: 0.9rem; color: #666; }
+    #mobileSidebar nav { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: auto; }
+    #mobileSidebar nav a { color: #8669E1; text-decoration: none; font-weight: 700; }
+    #mobileSidebar .balances { display: flex; gap: 1.2rem; margin-top: auto; margin-bottom: 1rem; }
+    #mobileSidebar .balances .stat { color: #2d1436; font-weight: 600; font-size: 1rem; }
+    #mobileSidebar .logout-btn {
+      background: none;
+      border: none;
+      color: #8669E1;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    #mobileSidebar .logout-btn i { font-size: 1.2rem; }
+    @media (max-width: 768px) {
+      #mobileSidebar { display: flex; }
+      .burger { display: flex; }
+      .burger span { background: #8669E1; }
+    }
+  </style>
 </head>
 <body>
   <header class="header">
@@ -431,6 +503,29 @@
       </div>
     </div>
   </header>
+  <aside class="sidebar" id="mobileSidebar">
+    <button class="close-sidebar" id="closeSidebarBtn" aria-label="Close">&times;</button>
+    <div class="user-info">
+      <div class="avatar"><i class="fa-solid fa-user"></i></div>
+      <div class="user-text">
+        <div class="username">Guest</div>
+        <div class="email">guest@magic.com</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="dashboard.html">Tasks</a>
+      <a href="inventory.html">Inventory</a>
+      <a href="market.html">Shops</a>
+      <a href="#" id="openPartyModal">Party</a>
+      <a href="group-plans.html">Guild</a>
+      <a href="https://dexscreener.com/solana/CYNVdwET5AQpVD9zhD2w8HbFxddHqxQoCrPck3DFuiZy" target="_blank" class="nav-link buy-habitica-link">$MAGIC</a>
+    </nav>
+    <div class="balances">
+      <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gemsProfile">0</span></span>
+      <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coinsProfile">0</span></span>
+    </div>
+    <button class="logout-btn" id="logoutSidebar"><i class="fa-solid fa-sign-out-alt"></i> Log Out</button>
+  </aside>
   <div class="challenges-container">
     <aside class="sidebar">
       <h4>Filters</h4>
@@ -601,6 +696,30 @@
   }
   document.addEventListener('DOMContentLoaded', setupSoonButtons);
   </script>
-  <script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.getElementById('burgerBtn');
+    const sidebar = document.getElementById('mobileSidebar');
+    const closeBtn = document.getElementById('closeSidebarBtn');
+    const logout = document.getElementById('logoutSidebar');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    if (burger) burger.addEventListener('click', openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (logout) logout.addEventListener('click', function(){ closeSidebar(); signOut(); });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeSidebar();
+    });
+  });
+  </script>
 </body>
 </html> 
