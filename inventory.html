@@ -1069,17 +1069,19 @@
       }
       return 'Special'; // Вместо 'Other' возвращаем 'Special'
     }
-    const inventoryIcons = iconFiles.map(f => {
-      const category = guessCategory(f);
-      let name = f.replace(/^imgi_\d+_?/, '').replace(/[-_.@].*$/, '').replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim();
-      name = name.charAt(0).toUpperCase() + name.slice(1);
-      return {
-        src: 'static/icons/' + f,
-        name,
-        desc: category + ' item',
-        category
-      };
-    });
+    const inventoryIcons = iconFiles
+  .filter(f => !f.includes('_default')) // убираем все файлы с _default
+  .map(f => {
+    const category = guessCategory(f);
+    let name = f.replace(/^imgi_\d+_?/, '').replace(/[-_.@].*$/, '').replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim();
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    return {
+      src: 'static/icons/' + f,
+      name,
+      desc: category + ' item',
+      category
+    };
+  });
     function getActiveFilters() {
       return Array.from(document.querySelectorAll('.filter-group input[type=checkbox]:checked')).map(cb => cb.value);
     }
