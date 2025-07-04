@@ -774,6 +774,7 @@
 </head>
 <body>
   <header class="header">
+    <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
     <div class="header-inner">
       <a href="dashboard.html" class="logo">Magic</a>
       <nav class="nav">
@@ -782,7 +783,6 @@
         <a href="#" id="openPartyModal">Party</a>
         <a href="group-plans.html">Guild</a>
         <a href="https://dexscreener.com/solana/CYNVdwET5AQpVD9zhD2w8HbFxddHqxQoCrPck3DFuiZy" target="_blank" class="nav-link buy-habitica-link">$MAGIC</a>     </nav>
-      </nav>
       <div class="header-actions">
         <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
         <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
@@ -1793,5 +1793,6 @@
       }
     ];
   </script>
+<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
 </body>
 </html> 
