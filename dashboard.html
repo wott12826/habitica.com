@@ -802,7 +802,7 @@
     }
     .rewards-user-list {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
       gap: 1.2rem;
       margin-bottom: 1.2rem;
     }
@@ -1334,18 +1334,6 @@
       </div>
     </div>
   </div>
-  <!-- Death Modal -->
-  <div class="modal-overlay" id="deathModal">
-    <div class="party-modal">
-      <button class="close-btn" onclick="restartAfterDeath()" title="Close">&times;</button>
-      <div class="modal-content">
-        <div class="modal-title">You Died!</div>
-        <div class="modal-desc">All your progress has been lost.</div>
-        <button class="party-btn" onclick="restartAfterDeath()">Restart</button>
-      </div>
-    </div>
-  </div>
-
 
   <script>
     // Game state
@@ -1546,18 +1534,6 @@
       document.getElementById('coins').textContent = gameState.coins;
       document.getElementById('coinsProfile').textContent = gameState.coins;
     }
-function checkStats() {
-  while (gameState.xp >= 100) {
-    gameState.xp -= 100;
-    gameState.level++;
-    showNotification(`Level up! You're now level ${gameState.level}!`, "success");
-  }
-  if (gameState.hp > 50) gameState.hp = 50;
-  if (gameState.hp <= 0) {
-    openModal("deathModal");
-  }
-}
-
 
     // Update habit (plus/minus buttons)
     function updateHabit(habitId, action) {
@@ -1584,7 +1560,17 @@ function checkStats() {
         gameState.hp = Math.max(0, gameState.hp - 5);
         showNotification('-5 HP', 'warning');
       }
-checkStats();
+
+      // Check for level up
+      if (gameState.xp >= gameState.maxXp) {
+        gameState.level++;
+        gameState.xp = 0;
+        gameState.maxXp = Math.floor(gameState.maxXp * 1.2);
+        gameState.maxHp += 10;
+        gameState.hp = gameState.maxHp;
+        gameState.gems += 1;
+        showNotification(`Level up! You're now level ${gameState.level}!`, 'success');
+      }
 
       updateDisplay();
       
@@ -1651,24 +1637,6 @@ checkStats();
       document.getElementById(modalId).classList.add('active');
     }
 
-      function restartAfterDeath() {
-        gameState.level = 1;
-        gameState.xp = 0;
-        gameState.hp = 50;
-        gameState.gems = 0;
-        gameState.coins = 0;
-        updateDisplay();
-        updateHabitsList();
-        updateDailiesList();
-        updateTodosList();
-        updateRewardsList();
-        updateSpecialRewardsList();
-        const user = firebase.auth().currentUser;
-        if (user) {
-          saveUserGameData(user.uid);
-        }
-        closeModal("deathModal");
-      }
     // Habit modal functions
     function openHabitModal(habitId = null) {
       editingHabitId = habitId;
@@ -1804,7 +1772,6 @@ checkStats();
         closeModal('dailyModal');
         closeModal('todoModal');
         closeModal('rewardModal');
-        closeModal('deathModal');
         closeModal('specialRewardModal');
       }
     });
@@ -1873,7 +1840,6 @@ checkStats();
       daily.completed = true;
       gameState.xp += 15;
       gameState.coins += 7;
-      checkStats();
       showNotification('+15 XP, +7 coins!', 'success');
       updateDailiesList();
       updateDisplay();
@@ -1978,7 +1944,7 @@ checkStats();
         todoCard.className = 'task-card';
         todoCard.setAttribute('data-id', todo.id);
         todoCard.innerHTML = `
-          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked disabled' : ''} onclick="toggleTodoComplete(${todo.id}, event)">
+          <input type="checkbox" class="todo-checkbox" ${todo.completed ? 'checked' : ''} onclick="toggleTodoComplete(${todo.id}, event)">
           <div style="flex:1;cursor:pointer;" onclick="openTodoModal(${todo.id})">
             <div class="task-title">${todo.title}</div>
             <div class="task-desc">${todo.notes || ''}</div>
@@ -1996,20 +1962,19 @@ checkStats();
       e.stopPropagation();
       const todo = gameState.todos.find(t => t.id === todoId);
       if (!todo) return;
-      if (todo.completed) return;
-      todo.completed = true;
-      if (e && e.target) e.target.disabled = true;
-      gameState.xp += 20;
-      gameState.coins += 10;
-      showNotification("+20 XP, +10 coins!", "success");
-      checkStats();
+      todo.completed = !todo.completed;
+      if (todo.completed) {
+        gameState.xp += 20;
+        gameState.coins += 10;
+        showNotification('+20 XP, +10 coins!', 'success');
+      }
       updateDisplay();
       updateTodosList();
-
+      
+      // Save to Firebase
       const user = firebase.auth().currentUser;
       if (user) {
         saveUserGameData(user.uid);
-      }
       }
     }
 

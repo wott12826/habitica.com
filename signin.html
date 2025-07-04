@@ -251,6 +251,12 @@
             Don't have an account? <a href="signup.html">Sign up</a>
         </div>
         
+        <!-- Dashboard button for signed in users -->
+        <div id="dashboardButton" style="display: none; margin-top: 1rem;">
+            <a href="dashboard.html" class="btn btn-primary" style="text-align: center;">
+                <i class="fas fa-home"></i> Go to Dashboard
+            </a>
+        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -455,19 +461,34 @@
             alert('Google sign in failed. Please try again.');
         });
 
-        // Redirect to the dashboard if the user is already signed in
+        // Check if user is already signed in
         let redirecting = false;
-
-        // Check if the user manually signed out so we don't immediately redirect
+        const dashboardButton = document.getElementById('dashboardButton');
+        
+        // Check if user manually signed out
         const manualSignOut = localStorage.getItem('manualSignOut');
-
+        
         firebase.auth().onAuthStateChanged((user) => {
             if (user && !redirecting) {
+                console.log('User is signed in');
+                
+                // If user manually signed out, don't show dashboard button immediately
                 if (manualSignOut === 'true') {
-                    localStorage.removeItem('manualSignOut');
+                    console.log('User manually signed out, not showing dashboard button');
+                    localStorage.removeItem('manualSignOut'); // Clear the flag
                     return;
                 }
-                window.location.href = 'dashboard.html';
+                
+                console.log('User is already signed in, showing dashboard button');
+                // Show dashboard button for signed in users
+                if (dashboardButton) {
+                    dashboardButton.style.display = 'block';
+                }
+            } else {
+                // Hide dashboard button for non-signed in users
+                if (dashboardButton) {
+                    dashboardButton.style.display = 'none';
+                }
             }
         });
     </script>
