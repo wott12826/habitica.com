@@ -2413,11 +2413,11 @@ gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
     let currentDailiesTab = 'all';
     function switchDailiesTab(tab) {
       currentDailiesTab = tab;
-      document.getElementById('tabDailiesAll').classList.remove('active');
       document.getElementById('tabDailiesCurrent').classList.remove('active');
+      document.getElementById('tabDailiesAll').classList.remove('active');
       document.getElementById('tabDailiesOther').classList.remove('active');
-      if(tab==='all') document.getElementById('tabDailiesAll').classList.add('active');
       if(tab==='current') document.getElementById('tabDailiesCurrent').classList.add('active');
+      if(tab==='all') document.getElementById('tabDailiesAll').classList.add('active');
       if(tab==='other') document.getElementById('tabDailiesOther').classList.add('active');
       updateDailiesList();
     }
