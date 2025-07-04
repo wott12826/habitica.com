@@ -27,6 +27,20 @@ try {
     console.warn('Firebase Database initialization failed:', error);
 }
 
+// Initialize Firestore (for persistent user data)
+let firestore = null;
+try {
+    if (firebase.firestore) {
+        firestore = firebase.firestore();
+        console.log('Firestore initialized successfully');
+    } else {
+        console.warn('Firebase Firestore not available');
+    }
+} catch (error) {
+    console.warn('Firestore initialization failed:', error);
+}
+
 // Export for use in other files
 window.firebaseConfig = firebaseConfig;
-window.database = database; 
+window.database = database;
+window.firestore = firestore;
