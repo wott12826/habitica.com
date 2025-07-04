@@ -974,7 +974,7 @@
         <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
         <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
         <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
-        <button class="icon-btn"><i class="fa-solid fa-cog"></i></button>
+        <button class="icon-btn" onclick="openProfileModal()"><i class="fa-solid fa-cog"></i></button>
         <span class="avatar"><i class="fa-solid fa-user"></i></span>
       </div>
     </div>
@@ -1515,6 +1515,8 @@
 
     // Update all displays
     function updateDisplay() {
+      gameState.xp = Math.max(0, Math.min(gameState.xp, gameState.maxXp));
+gameState.hp = Math.max(0, Math.min(gameState.hp, gameState.maxHp));
       // Update XP bar
       const xpPercent = (gameState.xp / gameState.maxXp) * 100;
       document.getElementById('xpBar').style.width = xpPercent + '%';
@@ -2495,5 +2497,63 @@
     // Set up auto-save every 30 seconds
     setInterval(autoSaveGameData, 30000);
   </script>
+  <!-- Profile Edit Modal -->
+<div class="modal-overlay" id="profileModal" style="display:none;">
+  <div class="habit-modal">
+    <button class="close-btn" onclick="closeModal('profileModal')" title="Close">&times;</button>
+    <div class="modal-content">
+      <div class="modal-title">Edit Profile</div>
+      <form id="profileForm" onsubmit="saveProfile(event)">
+        <div class="form-group">
+          <label for="profileDisplayName">Display Name</label>
+          <input type="text" id="profileDisplayName" required>
+        </div>
+        <div class="form-group">
+          <label for="profileLevel">Level</label>
+          <input type="number" id="profileLevel" min="1" max="100" required>
+        </div>
+        <div class="form-group">
+          <label for="profileXP">XP</label>
+          <input type="number" id="profileXP" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="profileHP">HP</label>
+          <input type="number" id="profileHP" min="0" required>
+        </div>
+        <div class="form-actions">
+          <button type="button" onclick="closeModal('profileModal')">Cancel</button>
+          <button type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+function openProfileModal() {
+  document.getElementById('profileDisplayName').value = document.getElementById('userDisplayName').textContent;
+  document.getElementById('profileLevel').value = gameState.level;
+  document.getElementById('profileXP').value = gameState.xp;
+  document.getElementById('profileHP').value = gameState.hp;
+  document.getElementById('profileModal').style.display = 'flex';
+}
+function closeModal(id) {
+  document.getElementById(id).style.display = 'none';
+}
+function saveProfile(e) {
+  e.preventDefault();
+  let xp = parseInt(document.getElementById('profileXP').value, 10);
+  let hp = parseInt(document.getElementById('profileHP').value, 10);
+  if (xp > gameState.maxXp) xp = gameState.maxXp;
+  if (xp < 0) xp = 0;
+  if (hp > gameState.maxHp) hp = gameState.maxHp;
+  if (hp < 0) hp = 0;
+  gameState.xp = xp;
+  gameState.hp = hp;
+  gameState.level = parseInt(document.getElementById('profileLevel').value, 10);
+  document.getElementById('userDisplayName').textContent = document.getElementById('profileDisplayName').value;
+  updateDisplay();
+  closeModal('profileModal');
+}
+</script>
 </body>
 </html>
