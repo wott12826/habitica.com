@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Habitica - Sign Up</title>
+    <link rel="shortcut icon" href="static/icons/favicon.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --main-purple: #6c5ce7;
+            --main-dark: #2d1436;
+            --light-bg: #f8f9fa;
+            --card-bg: #fff;
+            --border: #e9ecef;
+            --gray: #888;
+            --radius: 14px;
+        }
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #222;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        .auth-container {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+        .auth-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--main-purple), #a29bfe);
+        }
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .auth-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--main-purple);
+            margin-bottom: 0.5rem;
+        }
+        .auth-subtitle {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--main-purple);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        }
+        .form-input.error {
+            border-color: #e74c3c;
+        }
+        .error-message {
+            color: #e74c3c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+        .password-requirements {
+            font-size: 0.8rem;
+            color: var(--gray);
+            margin-top: 0.5rem;
+        }
+        .requirement {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            margin-bottom: 0.2rem;
+        }
+        .requirement.valid {
+            color: #00b894;
+        }
+        .requirement.invalid {
+            color: #e74c3c;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 1rem;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--main-purple), #a29bfe);
+            color: white;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(108, 92, 231, 0.3);
+        }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .divider {
+            text-align: center;
+            margin: 1.5rem 0;
+            position: relative;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--border);
+        }
+        .divider span {
+            background: var(--card-bg);
+            padding: 0 1rem;
+        }
+        .social-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: #333;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .social-btn:hover {
+            border-color: var(--main-purple);
+            background: #f8f9ff;
+        }
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        .auth-footer a {
+            color: var(--main-purple);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 1rem;
+        }
+        .spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid var(--main-purple);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .name-row {
+            display: flex;
+            gap: 1rem;
+        }
+        .name-row .form-group {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo">Habitica</div>
+            <div class="auth-subtitle">Create your account</div>
+        </div>
+        
+        <form id="signupForm">
+            <div class="name-row">
+                <div class="form-group">
+                    <label for="firstName" class="form-label">First Name</label>
+                    <input type="text" id="firstName" class="form-input" required>
+                    <div class="error-message" id="firstNameError"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="lastName" class="form-label">Last Name</label>
+                    <input type="text" id="lastName" class="form-input" required>
+                    <div class="error-message" id="lastNameError"></div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-input" required>
+                <div class="error-message" id="emailError"></div>
+            </div>
+            
+            <div class="form-group">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" id="password" class="form-input" required>
+                <div class="error-message" id="passwordError"></div>
+                <div class="password-requirements" id="passwordRequirements">
+                    <div class="requirement" id="length">
+                        <i class="fas fa-circle"></i>
+                        At least 8 characters
+                    </div>
+                    <div class="requirement" id="uppercase">
+                        <i class="fas fa-circle"></i>
+                        One uppercase letter
+                    </div>
+                    <div class="requirement" id="lowercase">
+                        <i class="fas fa-circle"></i>
+                        One lowercase letter
+                    </div>
+                    <div class="requirement" id="number">
+                        <i class="fas fa-circle"></i>
+                        One number
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <input type="password" id="confirmPassword" class="form-input" required>
+                <div class="error-message" id="confirmPasswordError"></div>
+            </div>
+            
+            <button type="submit" class="btn btn-primary" id="signupBtn">
+                Create Account
+            </button>
+        </form>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div style="margin-top: 0.5rem;">Creating account...</div>
+        </div>
+        
+        <div class="divider">
+            <span>or continue with</span>
+        </div>
+        
+        <button class="social-btn" id="googleSignup">
+            <i class="fab fa-google"></i>
+            Continue with Google
+        </button>
+        
+        <div class="auth-footer">
+            Already have an account? <a href="signin.html">Sign in</a>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    
+    <script>
+        // Get form elements
+        const signupForm = document.getElementById('signupForm');
+        const firstNameInput = document.getElementById('firstName');
+        const lastNameInput = document.getElementById('lastName');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirmPassword');
+        const signupBtn = document.getElementById('signupBtn');
+        const loading = document.getElementById('loading');
+        const googleSignupBtn = document.getElementById('googleSignup');
+
+        // Error elements
+        const firstNameError = document.getElementById('firstNameError');
+        const lastNameError = document.getElementById('lastNameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+        // Password requirements
+        const requirements = {
+            length: document.getElementById('length'),
+            uppercase: document.getElementById('uppercase'),
+            lowercase: document.getElementById('lowercase'),
+            number: document.getElementById('number')
+        };
+
+        // Clear errors
+        function clearErrors() {
+            firstNameError.style.display = 'none';
+            lastNameError.style.display = 'none';
+            emailError.style.display = 'none';
+            passwordError.style.display = 'none';
+            confirmPasswordError.style.display = 'none';
+            
+            firstNameInput.classList.remove('error');
+            lastNameInput.classList.remove('error');
+            emailInput.classList.remove('error');
+            passwordInput.classList.remove('error');
+            confirmPasswordInput.classList.remove('error');
+        }
+
+        // Show error
+        function showError(element, message) {
+            element.style.display = 'block';
+            element.textContent = message;
+        }
+
+        // Show loading
+        function showLoading() {
+            loading.style.display = 'block';
+            signupBtn.disabled = true;
+        }
+
+        // Hide loading
+        function hideLoading() {
+            loading.style.display = 'none';
+            signupBtn.disabled = false;
+        }
+
+        // Validate password
+        function validatePassword(password) {
+            const validations = {
+                length: password.length >= 8,
+                uppercase: /[A-Z]/.test(password),
+                lowercase: /[a-z]/.test(password),
+                number: /\d/.test(password)
+            };
+
+            Object.keys(validations).forEach(key => {
+                const requirement = requirements[key];
+                if (validations[key]) {
+                    requirement.classList.add('valid');
+                    requirement.classList.remove('invalid');
+                    requirement.querySelector('i').className = 'fas fa-check';
+                } else {
+                    requirement.classList.add('invalid');
+                    requirement.classList.remove('valid');
+                    requirement.querySelector('i').className = 'fas fa-times';
+                }
+            });
+
+            return Object.values(validations).every(Boolean);
+        }
+
+        // Password input event
+        passwordInput.addEventListener('input', () => {
+            validatePassword(passwordInput.value);
+        });
+
+        // Handle form submission
+        signupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            clearErrors();
+            
+            const firstName = firstNameInput.value.trim();
+            const lastName = lastNameInput.value.trim();
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            const confirmPassword = confirmPasswordInput.value;
+
+            // Basic validation
+            if (!firstName) {
+                showError(firstNameError, 'First name is required');
+                firstNameInput.classList.add('error');
+                return;
+            }
+
+            if (!lastName) {
+                showError(lastNameError, 'Last name is required');
+                lastNameInput.classList.add('error');
+                return;
+            }
+
+            if (!email) {
+                showError(emailError, 'Email is required');
+                emailInput.classList.add('error');
+                return;
+            }
+
+            if (!password) {
+                showError(passwordError, 'Password is required');
+                passwordInput.classList.add('error');
+                return;
+            }
+
+            if (!validatePassword(password)) {
+                showError(passwordError, 'Password does not meet requirements');
+                passwordInput.classList.add('error');
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                showError(confirmPasswordError, 'Passwords do not match');
+                confirmPasswordInput.classList.add('error');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                
+                // Update user profile
+                await userCredential.user.updateProfile({
+                    displayName: `${firstName} ${lastName}`
+                });
+
+                console.log('User created:', userCredential.user);
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                hideLoading();
+                console.error('Sign up error:', error);
+                
+                switch (error.code) {
+                    case 'auth/email-already-in-use':
+                        showError(emailError, 'An account with this email already exists');
+                        emailInput.classList.add('error');
+                        break;
+                    case 'auth/invalid-email':
+                        showError(emailError, 'Invalid email address');
+                        emailInput.classList.add('error');
+                        break;
+                    case 'auth/weak-password':
+                        showError(passwordError, 'Password is too weak');
+                        passwordInput.classList.add('error');
+                        break;
+                    default:
+                        showError(passwordError, 'Sign up failed. Please try again');
+                        passwordInput.classList.add('error');
+                }
+            }
+        });
+
+        // Google Sign Up
+        googleSignupBtn.addEventListener('click', async () => {
+            showLoading();
+            
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                console.log('Google sign up successful:', result.user);
+                
+                // Redirect to dashboard
+                window.location.href = 'dashboard.html';
+            } catch (error) {
+                hideLoading();
+                console.error('Google sign up error:', error);
+                
+                if (error.code === 'auth/popup-closed-by-user') {
+                    alert('Sign up was cancelled');
+                } else {
+                    alert('Google sign up failed. Please try again');
+                }
+            }
+        });
+
+        // Check if user is already signed in
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // User is already signed in, redirect to dashboard
+                window.location.href = 'dashboard.html';
+            }
+        });
+    </script>
+</body>
+</html> 
