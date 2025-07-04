@@ -54,8 +54,8 @@
 
 @media (max-width: 768px) {
   .burger { display: flex; }
-  .header-inner,
-  .nav-container {
+  .nav-container,
+  .header .nav {
     position: fixed;
     top: 0;
     left: -250px;
@@ -68,9 +68,8 @@
     transition: left 0.3s;
     z-index: 1000;
   }
-  .header.nav-open .header-inner,
-  .header.nav-open .nav-container { left: 0; }
-  .header-inner .nav,
+  .header.nav-open .nav-container,
+  .header.nav-open .nav { left: 0; }
   .nav-links,
   .auth-buttons,
   .header-actions {
