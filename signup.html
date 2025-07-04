@@ -7,6 +7,7 @@
     <link rel="shortcut icon" href="static/icons/favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles/responsive.css">
     <style>
         :root {
             --main-purple: #6c5ce7;
@@ -219,6 +220,20 @@
         .name-row .form-group {
             flex: 1;
         }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+
+            .auth-container {
+                padding: 2rem;
+            }
+
+            .name-row {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body>
@@ -302,12 +317,6 @@
             Already have an account? <a href="signin.html">Sign in</a>
         </div>
         
-        <!-- Dashboard button for signed in users -->
-        <div id="dashboardButton" style="display: none; margin-top: 1rem;">
-            <a href="dashboard.html" class="btn btn-primary" style="text-align: center;">
-                <i class="fas fa-home"></i> Go to Dashboard
-            </a>
-        </div>
     </div>
 
     <!-- Firebase SDK -->
@@ -541,6 +550,7 @@
                     console.log('Popup failed, trying redirect:', popupError);
                     // If popup fails (e.g., blocked by browser), try redirect
                     console.log('Attempting redirect sign in...');
+                    redirecting = true;
                     await firebase.auth().signInWithRedirect(provider);
                     return; // Redirect will happen, so we return here
                 }
@@ -588,7 +598,7 @@
 
         // Handle redirect result (for when popup is blocked)
         firebase.auth().getRedirectResult().then((result) => {
-            if (result) {
+            if (result && result.user) {
                 console.log('Redirect sign up successful:', result.user);
                 window.location.href = 'dashboard.html';
             }
@@ -598,34 +608,18 @@
             alert('Google sign up failed. Please try again.');
         });
 
-        // Check if user is already signed in
+        // Redirect to the dashboard if the user is already signed in
         let redirecting = false;
-        const dashboardButton = document.getElementById('dashboardButton');
-        
-        // Check if user manually signed out
+
         const manualSignOut = localStorage.getItem('manualSignOut');
-        
+
         firebase.auth().onAuthStateChanged((user) => {
             if (user && !redirecting) {
-                console.log('User is signed in');
-                
-                // If user manually signed out, don't show dashboard button immediately
                 if (manualSignOut === 'true') {
-                    console.log('User manually signed out, not showing dashboard button');
-                    localStorage.removeItem('manualSignOut'); // Clear the flag
+                    localStorage.removeItem('manualSignOut');
                     return;
                 }
-                
-                console.log('User is already signed in, showing dashboard button');
-                // Show dashboard button for signed in users
-                if (dashboardButton) {
-                    dashboardButton.style.display = 'block';
-                }
-            } else {
-                // Hide dashboard button for non-signed in users
-                if (dashboardButton) {
-                    dashboardButton.style.display = 'none';
-                }
+                window.location.href = 'dashboard.html';
             }
         });
     </script>
