@@ -164,6 +164,11 @@
             font-size: 1.1rem;
         }
 
+        .btn-hero:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.3);
+        }
+
         /* Features Section */
         .features {
             padding: 5rem 0;
@@ -742,16 +747,6 @@
                 });
                 card.addEventListener('mouseleave', () => {
                     card.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-
-            // Add click handlers for buttons (placeholder)
-            document.querySelectorAll('.btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    if (btn.textContent.includes('Sign Up') || btn.textContent.includes('Start')) {
-                        e.preventDefault();
-                        alert('Sign up functionality would be implemented here!');
-                    }
                 });
             });
         });
