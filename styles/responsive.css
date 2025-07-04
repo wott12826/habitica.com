@@ -7,24 +7,24 @@
 /* Мобильная версия: sidebar скрыт, появляется поверх */
 @media (max-width: 900px) {
   .sidebar {
+    display: none;
     position: fixed;
-    left: 0; top: 0; bottom: 0;
+    top: 0; left: 0; bottom: 0;
     width: 80vw;
     max-width: 320px;
     background: #fff;
+    z-index: 2000;
     box-shadow: 2px 0 16px rgba(44,34,80,0.12);
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
-    height: 100vh;
     overflow-y: auto;
-    border-radius: 0 18px 18px 0;
-    padding-top: 64px; /* под хедер */
+    padding-top: 64px;
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    transform: translateX(-100%);
   }
-  .header.nav-open + .sidebar,
-  .nav-open .sidebar {
+  .header.nav-open + .dashboard .sidebar,
+  .header.nav-open .sidebar {
+    display: block;
     transform: translateX(0);
   }
-  /* затемнение фона */
   .sidebar-backdrop {
     display: none;
   }
@@ -36,6 +36,19 @@
     left: 0; top: 0; right: 0; bottom: 0;
     background: rgba(44,34,80,0.25);
     animation: fadeIn 0.2s;
+  }
+  .header-inner {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .header.nav-open .header-inner {
+    opacity: 0.2;
+    pointer-events: none;
+  }
+  .burger {
+    position: static;
+    margin-right: 1rem;
+    z-index: 2100;
   }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 }
