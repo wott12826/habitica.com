@@ -118,9 +118,15 @@
 
 .rewards-user-list, .rewards-special-list {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(90px, 1fr));
   gap: 1.2rem;
   margin-bottom: 1.2rem;
+  overflow-x: auto;
+}
+.reward-card {
+  min-width: 90px;
+  max-width: 120px;
+  margin: 0 auto;
 }
 @media (max-width: 600px) {
   .rewards-user-list, .rewards-special-list {
