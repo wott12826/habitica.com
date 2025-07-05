@@ -1138,7 +1138,9 @@
   </header>
   <div class="dashboard">
     <aside class="profile">
-      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>      <div>
+      <button class="close-sidebar" id="closeSidebarBtn" aria-label="Close">&times;</button>
+      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>
+      <div>
         <div class="username" id="userDisplayName">Guest</div>
         <div class="userid" id="userEmail">guest@magic.com</div>
         <div class="level">Level <span id="level">1</span> Warrior</div>
@@ -2762,6 +2764,6 @@ function setupSoonButtons() {
 }
 document.addEventListener('DOMContentLoaded', setupSoonButtons);
 </script>
-<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
+<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}const closeBtn=document.getElementById("closeSidebarBtn");if(closeBtn&&h){closeBtn.addEventListener("click",function(){h.classList.remove("nav-open");document.body.style.overflow="";});}});</script>
 </body>
 </html>

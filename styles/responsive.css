@@ -81,3 +81,21 @@
     margin-top: 20% !important;
   }
 }
+
+.profile .close-sidebar {
+  position: absolute;
+  right: 18px;
+  top: 18px;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #fff;
+  z-index: 1301;
+  cursor: pointer;
+  display: none;
+}
+@media (max-width: 900px) {
+  .profile .close-sidebar {
+    display: block;
+  }
+}
