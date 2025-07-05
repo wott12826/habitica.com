@@ -2766,5 +2766,35 @@ function setupSoonButtons() {
 document.addEventListener('DOMContentLoaded', setupSoonButtons);
 </script>
 <script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}const closeBtn=document.getElementById("closeSidebarBtn");if(closeBtn&&h){closeBtn.addEventListener("click",function(){h.classList.remove("nav-open");document.body.style.overflow="";});}});</script>
+<script>
+  // JS
+document.addEventListener('DOMContentLoaded', function() {
+  const header = document.querySelector('.header');
+  const burger = document.querySelector('.burger');
+  const closeBtn = document.querySelector('.close-sidebar');
+  const backdrop = document.querySelector('.sidebar-backdrop');
+  // Открыть меню
+  burger.addEventListener('click', function() {
+    header.classList.add('nav-open');
+    document.body.style.overflow = 'hidden';
+  });
+  // Закрыть меню
+  closeBtn.addEventListener('click', function() {
+    header.classList.remove('nav-open');
+    document.body.style.overflow = '';
+  });
+  backdrop.addEventListener('click', function() {
+    header.classList.remove('nav-open');
+    document.body.style.overflow = '';
+  });
+  // Закрывать меню по клику на ссылку
+  document.querySelectorAll('.sidebar-nav a').forEach(link => {
+    link.addEventListener('click', function() {
+      header.classList.remove('nav-open');
+      document.body.style.overflow = '';
+    });
+  });
+});
+</script>
 </body>
 </html>
