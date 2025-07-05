@@ -98,23 +98,86 @@
     position: relative;
   }
   .header-inner {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 80vw;
+    max-width: 320px;
+    background: #6c5ce7;
+    border-radius: 0 18px 18px 0;
+    box-shadow: 2px 0 24px rgba(44,34,80,0.18);
+    z-index: 2001;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2.5rem 2rem 2rem 2rem;
+    gap: 2.2rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    display: flex;
+  }
+  .header.nav-open .header-inner {
+    transform: translateX(0);
   }
   .header-inner .close-sidebar {
-    display: none;
-  }
-  .header.nav-open .header-inner .close-sidebar {
     display: block;
     position: absolute;
-    right: 18px;
-    top: 18px;
+    right: 22px;
+    top: 22px;
     background: none;
     border: none;
-    font-size: 2rem;
+    font-size: 2.2rem;
     color: #fff;
-    z-index: 1301;
+    z-index: 2100;
     cursor: pointer;
   }
+  .header-inner .logo {
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0 0 1.5rem 0;
+    text-align: left;
+  }
+  .header-inner .nav {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  .header-inner .nav a {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 700;
+    text-decoration: none;
+    opacity: 1;
+    padding: 0.2rem 0;
+    transition: color 0.2s;
+  }
+  .header-inner .header-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 1.2rem;
+    width: 100%;
+    margin-top: 1.5rem;
+    justify-content: flex-start;
+  }
+  .sidebar-backdrop {
+    display: none;
+  }
+  .header.nav-open ~ .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(44,34,80,0.25);
+    z-index: 1500;
+    animation: fadeIn 0.3s;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .header-inner .close-sidebar {
