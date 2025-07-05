@@ -925,7 +925,16 @@
 
   <script>
     // Game state for balance display
-    let gameState = { gems: 0, coins: 0 };
+    let gameState = { 
+      xp: 50,
+      maxXp: 100,
+      hp: 50,
+      maxHp: 50,
+      level: 1,
+      gems: 0, 
+      coins: 0,
+      ownedItems: []
+    };
   
     // Update balance display
     function updateDisplay() {
@@ -946,11 +955,23 @@
       return firestore.collection('users').doc(userId).get()
         .then((doc) => {
           const data = doc.exists ? doc.data() : null;
-          if (data && data.gameState) {
+          if (data) {
             console.log('User data found:', data);
-            gameState.gems = data.gameState.gems || 0;
-            gameState.coins = data.gameState.coins || 0;
-            console.log('Balance loaded - Gems:', gameState.gems, 'Coins:', gameState.coins);
+            
+            // Load game state
+            if (data.gameState) {
+              gameState.xp = data.gameState.xp || 50;
+              gameState.maxXp = data.gameState.maxXp || 100;
+              gameState.hp = data.gameState.hp || 50;
+              gameState.maxHp = data.gameState.maxHp || 50;
+              gameState.level = data.gameState.level || 1;
+              gameState.gems = data.gameState.gems || 0;
+              gameState.coins = data.gameState.coins || 0;
+              gameState.ownedItems = data.gameState.ownedItems || [];
+              console.log('Balance loaded - Gems:', gameState.gems, 'Coins:', gameState.coins);
+            }
+            
+            console.log('Game data loaded successfully');
           } else {
             console.log('No saved data found for user, using defaults');
           }
@@ -978,8 +999,255 @@
         updateDisplay();
       }
     });
+
+    // Save user game data to Firebase
+    function saveUserGameData(userId) {
+      if (!userId || !firestore) return;
+      
+      const userData = {
+        gameState: {
+          xp: gameState.xp,
+          maxXp: gameState.maxXp,
+          hp: gameState.hp,
+          maxHp: gameState.maxHp,
+          level: gameState.level,
+          gems: gameState.gems,
+          coins: gameState.coins,
+          ownedItems: gameState.ownedItems
+        },
+        lastUpdated: Date.now()
+      };
+
+      return firestore.collection('users').doc(userId).set(userData, { merge: true })
+        .then(() => {
+          console.log('Game data saved successfully');
+        })
+        .catch((error) => {
+          console.error('Error saving game data:', error);
+        });
+    }
+
+    // Auto-save function
+    function autoSaveGameData() {
+      const user = firebase.auth().currentUser;
+      if (user) {
+        saveUserGameData(user.uid);
+      }
+    }
+
+    // Set up auto-save every 30 seconds
+    setInterval(autoSaveGameData, 30000);
+
+    // Special rewards data (same as in dashboard.html)
+    const specialRewardsData = [
+      {
+        id: 101,
+        title: "Spear of Destiny",
+        description: "A legendary spear that increases your Strength and Perception.",
+        icon: "static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png",
+        price: 90,
+        bonuses: { str: 10, int: 0, con: 0, per: 7 },
+        stats: { str: 10, int: 0, con: 0, per: 7 },
+        classBonus: 4.5
+      },
+      {
+        id: 102,
+        title: "Pink Bow",
+        description: "A cute bow that boosts your Intelligence and Perception.",
+        icon: "static/icons/imgi_3_shop_armor_special_summer2025Warrior.png",
+        price: 90,
+        bonuses: { str: 0, int: 8, con: 0, per: 8 },
+        stats: { str: 0, int: 8, con: 0, per: 8 },
+        classBonus: 3.5
+      },
+      {
+        id: 103,
+        title: "Scallop Helm",
+        description: "Impenetrable and perfectly pointy, this helmet will even protect you from starfish. Increases Strength by 9. Limited Edition Summer 2025 Gear.",
+        icon: "static/icons/imgi_4_shop_head_special_summer2025Warrior.png",
+        price: 60,
+        bonuses: { str: 13, int: 0, con: 2, per: 0 },
+        stats: { str: 9, int: 0, con: 2, per: 0 },
+        classBonus: 4.5
+      },
+      {
+        id: 104,
+        title: "Blue Shell",
+        description: "A rare shell that increases your Constitution and Perception.",
+        icon: "static/icons/imgi_5_shop_shield_special_summer2025Warrior.png",
+        price: 70,
+        bonuses: { str: 0, int: 0, con: 10, per: 5 },
+        stats: { str: 0, int: 0, con: 10, per: 5 },
+        classBonus: 2.5
+      },
+      {
+        id: 105,
+        title: "Magic Wand",
+        description: "A wand that boosts your Intelligence.",
+        icon: "static/icons/imgi_6_shop_weapon_warrior_0.png",
+        price: 1,
+        bonuses: { str: 0, int: 12, con: 0, per: 0 },
+        stats: { str: 0, int: 12, con: 0, per: 0 },
+        classBonus: 2.0
+      },
+      {
+        id: 106,
+        title: "Crab Mount",
+        description: "A sturdy crab mount that increases your Constitution.",
+        icon: "static/icons/imgi_7_shop_armor_warrior_1.png",
+        price: 30,
+        bonuses: { str: 0, int: 0, con: 8, per: 0 },
+        stats: { str: 0, int: 0, con: 8, per: 0 },
+        classBonus: 1.5
+      },
+      {
+        id: 107,
+        title: "Wooden Shield",
+        description: "A simple shield that increases your Constitution.",
+        icon: "static/icons/imgi_8_shop_shield_warrior_1.png",
+        price: 20,
+        bonuses: { str: 0, int: 0, con: 6, per: 0 },
+        stats: { str: 0, int: 0, con: 6, per: 0 },
+        classBonus: 1.0
+      },
+      {
+        id: 108,
+        title: "Viking Helm",
+        description: "A horned helm that increases Strength and Constitution.",
+        icon: "static/icons/imgi_9_shop_head_warrior_1.png",
+        price: 15,
+        bonuses: { str: 5, int: 0, con: 5, per: 0 },
+        stats: { str: 5, int: 0, con: 5, per: 0 },
+        classBonus: 1.0
+      },
+      {
+        id: 109,
+        title: "Potion of Wisdom",
+        description: "A potion that increases your Intelligence.",
+        icon: "static/icons/imgi_10_shop_potion.png",
+        price: 25,
+        bonuses: { str: 0, int: 10, con: 0, per: 0 },
+        stats: { str: 0, int: 10, con: 0, per: 0 },
+        classBonus: 1.0
+      },
+      {
+        id: 110,
+        title: "Treasure Chest",
+        description: "A chest full of gold! Increases all stats a little.",
+        icon: "static/icons/imgi_11_shop_armoire.gif",
+        price: 100,
+        bonuses: { str: 3, int: 3, con: 3, per: 3 },
+        stats: { str: 3, int: 3, con: 3, per: 3 },
+        classBonus: 2.0
+      }
+    ];
+
+    // --- Автоматическое распределение иконок по категориям ---
+    const iconFiles = [
+      'imgi_3_shop_armor_special_summer2025Warrior.png',
+      'imgi_2_shop_weapon_special_summer2025Warrior.png',
+      'imgi_1_swords-CvGDZwaq.png',
+      'imgi_54_default.svg','imgi_52_default.svg','imgi_51_default.svg','imgi_50_default.svg','imgi_49_default.svg','imgi_48_default.svg','imgi_47_default.svg','imgi_46_default.svg','imgi_45_default.svg','imgi_44_default.svg','imgi_43_default.svg','imgi_42_default.svg','imgi_41_default.svg','imgi_40_default.svg','imgi_39_default.svg','imgi_38_default.svg','imgi_37_default.svg','imgi_36_default.svg','imgi_35_default.svg','imgi_34_default.svg','imgi_33_default.svg','imgi_32_default.svg','imgi_31_default.svg','imgi_30_default.svg','imgi_29_default.svg','imgi_28_default.svg','imgi_27_default.svg','imgi_26_default.svg','imgi_25_default.svg','imgi_24_default.svg','imgi_23_default.svg','imgi_22_default.svg','imgi_21_default.svg','imgi_20_default.svg','imgi_19_default.svg','imgi_18_default.svg','imgi_17_default.svg',
+      'imgi_11_shop_armoire.gif','imgi_10_shop_potion.png','imgi_9_shop_head_warrior_1.png','imgi_8_shop_shield_warrior_1.png','imgi_7_shop_armor_warrior_1.png','imgi_6_shop_weapon_warrior_0.png','imgi_5_shop_shield_special_summer2025Warrior.png','imgi_4_shop_head_special_summer2025Warrior.png',
+      'imgi_66_swords@3x-Ba5Csmf-.png','imgi_65_swords@2x-DEGP_Poy.png','imgi_63_eyewear_special_greenTopFrame.png','imgi_64_headAccessory_special_pinkHeadband.png','imgi_62_hair_base_3_white.png','imgi_60_head_0.png','imgi_61_hair_bangs_4_white.png','imgi_59_slim_shirt_green.png','imgi_58_skin_ea8349.png','imgi_57_chair_red.png','imgi_56_hair_flower_6.png','imgi_55_background_purple.png','imgi_53_bits-CS-bYJ6e.svg',
+      'imgi_15_icon_hair_bangs_4_white.png','imgi_14_icon_hair_bangs_3_white.png','imgi_13_icon_hair_bangs_2_white.png','imgi_12_icon_hair_bangs_1_white.png','imgi_16_default.svg','imgi_15_default.svg','imgi_14_default.svg','imgi_13_default.svg','imgi_53_swords@3x-Ba5Csmf-.png','imgi_52_swords@2x-DEGP_Poy.png','imgi_50_hair_bangs_1_black.png','imgi_51_hair_base_3_black.png','imgi_49_head_0.png','imgi_48_slim_shirt_green.png','imgi_46_chair_handleless_yellow.png','imgi_47_skin_98461a.png','imgi_45_hair_flower_1.png','imgi_44_background_violet.png','imgi_42_bits-CS-bYJ6e.svg','imgi_38_swords@3x-Ba5Csmf-.png','imgi_37_swords@2x-DEGP_Poy.png','imgi_12_default.svg','imgi_11_default.svg','imgi_10_default.svg','imgi_9_default.svg','imgi_8_default.svg','imgi_7_default.svg','imgi_36_bot-right@3x-K991s10t.png','imgi_35_bot-left@3x-0KihHbVu.png','imgi_34_top-right@3x-wPRHZ84x.png','imgi_33_top-left@3x-D1aL29BF.png','imgi_32_hair_base_3_black.png','imgi_31_hair_bangs_1_black.png','imgi_30_head_0.png','imgi_28_skin_98461a.png','imgi_29_slim_shirt_green.png','imgi_27_chair_handleless_yellow.png','imgi_26_hair_flower_1.png','imgi_25_background_violet.png'
+    ];
+    const categoryMap = [
+      { key: 'egg', label: 'Eggs' },
+      { key: 'potion', label: 'Hatching Potions' },
+      { key: 'food', label: 'Food & Saddles' },
+      { key: 'saddle', label: 'Food & Saddles' },
+      { key: 'special', label: 'Special' },
+      { key: 'quest', label: 'Quests' },
+      { key: 'armoire', label: 'Quests' },
+    ];
+    function guessCategory(filename) {
+      const lower = filename.toLowerCase();
+      for (const cat of categoryMap) {
+        if (lower.includes(cat.key)) return cat.label;
+      }
+      return 'Special'; // Вместо 'Other' возвращаем 'Special'
+    }
+    const inventoryIcons = iconFiles
+      .filter(f => !f.includes('_default')) // убираем все файлы с _default
+      .map(f => {
+        const category = guessCategory(f);
+        let name = f.replace(/^imgi_\d+_?/, '').replace(/[-_.@].*$/, '').replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim();
+        name = name.charAt(0).toUpperCase() + name.slice(1);
+        return {
+          src: 'static/icons/' + f,
+          name,
+          desc: category + ' item',
+          category
+        };
+      });
+
+    function getActiveFilters() {
+      return Array.from(document.querySelectorAll('.filter-group input[type=checkbox]:checked')).map(cb => cb.value);
+    }
+
+    function renderInventoryItems() {
+      const filters = getActiveFilters();
+      const list = document.querySelector('#tab-items .items-list');
+      list.innerHTML = '';
+      let filtered = inventoryIcons;
+      if (filters.length > 0) {
+        filtered = inventoryIcons.filter(item => filters.includes(item.category));
+      }
+      if (filtered.length === 0) {
+        list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
+        return;
+      }
+      
+      console.log('Rendering inventory items. Total ownedItems:', gameState.ownedItems);
+      
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        // Check if item is owned by comparing with special rewards
+        const isOwned = gameState.ownedItems && gameState.ownedItems.some(ownedId => {
+          // Check if this inventory item corresponds to a special reward
+          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
+          const matches = specialReward && specialReward.icon === item.src;
+          if (matches) {
+            console.log(`Item ${item.name} is owned (ID: ${ownedId})`);
+          }
+          return matches;
+        });
+        
+        card.className = isOwned ? 'item-card' : 'item-card locked';
+        console.log(`Item ${item.name}: isOwned = ${isOwned}, className = ${card.className}`);
+        
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+        `;
+        list.appendChild(card);
+      });
+    }
+
+    // Initialize inventory when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      // Render inventory items after data is loaded
+      setTimeout(() => {
+        renderInventoryItems();
+      }, 1000);
+    });
+
+    // Update inventory display when data changes
+    function updateInventoryDisplay() {
+      renderInventoryItems();
+    }
+
+    // Override updateDisplay to also update inventory
+    const originalUpdateDisplay = updateDisplay;
+    updateDisplay = function() {
+      originalUpdateDisplay();
+      updateInventoryDisplay();
+    };
   </script>
-<script>
+<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
+  <script>
     function signOut() {
       localStorage.setItem('manualSignOut', 'true');
       if (window.firebase && firebase.auth) {
@@ -1045,736 +1313,62 @@
       });
     });
 
-    // --- Автоматическое распределение иконок по категориям ---
-    const iconFiles = [
-      'imgi_3_shop_armor_special_summer2025Warrior.png',
-      'imgi_2_shop_weapon_special_summer2025Warrior.png',
-      'imgi_1_swords-CvGDZwaq.png',
-      'imgi_54_default.svg','imgi_52_default.svg','imgi_51_default.svg','imgi_50_default.svg','imgi_49_default.svg','imgi_48_default.svg','imgi_47_default.svg','imgi_46_default.svg','imgi_45_default.svg','imgi_44_default.svg','imgi_43_default.svg','imgi_42_default.svg','imgi_41_default.svg','imgi_40_default.svg','imgi_39_default.svg','imgi_38_default.svg','imgi_37_default.svg','imgi_36_default.svg','imgi_35_default.svg','imgi_34_default.svg','imgi_33_default.svg','imgi_32_default.svg','imgi_31_default.svg','imgi_30_default.svg','imgi_29_default.svg','imgi_28_default.svg','imgi_27_default.svg','imgi_26_default.svg','imgi_25_default.svg','imgi_24_default.svg','imgi_23_default.svg','imgi_22_default.svg','imgi_21_default.svg','imgi_20_default.svg','imgi_19_default.svg','imgi_18_default.svg','imgi_17_default.svg',
-      'imgi_11_shop_armoire.gif','imgi_10_shop_potion.png','imgi_9_shop_head_warrior_1.png','imgi_8_shop_shield_warrior_1.png','imgi_7_shop_armor_warrior_1.png','imgi_6_shop_weapon_warrior_0.png','imgi_5_shop_shield_special_summer2025Warrior.png','imgi_4_shop_head_special_summer2025Warrior.png',
-      'imgi_66_swords@3x-Ba5Csmf-.png','imgi_65_swords@2x-DEGP_Poy.png','imgi_63_eyewear_special_greenTopFrame.png','imgi_64_headAccessory_special_pinkHeadband.png','imgi_62_hair_base_3_white.png','imgi_60_head_0.png','imgi_61_hair_bangs_4_white.png','imgi_59_slim_shirt_green.png','imgi_58_skin_ea8349.png','imgi_57_chair_red.png','imgi_56_hair_flower_6.png','imgi_55_background_purple.png','imgi_53_bits-CS-bYJ6e.svg',
-      'imgi_15_icon_hair_bangs_4_white.png','imgi_14_icon_hair_bangs_3_white.png','imgi_13_icon_hair_bangs_2_white.png','imgi_12_icon_hair_bangs_1_white.png','imgi_16_default.svg','imgi_15_default.svg','imgi_14_default.svg','imgi_13_default.svg','imgi_53_swords@3x-Ba5Csmf-.png','imgi_52_swords@2x-DEGP_Poy.png','imgi_50_hair_bangs_1_black.png','imgi_51_hair_base_3_black.png','imgi_49_head_0.png','imgi_48_slim_shirt_green.png','imgi_46_chair_handleless_yellow.png','imgi_47_skin_98461a.png','imgi_45_hair_flower_1.png','imgi_44_background_violet.png','imgi_42_bits-CS-bYJ6e.svg','imgi_38_swords@3x-Ba5Csmf-.png','imgi_37_swords@2x-DEGP_Poy.png','imgi_12_default.svg','imgi_11_default.svg','imgi_10_default.svg','imgi_9_default.svg','imgi_8_default.svg','imgi_7_default.svg','imgi_36_bot-right@3x-K991s10t.png','imgi_35_bot-left@3x-0KihHbVu.png','imgi_34_top-right@3x-wPRHZ84x.png','imgi_33_top-left@3x-D1aL29BF.png','imgi_32_hair_base_3_black.png','imgi_31_hair_bangs_1_black.png','imgi_30_head_0.png','imgi_28_skin_98461a.png','imgi_29_slim_shirt_green.png','imgi_27_chair_handleless_yellow.png','imgi_26_hair_flower_1.png','imgi_25_background_violet.png'
-    ];
-    const categoryMap = [
-      { key: 'egg', label: 'Eggs' },
-      { key: 'potion', label: 'Hatching Potions' },
-      { key: 'food', label: 'Food & Saddles' },
-      { key: 'saddle', label: 'Food & Saddles' },
-      { key: 'special', label: 'Special' },
-      { key: 'quest', label: 'Quests' },
-      { key: 'armoire', label: 'Quests' },
-    ];
-    function guessCategory(filename) {
-      const lower = filename.toLowerCase();
-      for (const cat of categoryMap) {
-        if (lower.includes(cat.key)) return cat.label;
-      }
-      return 'Special'; // Вместо 'Other' возвращаем 'Special'
-    }
-    const inventoryIcons = iconFiles
-  .filter(f => !f.includes('_default')) // убираем все файлы с _default
-  .map(f => {
-    const category = guessCategory(f);
-    let name = f.replace(/^imgi_\d+_?/, '').replace(/[-_.@].*$/, '').replace(/([A-Z])/g, ' $1').replace(/\s+/g, ' ').trim();
-    name = name.charAt(0).toUpperCase() + name.slice(1);
-    return {
-      src: 'static/icons/' + f,
-      name,
-      desc: category + ' item',
-      category
-    };
-  });
-    function getActiveFilters() {
-      return Array.from(document.querySelectorAll('.filter-group input[type=checkbox]:checked')).map(cb => cb.value);
-    }
-    function renderInventoryItems() {
-      const filters = getActiveFilters();
-      const list = document.querySelector('#tab-items .items-list');
-      list.innerHTML = '';
-      let filtered = inventoryIcons;
-      if (filters.length > 0) {
-        filtered = inventoryIcons.filter(item => filters.includes(item.category));
-      }
-      if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state">No items found for selected filters.</div>';
-        return;
-      }
-      
-      console.log('Rendering inventory items. Total ownedItems:', userGameData.ownedItems);
-      
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        // Check if item is owned by comparing with special rewards
-        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
-          // Check if this inventory item corresponds to a special reward
-          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          const matches = specialReward && specialReward.icon === item.src;
-          if (matches) {
-            console.log(`Item ${item.name} is owned (ID: ${ownedId})`);
-          }
-          return matches;
-        });
-        
-        card.className = isOwned ? 'item-card' : 'item-card locked';
-        console.log(`Item ${item.name}: isOwned = ${isOwned}, className = ${card.className}`);
-        
-        card.innerHTML = `
-          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
-          <div class="item-title">${item.name}</div>
-          <div class="item-desc">${item.desc}</div>
-        `;
-        list.appendChild(card);
-      });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      document.querySelectorAll('.filter-group input[type=checkbox]').forEach(cb => {
-        cb.addEventListener('change', renderInventoryItems);
-      });
-      renderInventoryItems();
-    });
-
-    // --- Пример данных экипировки ---
-    const equipmentData = [
-      { src: 'static/icons/imgi_1_swords-CvGDZwaq.png', name: 'Warrior Sword', type: 'Weapon' },
-      { src: 'static/icons/imgi_8_shop_shield_warrior_1.png', name: 'Warrior Shield', type: 'Offhand' },
-      { src: 'static/icons/imgi_9_shop_head_warrior_1.png', name: 'Viking Helm', type: 'Head' },
-      { src: 'static/icons/imgi_7_shop_armor_warrior_1.png', name: 'Warrior Armor', type: 'Armor' },
-      { src: 'static/icons/imgi_64_headAccessory_special_pinkHeadband.png', name: 'Pink Headband', type: 'HeadAccessory' },
-      { src: 'static/icons/imgi_63_eyewear_special_greenTopFrame.png', name: 'Green TopFrame', type: 'Eyewear' },
-      { src: 'static/icons/imgi_59_slim_shirt_green.png', name: 'Green Shirt', type: 'Body' },
-      { src: 'static/icons/imgi_55_background_purple.png', name: 'Purple Cape', type: 'Back' },
-    ];
-    function getActiveEquipmentFilters() {
-      return Array.from(document.querySelectorAll('#equipment-filters input[type=checkbox]:checked')).map(cb => cb.value);
-    }
-    function renderEquipment() {
-      const filters = getActiveEquipmentFilters();
-      const list = document.getElementById('equipment-list');
-      list.innerHTML = '';
-      let filtered = equipmentData;
-      if (filters.length > 0) {
-        filtered = equipmentData.filter(item => filters.includes(item.type));
-      }
-      if (filtered.length === 0) {
-        list.innerHTML = '<div class="empty-state">Нет предметов для выбранных фильтров.</div>';
-        return;
-      }
-      
-      console.log('Rendering equipment. Total ownedItems:', userGameData.ownedItems);
-      
-      filtered.forEach(item => {
-        const card = document.createElement('div');
-        // Check if item is owned by comparing with special rewards
-        const isOwned = userGameData.ownedItems && userGameData.ownedItems.some(ownedId => {
-          const specialReward = specialRewardsData.find(sr => sr.id === ownedId);
-          const matches = specialReward && specialReward.icon === item.src;
-          if (matches) {
-            console.log(`Equipment ${item.name} is owned (ID: ${ownedId})`);
-          }
-          return matches;
-        });
-        
-        card.className = isOwned ? 'item-card' : 'item-card locked';
-        console.log(`Equipment ${item.name}: isOwned = ${isOwned}, className = ${card.className}`);
-        
-        card.innerHTML = `
-          <div class="item-icon"><img src="${item.src}" alt="${item.name}" style="width:40px;height:40px;"></div>
-          <div class="item-title">${item.name}</div>
-          <div class="item-desc">${item.type}</div>
-        `;
-        list.appendChild(card);
-      });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      // Переключение фильтров при смене таба
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-          const tabName = this.dataset.tab;
-          document.getElementById('items-filters').style.display = tabName === 'items' ? '' : 'none';
-          document.getElementById('equipment-filters').style.display = tabName === 'equipment' ? '' : 'none';
-        });
-      });
-      // Слушатели фильтров экипировки
-      document.querySelectorAll('#equipment-filters input[type=checkbox]').forEach(cb => {
-        cb.addEventListener('change', renderEquipment);
-      });
-      renderEquipment();
-    });
-
-    // --- Пример данных питомцев и скакунов ---
-    const petsData = [
-      { name: 'Wolf', type: 'Base', owned: true },
-      { name: 'Tiger Cub', type: 'Base', owned: false },
-      { name: 'Panda', type: 'Magic', owned: false },
-      { name: 'Lion', type: 'Quest', owned: true },
-      { name: 'Fox', type: 'Wacky', owned: false },
-      { name: 'Bear', type: 'Special', owned: true },
-      { name: 'Dragon', type: 'Base', owned: false },
-      { name: 'Unicorn', type: 'Magic', owned: false },
-      { name: 'Phoenix', type: 'Quest', owned: false },
-      { name: 'Gryphon', type: 'Wacky', owned: false },
-      { name: 'Kraken', type: 'Special', owned: false },
-      { name: 'Hydra', type: 'Base', owned: false },
-      { name: 'Minotaur', type: 'Magic', owned: false },
-      { name: 'Centaur', type: 'Quest', owned: false },
-      { name: 'Pegasus', type: 'Wacky', owned: false },
-      { name: 'Chimera', type: 'Special', owned: false },
-      // Adding more Wacky pets to match the user's HTML
-      { name: 'Wacky Pet 1', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 2', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 3', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 4', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 5', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 6', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 7', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 8', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 9', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 10', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 11', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 12', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 13', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 14', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 15', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 16', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 17', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 18', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 19', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 20', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 21', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 22', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 23', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 24', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 25', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 26', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 27', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 28', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 29', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 30', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 31', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 32', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 33', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 34', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 35', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 36', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 37', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 38', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 39', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 40', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 41', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 42', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 43', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 44', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 45', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 46', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 47', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 48', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 49', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 50', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 51', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 52', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 53', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 54', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 55', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 56', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 57', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 58', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 59', type: 'Wacky', owned: false },
-      { name: 'Wacky Pet 60', type: 'Wacky', owned: false },
-      // Adding more Special pets to match the user's HTML
-      { name: 'Special Pet 1', type: 'Special', owned: false },
-      { name: 'Special Pet 2', type: 'Special', owned: false },
-      { name: 'Special Pet 3', type: 'Special', owned: false },
-      { name: 'Special Pet 4', type: 'Special', owned: false },
-      { name: 'Special Pet 5', type: 'Special', owned: false },
-      { name: 'Special Pet 6', type: 'Special', owned: false },
-      { name: 'Special Pet 7', type: 'Special', owned: false },
-      { name: 'Special Pet 8', type: 'Special', owned: false },
-      { name: 'Special Pet 9', type: 'Special', owned: false },
-      { name: 'Special Pet 10', type: 'Special', owned: false },
-      { name: 'Special Pet 11', type: 'Special', owned: false },
-      { name: 'Special Pet 12', type: 'Special', owned: false },
-      { name: 'Special Pet 13', type: 'Special', owned: false },
-      { name: 'Special Pet 14', type: 'Special', owned: false },
-      { name: 'Special Pet 15', type: 'Special', owned: false },
-      { name: 'Special Pet 16', type: 'Special', owned: false },
-      { name: 'Special Pet 17', type: 'Special', owned: false },
-      { name: 'Special Pet 18', type: 'Special', owned: false },
-      { name: 'Special Pet 19', type: 'Special', owned: false },
-      { name: 'Special Pet 20', type: 'Special', owned: false },
-      { name: 'Special Pet 21', type: 'Special', owned: false },
-      { name: 'Special Pet 22', type: 'Special', owned: false },
-      { name: 'Special Pet 23', type: 'Special', owned: false },
-      { name: 'Special Pet 24', type: 'Special', owned: false },
-      { name: 'Special Pet 25', type: 'Special', owned: false },
-      { name: 'Special Pet 26', type: 'Special', owned: false },
-      { name: 'Special Pet 27', type: 'Special', owned: false },
-      { name: 'Special Pet 28', type: 'Special', owned: false },
-      { name: 'Special Pet 29', type: 'Special', owned: false },
-      { name: 'Special Pet 30', type: 'Special', owned: false },
-      { name: 'Special Pet 31', type: 'Special', owned: false },
-      { name: 'Special Pet 32', type: 'Special', owned: false },
-      { name: 'Special Pet 33', type: 'Special', owned: false },
-      { name: 'Special Pet 34', type: 'Special', owned: false },
-      { name: 'Special Pet 35', type: 'Special', owned: false },
-      { name: 'Special Pet 36', type: 'Special', owned: false },
-      { name: 'Special Pet 37', type: 'Special', owned: false },
-      { name: 'Special Pet 38', type: 'Special', owned: false },
-      { name: 'Special Pet 39', type: 'Special', owned: false },
-      { name: 'Special Pet 40', type: 'Special', owned: false },
-      { name: 'Special Pet 41', type: 'Special', owned: false },
-      { name: 'Special Pet 42', type: 'Special', owned: false },
-      { name: 'Special Pet 43', type: 'Special', owned: false },
-      { name: 'Special Pet 44', type: 'Special', owned: false },
-      { name: 'Special Pet 45', type: 'Special', owned: false },
-      { name: 'Special Pet 46', type: 'Special', owned: false },
-      { name: 'Special Pet 47', type: 'Special', owned: false },
-      { name: 'Special Pet 48', type: 'Special', owned: false },
-      { name: 'Special Pet 49', type: 'Special', owned: false },
-      { name: 'Special Pet 50', type: 'Special', owned: false },
-      // Adding more Base pets to match the user's HTML
-      { name: 'Base Pet 1', type: 'Base', owned: false },
-      { name: 'Base Pet 2', type: 'Base', owned: false },
-      { name: 'Base Pet 3', type: 'Base', owned: false },
-      { name: 'Base Pet 4', type: 'Base', owned: false },
-      { name: 'Base Pet 5', type: 'Base', owned: false },
-      { name: 'Base Pet 6', type: 'Base', owned: false },
-      { name: 'Base Pet 7', type: 'Base', owned: false },
-      { name: 'Base Pet 8', type: 'Base', owned: false },
-      { name: 'Base Pet 9', type: 'Base', owned: false },
-      { name: 'Base Pet 10', type: 'Base', owned: false },
-      { name: 'Base Pet 11', type: 'Base', owned: false },
-      { name: 'Base Pet 12', type: 'Base', owned: false },
-      { name: 'Base Pet 13', type: 'Base', owned: false },
-      { name: 'Base Pet 14', type: 'Base', owned: false },
-      { name: 'Base Pet 15', type: 'Base', owned: false },
-      { name: 'Base Pet 16', type: 'Base', owned: false },
-      { name: 'Base Pet 17', type: 'Base', owned: false },
-      { name: 'Base Pet 18', type: 'Base', owned: false },
-      { name: 'Base Pet 19', type: 'Base', owned: false },
-      { name: 'Base Pet 20', type: 'Base', owned: false },
-      { name: 'Base Pet 21', type: 'Base', owned: false },
-      { name: 'Base Pet 22', type: 'Base', owned: false },
-      { name: 'Base Pet 23', type: 'Base', owned: false },
-      { name: 'Base Pet 24', type: 'Base', owned: false },
-      { name: 'Base Pet 25', type: 'Base', owned: false },
-      { name: 'Base Pet 26', type: 'Base', owned: false },
-      { name: 'Base Pet 27', type: 'Base', owned: false },
-      { name: 'Base Pet 28', type: 'Base', owned: false },
-      { name: 'Base Pet 29', type: 'Base', owned: false },
-      { name: 'Base Pet 30', type: 'Base', owned: false },
-      { name: 'Base Pet 31', type: 'Base', owned: false },
-      { name: 'Base Pet 32', type: 'Base', owned: false },
-      { name: 'Base Pet 33', type: 'Base', owned: false },
-      { name: 'Base Pet 34', type: 'Base', owned: false },
-      { name: 'Base Pet 35', type: 'Base', owned: false },
-      { name: 'Base Pet 36', type: 'Base', owned: false },
-      { name: 'Base Pet 37', type: 'Base', owned: false },
-      { name: 'Base Pet 38', type: 'Base', owned: false },
-      { name: 'Base Pet 39', type: 'Base', owned: false },
-      { name: 'Base Pet 40', type: 'Base', owned: false },
-      { name: 'Base Pet 41', type: 'Base', owned: false },
-      { name: 'Base Pet 42', type: 'Base', owned: false },
-      { name: 'Base Pet 43', type: 'Base', owned: false },
-      { name: 'Base Pet 44', type: 'Base', owned: false },
-      { name: 'Base Pet 45', type: 'Base', owned: false },
-      { name: 'Base Pet 46', type: 'Base', owned: false },
-      { name: 'Base Pet 47', type: 'Base', owned: false },
-      { name: 'Base Pet 48', type: 'Base', owned: false },
-      { name: 'Base Pet 49', type: 'Base', owned: false },
-      { name: 'Base Pet 50', type: 'Base', owned: false },
-    ];
-    const mountsData = [
-      { name: 'Wolf Mount', type: 'Base_mount', owned: true },
-      { name: 'Tiger Mount', type: 'Base_mount', owned: false },
-      { name: 'Panda Mount', type: 'Magic_mount', owned: false },
-      { name: 'Lion Mount', type: 'Quest_mount', owned: true },
-      { name: 'Fox Mount', type: 'Special_mount', owned: false },
-      { name: 'Dragon Mount', type: 'Base_mount', owned: false },
-      { name: 'Unicorn Mount', type: 'Magic_mount', owned: false },
-      { name: 'Phoenix Mount', type: 'Quest_mount', owned: false },
-      { name: 'Gryphon Mount', type: 'Wacky_mount', owned: false },
-      { name: 'Kraken Mount', type: 'Special_mount', owned: false },
-      { name: 'Hydra Mount', type: 'Base_mount', owned: false },
-      { name: 'Minotaur Mount', type: 'Magic_mount', owned: false },
-      { name: 'Centaur Mount', type: 'Quest_mount', owned: false },
-      { name: 'Pegasus Mount', type: 'Wacky_mount', owned: false },
-      { name: 'Chimera Mount', type: 'Special_mount', owned: false },
-    ];
-    function getActivePetsFilters() {
-      const filters = Array.from(document.querySelectorAll('#pets-filters input[type=checkbox]:checked')).map(cb => cb.value);
-      return filters;
-    }
-    // --- Expand/Collapse logic ---
-    const PETS_SHOWN = 60; // Increased to show more pets before expand button
-    let expandedSections = {};
-    function renderPetsAndMounts() {
-      const filters = getActivePetsFilters();
-      const hideMissing = document.getElementById('hide-missing')?.checked;
-      const petsSection = document.getElementById('pets-section');
-      petsSection.innerHTML = '';
-      
-      // --- Pets ---
-      const petTypes = ['Base', 'Magic', 'Quest', 'Wacky', 'Special'];
-      petTypes.forEach(type => {
-        if (!filters.includes(type)) return;
-        const group = petsData.filter(p => p.type === type && (!hideMissing || p.owned));
-        if (group.length === 0) return;
-        
-        const section = document.createElement('div');
-        section.className = 'pet-section';
-        
-        // Use Russian titles to match the user's HTML
-        let title = type;
-        if (type === 'Wacky') title = 'Дурацкие';
-        else if (type === 'Base') title = 'Обычные';
-        else if (type === 'Magic') title = 'Из Волшебного эликсира';
-        else if (type === 'Quest') title = 'Квестовые';
-        else if (type === 'Special') title = 'Особые';
-        
-        section.innerHTML = `<div class='pet-section-title'>${title}</div>`;
-        
-        const container = document.createElement('div');
-        container.className = 'd-inline-flex flex-column';
-        
-        const row = document.createElement('div');
-        row.className = 'pet-row d-flex';
-        
-        let showAll = expandedSections['pet_'+type];
-        const toShow = showAll ? group : group.slice(0, PETS_SHOWN);
-        
-        toShow.forEach(pet => {
-          const groupDiv = document.createElement('div');
-          groupDiv.className = 'pet-group';
-          
-          const wrapper = document.createElement('div');
-          wrapper.className = 'item-wrapper';
-          wrapper.id = crypto.randomUUID();
-          
-          const slot = document.createElement('div');
-          slot.className = `item pet-slot transition ${pet.owned ? 'owned' : 'item-empty'}`;
-          
-          if (pet.owned) {
-            slot.innerHTML = `<img src="static/icons/imgi_11_default.svg" alt="${pet.name}" class="pixel-art item-content">`;
-          } else {
-            slot.innerHTML = `<img src="https://habitica-assets.s3.amazonaws.com/mobileApp/images/PixelPaw.png" alt="${pet.name}" class="pixel-art item-content GreyedOut">`;
-          }
-          
-          wrapper.appendChild(slot);
-          groupDiv.appendChild(wrapper);
-          row.appendChild(groupDiv);
-        });
-        
-        container.appendChild(row);
-        section.appendChild(container);
-        
-        if (group.length > PETS_SHOWN) {
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-flat btn-show-more mt-2 mb-3 expand-btn';
-          btn.innerHTML = `<span class="button-text">${showAll ? 'свернуть' : 'развернуть'}</span>`;
-          btn.onclick = () => { 
-            expandedSections['pet_'+type] = !showAll; 
-            renderPetsAndMounts(); 
-          };
-          section.appendChild(btn);
-        }
-        
-        petsSection.appendChild(section);
-      });
-      
-      // --- Mounts ---
-      const mountTypes = ['Base_mount', 'Magic_mount', 'Quest_mount', 'Wacky_mount', 'Special_mount'];
-      mountTypes.forEach(type => {
-        if (!filters.includes(type)) return;
-        const group = mountsData.filter(m => m.type === type && (!hideMissing || m.owned));
-        if (group.length === 0) return;
-        
-        const section = document.createElement('div');
-        section.className = 'pet-section';
-        
-        // Use Russian titles for mounts too
-        let title = type.replace('_mount','');
-        if (title === 'Wacky') title = 'Дурацкие';
-        else if (title === 'Base') title = 'Обычные';
-        else if (title === 'Magic') title = 'Из Волшебного эликсира';
-        else if (title === 'Quest') title = 'Квестовые';
-        else if (title === 'Special') title = 'Особые';
-        
-        section.innerHTML = `<div class='pet-section-title'>${title}</div>`;
-        
-        const container = document.createElement('div');
-        container.className = 'd-inline-flex flex-column';
-        
-        const row = document.createElement('div');
-        row.className = 'pet-row d-flex';
-        
-        let showAll = expandedSections['mount_'+type];
-        const toShow = showAll ? group : group.slice(0, PETS_SHOWN);
-        
-        toShow.forEach(mount => {
-          const groupDiv = document.createElement('div');
-          groupDiv.className = 'pet-group';
-          
-          const wrapper = document.createElement('div');
-          wrapper.className = 'item-wrapper';
-          wrapper.id = crypto.randomUUID();
-          
-          const slot = document.createElement('div');
-          slot.className = `item pet-slot transition ${mount.owned ? 'owned' : 'item-empty'}`;
-          
-          if (mount.owned) {
-            slot.innerHTML = `<img src="static/icons/imgi_12_default.svg" alt="${mount.name}" class="pixel-art item-content">`;
-          } else {
-            slot.innerHTML = `<img src="https://habitica-assets.s3.amazonaws.com/mobileApp/images/PixelPaw.png" alt="${mount.name}" class="pixel-art item-content GreyedOut">`;
-          }
-          
-          wrapper.appendChild(slot);
-          groupDiv.appendChild(wrapper);
-          row.appendChild(groupDiv);
-        });
-        
-        container.appendChild(row);
-        section.appendChild(container);
-        
-        if (group.length > PETS_SHOWN) {
-          const btn = document.createElement('button');
-          btn.className = 'btn btn-flat btn-show-more mt-2 mb-3 expand-btn';
-          btn.innerHTML = `<span class="button-text">${showAll ? 'свернуть' : 'развернуть'}</span>`;
-          btn.onclick = () => { 
-            expandedSections['mount_'+type] = !showAll; 
-            renderPetsAndMounts(); 
-          };
-          section.appendChild(btn);
-        }
-        
-        petsSection.appendChild(section);
-      });
-    }
-    document.addEventListener('DOMContentLoaded', function() {
-      // Переключение фильтров при смене таба
-      document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', function() {
-          const tabName = this.dataset.tab;
-          document.getElementById('items-filters').style.display = tabName === 'items' ? '' : 'none';
-          document.getElementById('equipment-filters').style.display = tabName === 'equipment' ? '' : 'none';
-          document.getElementById('pets-filters').style.display = tabName === 'pets' ? '' : 'none';
-        });
-      });
-      // Слушатели фильтров питомцев и скакунов
-      document.querySelectorAll('#pets-filters input[type=checkbox]').forEach(cb => {
-        cb.addEventListener('change', renderPetsAndMounts);
-      });
-      document.getElementById('hide-missing')?.addEventListener('change', renderPetsAndMounts);
-      renderPetsAndMounts();
-    });
-
-    // Модалка 'Soon'
-    function openSoonModal() {
-      document.getElementById('soonModal').style.display = 'flex';
-    }
-    function closeSoonModal() {
-      document.getElementById('soonModal').style.display = 'none';
-    }
-    // Навесить обработчики на party-btn и group-btn
-    function setupSoonButtons() {
-      document.querySelectorAll('.party-btn, .group-btn').forEach(btn => {
-        btn.onclick = function(e) {
-          e.preventDefault();
-          openSoonModal();
-        };
-      });
-    }
-    document.addEventListener('DOMContentLoaded', setupSoonButtons);
-
     // Profile modal functions
     function openProfileModal() {
       const user = firebase.auth().currentUser;
-      if (user) {
-        document.getElementById('profileDisplayName').value = user.displayName || '';
-        document.getElementById('profileEmail').value = user.email || '';
-        if (user.photoURL) {
-          document.getElementById('profileAvatarPreview').src = user.photoURL;
-        }
-      }
+      if (!user) return;
+      document.getElementById('profileDisplayName').value = user.displayName || '';
+      document.getElementById('profileEmail').value = user.email || '';
+      document.getElementById('profileAvatarPreview').src = user.photoURL || 'https://www.gravatar.com/avatar/?d=mp';
       document.getElementById('profileModal').style.display = 'flex';
+      document.getElementById('profileAvatar').value = '';
     }
-
     function closeProfileModal() {
       document.getElementById('profileModal').style.display = 'none';
     }
-
     function previewAvatar(event) {
       const file = event.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById('profileAvatarPreview').src = e.target.result;
+        reader.onload = function(ev) {
+          document.getElementById('profileAvatarPreview').src = ev.target.result;
         };
         reader.readAsDataURL(file);
       }
     }
-
-    async function saveProfile(event) {
-      event.preventDefault();
-      
+    async function saveProfile(e) {
+      e.preventDefault();
       const user = firebase.auth().currentUser;
-      if (!user) {
-        alert('No user logged in');
-        return;
-      }
-
+      if (!user) return;
       const displayName = document.getElementById('profileDisplayName').value;
-      const avatarFile = document.getElementById('profileAvatar').files[0];
-
-      try {
-        let photoURL = user.photoURL;
-
-        // Upload avatar if selected
-        if (avatarFile) {
-          const storageRef = firebase.storage().ref();
-          const avatarRef = storageRef.child(`avatars/${user.uid}/${Date.now()}_${avatarFile.name}`);
-          const snapshot = await avatarRef.put(avatarFile);
-          photoURL = await snapshot.ref.getDownloadURL();
-        }
-
-        // Update profile
-        await user.updateProfile({
-          displayName: displayName,
-          photoURL: photoURL
-        });
-
-        // Update sidebar avatar if exists
-        const sidebarAvatar = document.getElementById('sidebarAvatar');
-        if (sidebarAvatar && photoURL) {
-          sidebarAvatar.innerHTML = `<img src="${photoURL}" alt="Avatar" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
-        }
-
-        // Save to Firestore
-        await firestore.collection('users').doc(user.uid).update({
-          displayName: displayName,
-          photoURL: photoURL
-        });
-
-        closeProfileModal();
-        alert('Profile updated successfully!');
-      } catch (error) {
-        console.error('Error updating profile:', error);
-        alert('Error updating profile: ' + error.message);
+      let photoURL = user.photoURL;
+      const fileInput = document.getElementById('profileAvatar');
+      const file = fileInput.files[0];
+      if (file) {
+        const storageRef = firebase.storage().ref();
+        const avatarRef = storageRef.child('avatars/' + user.uid + '_' + Date.now());
+        await avatarRef.put(file);
+        photoURL = await avatarRef.getDownloadURL();
       }
+      // Обновить профиль пользователя
+      await user.updateProfile({ displayName, photoURL });
+      // Сохранить в Firestore
+      if (window.firestore) {
+        await firestore.collection('users').doc(user.uid).set({
+          displayName,
+          photoURL,
+          email: user.email
+        }, { merge: true });
+      }
+      closeProfileModal();
     }
-
-    // Add click handler to settings button
     document.addEventListener('DOMContentLoaded', function() {
-      const settingsBtn = document.querySelector('.icon-btn i.fa-cog').parentElement;
-      if (settingsBtn) {
+      const headerActions = document.querySelector('.header-actions');
+      if (headerActions) {
+        const settingsBtn = headerActions.querySelector('.fa-cog').parentElement;
         settingsBtn.onclick = openProfileModal;
       }
     });
-
-    // Firebase initialization and user data loading
-    let userGameData = {
-      ownedItems: []
-    };
-
-    // Load user game data from Firebase
-    async function loadUserGameData(userId) {
-      try {
-        console.log('Loading user data for userId:', userId);
-        const doc = await firestore.collection('users').doc(userId).get();
-        if (doc.exists) {
-          const data = doc.data();
-          console.log('Raw data from Firebase:', data);
-          if (data.gameState) {
-            // Load ownedItems from gameState
-            userGameData.ownedItems = data.gameState.ownedItems || [];
-            console.log('Loaded ownedItems:', userGameData.ownedItems);
-            // Update inventory display with owned items
-            renderInventoryItems();
-            renderEquipment();
-          } else {
-            console.log('No gameState found in data');
-          }
-        } else {
-          console.log('No document found for user');
-        }
-      } catch (error) {
-        console.error('Error loading user data:', error);
-      }
-    }
-
-    // Check authentication state and load data
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        console.log('User authenticated in inventory:', user.email);
-        loadUserGameData(user.uid);
-      } else {
-        console.log('User not authenticated in inventory');
-        // Use default empty data
-        userGameData = { ownedItems: [] };
-        renderInventoryItems();
-        renderEquipment();
-      }
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-  const headerActions = document.querySelector('.header-actions');
-  if (headerActions) {
-    const settingsBtn = headerActions.querySelector('.fa-cog').parentElement;
-    settingsBtn.onclick = openProfileModal;
-  }
-});
-    // Special rewards data for comparison (same as in dashboard.html)
-    const specialRewardsData = [
-      {
-        id: 101,
-        title: "Spear of Destiny",
-        icon: "static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png"
-      },
-      {
-        id: 102,
-        title: "Pink Bow",
-        icon: "static/icons/imgi_3_shop_armor_special_summer2025Warrior.png"
-      },
-      {
-        id: 103,
-        title: "Scallop Helm",
-        icon: "static/icons/imgi_4_shop_head_special_summer2025Warrior.png"
-      },
-      {
-        id: 104,
-        title: "Blue Shell",
-        icon: "static/icons/imgi_5_shop_shield_special_summer2025Warrior.png"
-      },
-      {
-        id: 105,
-        title: "Magic Wand",
-        icon: "static/icons/imgi_6_shop_weapon_warrior_0.png"
-      },
-      {
-        id: 106,
-        title: "Crab Mount",
-        icon: "static/icons/imgi_7_shop_armor_warrior_1.png"
-      },
-      {
-        id: 107,
-        title: "Wooden Shield",
-        icon: "static/icons/imgi_8_shop_shield_warrior_1.png"
-      },
-      {
-        id: 108,
-        title: "Viking Helm",
-        icon: "static/icons/imgi_9_shop_head_warrior_1.png"
-      },
-      {
-        id: 109,
-        title: "Potion of Wisdom",
-        icon: "static/icons/imgi_10_shop_potion.png"
-      },
-      {
-        id: 110,
-        title: "Treasure Chest",
-        icon: "static/icons/imgi_11_shop_armoire.gif"
-      }
-    ];
   </script>
-<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
 </body>
 </html> 
