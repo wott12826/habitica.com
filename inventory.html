@@ -1362,46 +1362,64 @@
       const hideMissing = document.getElementById('hide-missing')?.checked;
       
       // Render pets
-      const petsTitle = document.createElement('h3');
+      const petsTitle = document.createElement('div');
+      petsTitle.className = 'pet-section-title';
       petsTitle.textContent = 'Pets';
-      petsTitle.style.cssText = 'margin-bottom: 1rem; color: #6c5ce7; font-size: 1.2rem;';
       petsSection.appendChild(petsTitle);
       
+      const petsSectionDiv = document.createElement('div');
+      petsSectionDiv.className = 'pet-section';
+      
       const petsGrid = document.createElement('div');
-      petsGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem; margin-bottom: 2rem;';
+      petsGrid.className = 'pet-grid';
       
       const petItems = petsData.filter(item => item.type === 'pet');
       petItems.forEach(pet => {
         if (hideMissing && !pet.owned) return;
         
+        const petGroup = document.createElement('div');
+        petGroup.className = 'pet-group';
+        
         const petSlot = document.createElement('div');
         petSlot.className = pet.owned ? 'pet-slot owned' : 'pet-slot item-empty';
         petSlot.innerHTML = `<img src="${pet.icon}" alt="${pet.name}" style="width:40px;height:40px;">`;
-        petsGrid.appendChild(petSlot);
+        
+        petGroup.appendChild(petSlot);
+        petsGrid.appendChild(petGroup);
       });
       
-      petsSection.appendChild(petsGrid);
+      petsSectionDiv.appendChild(petsGrid);
+      petsSection.appendChild(petsSectionDiv);
       
       // Render mounts
-      const mountsTitle = document.createElement('h3');
+      const mountsTitle = document.createElement('div');
+      mountsTitle.className = 'pet-section-title';
       mountsTitle.textContent = 'Mounts';
-      mountsTitle.style.cssText = 'margin-bottom: 1rem; color: #6c5ce7; font-size: 1.2rem;';
       petsSection.appendChild(mountsTitle);
       
+      const mountsSectionDiv = document.createElement('div');
+      mountsSectionDiv.className = 'pet-section';
+      
       const mountsGrid = document.createElement('div');
-      mountsGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem;';
+      mountsGrid.className = 'pet-grid';
       
       const mountItems = petsData.filter(item => item.type === 'mount');
       mountItems.forEach(mount => {
         if (hideMissing && !mount.owned) return;
         
+        const mountGroup = document.createElement('div');
+        mountGroup.className = 'pet-group';
+        
         const mountSlot = document.createElement('div');
         mountSlot.className = mount.owned ? 'pet-slot owned' : 'pet-slot item-empty';
         mountSlot.innerHTML = `<img src="${mount.icon}" alt="${mount.name}" style="width:40px;height:40px;">`;
-        mountsGrid.appendChild(mountSlot);
+        
+        mountGroup.appendChild(mountSlot);
+        mountsGrid.appendChild(mountGroup);
       });
       
-      petsSection.appendChild(mountsGrid);
+      mountsSectionDiv.appendChild(mountsGrid);
+      petsSection.appendChild(mountsSectionDiv);
     }
 
     // Переключение табов Inventory
