@@ -116,60 +116,26 @@
   display: inline-block;
 }
 
-.rewards-user-list, .rewards-special-list {
+.rewards-user-list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(90px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.2rem;
   margin-bottom: 1.2rem;
-  overflow-x: auto;
-}
-.reward-card {
-  min-width: 90px;
-  max-width: 120px;
-  margin: 0 auto;
 }
 @media (max-width: 600px) {
-  .rewards-user-list, .rewards-special-list {
+  .rewards-user-list {
     grid-template-columns: 1fr;
   }
 }
 
-.task-col-rewards {
-  min-width: 170% !important;
-  max-width: 480px !important;
-  width: 100% !important;
-  flex: 0 0 440px !important;
+.rewards-special-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+  margin-bottom: 1.2rem;
 }
-@media (max-width: 900px) {
-  .task-col-rewards {
-    min-width: 100% !important;
-    max-width: 100% !important;
-    flex: 1 1 100% !important;
-  }
-}
-
-.tasks-grid {
-  display: flex;
-  flex-direction: row;
-  gap: 1.5rem;
-  overflow-x: auto;
-  padding-bottom: 1rem;
-}
-.task-col {
-  min-width: 320px;
-  max-width: 400px;
-  flex: 0 0 340px;
-}
-@media (max-width: 900px) {
-  .tasks-grid {
-    flex-direction: column;
-    gap: 1.2rem;
-    overflow-x: unset;
-    padding-bottom: 0;
-  }
-  .task-col {
-    min-width: 0;
-    max-width: 100%;
-    flex: 1 1 100%;
+@media (max-width: 600px) {
+  .rewards-special-list {
+    grid-template-columns: 1fr;
   }
 }
