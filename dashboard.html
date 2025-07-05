@@ -951,9 +951,12 @@
     }
     .rewards-user-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.2rem;
       margin-bottom: 1.2rem;
+    }
+    @media (max-width: 600px) {
+      .rewards-user-list { grid-template-columns: 1fr; }
     }
     .rewards-self-block {
       background: #fff;
