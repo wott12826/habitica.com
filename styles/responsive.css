@@ -95,6 +95,10 @@
   display: none;
 }
 @media (max-width: 900px) {
+
+  .header.nav-open .profile .close-sidebar {
+    display: block;
+  }
   .profile .close-sidebar {
     display: block;
     margin-right: 39% !important;
