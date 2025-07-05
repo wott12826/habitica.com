@@ -115,27 +115,3 @@
   margin-right: 0.5em;
   display: inline-block;
 }
-
-.rewards-user-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-}
-@media (max-width: 600px) {
-  .rewards-user-list {
-    grid-template-columns: 1fr;
-  }
-}
-
-.rewards-special-list {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.2rem;
-  margin-bottom: 1.2rem;
-}
-@media (max-width: 600px) {
-  .rewards-special-list {
-    grid-template-columns: 1fr;
-  }
-}
