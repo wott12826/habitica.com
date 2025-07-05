@@ -480,15 +480,8 @@
 
     // Update balance display
     function updateDisplay() {
-      const gemsElement = document.getElementById('gems');
-      const coinsElement = document.getElementById('coins');
-      const gemsProfile = document.getElementById('gemsProfile');
-      const coinsProfile = document.getElementById('coinsProfile');
-
-      if (gemsElement) gemsElement.textContent = gameState.gems;
-      if (coinsElement) coinsElement.textContent = gameState.coins;
-      if (gemsProfile) gemsProfile.textContent = gameState.gems;
-      if (coinsProfile) coinsProfile.textContent = gameState.coins;
+      document.getElementById('gems').textContent = gameState.gems;
+      document.getElementById('coins').textContent = gameState.coins;
     }
 
     // Load user data from Firebase

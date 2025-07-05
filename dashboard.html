@@ -1118,31 +1118,27 @@
 </head>
 <body>
   <header class="header">
-    <button class="burger" aria-label="Open menu">&#9776;</button>
+    <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
     <div class="header-inner">
-      <div class="sidebar-header">
-        <span class="sidebar-title">Magic</span>
-        <button class="close-sidebar" aria-label="Close menu">&times;</button>
-      </div>
-      <nav class="sidebar-nav">
-        <a href="#" class="active">Tasks</a>
-        <a href="#">Inventory</a>
-        <a href="#">Party</a>
-        <a href="#">Guild</a>
-        <a href="#">$MAGIC</a>
-      </nav>
-      <div class="sidebar-footer">
-        <span class="sidebar-stat">💎 <span id="gems">1</span></span>
-        <span class="sidebar-stat">🔔 <span id="notifications">3</span></span>
-        <span class="sidebar-stat">⚙️</span>
+      <a href="dashboard.html" class="logo">Magic</a>
+      <nav class="nav">
+        <a href="dashboard.html" class="active">Tasks</a>
+        <a href="inventory.html">Inventory</a>
+        <a href="#" id="openPartyModal">Party</a>
+        <a href="group-plans.html">Guild</a>
+        <a href="https://dexscreener.com/solana/CYNVdwET5AQpVD9zhD2w8HbFxddHqxQoCrPck3DFuiZy" target="_blank" class="nav-link buy-habitica-link">$MAGIC</a>     </nav>
+      <div class="header-actions">
+        <span class="stat"><i class="fa-solid fa-gem"></i> <span id="gems">0</span></span>
+        <span class="stat"><i class="fa-solid fa-coins"></i> <span id="coins">0</span></span>
+        <button class="icon-btn"><i class="fa-solid fa-bell"></i></button>
+<button class="icon-btn"><i class="fa-solid fa-cog"></i></button>        
+
       </div>
     </div>
-    <div class="sidebar-backdrop"></div>
   </header>
   <div class="dashboard">
     <aside class="profile">
-      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>
-      <div>
+      <div class="avatar" id="sidebarAvatar"><i class="fa-solid fa-user"></i></div>      <div>
         <div class="username" id="userDisplayName">Guest</div>
         <div class="userid" id="userEmail">guest@magic.com</div>
         <div class="level">Level <span id="level">1</span> Warrior</div>
@@ -2766,36 +2762,6 @@ function setupSoonButtons() {
 }
 document.addEventListener('DOMContentLoaded', setupSoonButtons);
 </script>
-<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}const closeBtn=document.getElementById("closeSidebarBtn");if(closeBtn&&h){closeBtn.addEventListener("click",function(){h.classList.remove("nav-open");document.body.style.overflow="";});}});</script>
-<script>
-  // JS
-document.addEventListener('DOMContentLoaded', function() {
-  const header = document.querySelector('.header');
-  const burger = document.querySelector('.burger');
-  const closeBtn = document.querySelector('.close-sidebar');
-  const backdrop = document.querySelector('.sidebar-backdrop');
-  // Открыть меню
-  burger.addEventListener('click', function() {
-    header.classList.add('nav-open');
-    document.body.style.overflow = 'hidden';
-  });
-  // Закрыть меню
-  closeBtn.addEventListener('click', function() {
-    header.classList.remove('nav-open');
-    document.body.style.overflow = '';
-  });
-  backdrop.addEventListener('click', function() {
-    header.classList.remove('nav-open');
-    document.body.style.overflow = '';
-  });
-  // Закрывать меню по клику на ссылку
-  document.querySelectorAll('.sidebar-nav a').forEach(link => {
-    link.addEventListener('click', function() {
-      header.classList.remove('nav-open');
-      document.body.style.overflow = '';
-    });
-  });
-});
-</script>
+<script>document.addEventListener("DOMContentLoaded",function(){const b=document.getElementById("burgerBtn"),h=document.querySelector(".header");if(b&&h){b.addEventListener("click",()=>{h.classList.toggle("nav-open")});}});</script>
 </body>
 </html>
