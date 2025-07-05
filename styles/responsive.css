@@ -135,7 +135,7 @@
 }
 
 .task-col-rewards {
-  min-width: 420px !important;
+  min-width: 170% !important;
   max-width: 480px !important;
   width: 100% !important;
   flex: 0 0 440px !important;
