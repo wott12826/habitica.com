@@ -135,15 +135,15 @@
 }
 
 .task-col-rewards {
-  min-width: 420px;
-  max-width: 480px;
-  width: 100%;
-  flex: 0 0 440px;
+  min-width: 420px !important;
+  max-width: 480px !important;
+  width: 100% !important;
+  flex: 0 0 440px !important;
 }
 @media (max-width: 900px) {
   .task-col-rewards {
-    min-width: 100%;
-    max-width: 100%;
-    flex: 1 1 100%;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
   }
 }
