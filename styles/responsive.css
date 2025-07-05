@@ -110,11 +110,12 @@
     z-index: 2001;
     flex-direction: column;
     align-items: flex-start;
-    padding: 2.5rem 2rem 2rem 2rem;
-    gap: 2.2rem;
+    padding: 2.5rem 2.2rem 2.2rem 2.2rem;
+    gap: 2.5rem;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(.4,0,.2,1);
     display: flex;
+    box-sizing: border-box;
   }
   .header.nav-open .header-inner {
     transform: translateX(0);
@@ -122,8 +123,8 @@
   .header-inner .close-sidebar {
     display: block;
     position: absolute;
-    right: 22px;
-    top: 22px;
+    right: 18px;
+    top: 18px;
     background: none;
     border: none;
     font-size: 2.2rem;
@@ -137,6 +138,8 @@
     font-weight: 800;
     margin: 0 0 1.5rem 0;
     text-align: left;
+    width: 100%;
+    display: block;
   }
   .header-inner .nav {
     display: flex;
@@ -151,13 +154,18 @@
     font-weight: 700;
     text-decoration: none;
     opacity: 1;
-    padding: 0.2rem 0;
-    transition: color 0.2s;
+    padding: 0.2rem 0.5rem;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+  }
+  .header-inner .nav a.active, .header-inner .nav a:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
   }
   .header-inner .header-actions {
     display: flex;
     flex-direction: row;
-    gap: 1.2rem;
+    gap: 1.5rem;
     width: 100%;
     margin-top: 1.5rem;
     justify-content: flex-start;
