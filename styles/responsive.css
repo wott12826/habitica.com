@@ -99,3 +99,24 @@
     display: block;
   }
 }
+
+.header-inner .close-sidebar {
+  display: none;
+}
+@media (max-width: 900px) {
+  .header-inner {
+    position: relative;
+  }
+  .header-inner .close-sidebar {
+    display: block;
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #fff;
+    z-index: 1301;
+    cursor: pointer;
+  }
+}
