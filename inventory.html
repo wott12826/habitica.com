@@ -1025,16 +1025,13 @@
     function updateDisplay() {
       const gemsElement = document.getElementById('gems');
       const coinsElement = document.getElementById('coins');
-      
-      if (gemsElement && coinsElement) {
-        gemsElement.textContent = gameState.gems;
-        coinsElement.textContent = gameState.coins;
-        console.log('Balance updated - Gems:', gameState.gems, 'Coins:', gameState.coins);
-      } else {
-        console.error('Balance elements not found!');
-        console.log('gems element:', gemsElement);
-        console.log('coins element:', coinsElement);
-      }
+      const gemsProfile = document.getElementById('gemsProfile');
+      const coinsProfile = document.getElementById('coinsProfile');
+
+      if (gemsElement) gemsElement.textContent = gameState.gems;
+      if (coinsElement) coinsElement.textContent = gameState.coins;
+      if (gemsProfile) gemsProfile.textContent = gameState.gems;
+      if (coinsProfile) coinsProfile.textContent = gameState.coins;
     }
 
     // Initialize display when page loads
