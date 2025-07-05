@@ -107,3 +107,11 @@
     font-size: 1.2em;
   }
 }
+
+.nav .nav-social-icon, .footer .nav-social-icon {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+  display: inline-block;
+}
