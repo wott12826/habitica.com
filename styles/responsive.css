@@ -147,3 +147,29 @@
     flex: 1 1 100% !important;
   }
 }
+
+.tasks-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
+.task-col {
+  min-width: 320px;
+  max-width: 400px;
+  flex: 0 0 340px;
+}
+@media (max-width: 900px) {
+  .tasks-grid {
+    flex-direction: column;
+    gap: 1.2rem;
+    overflow-x: unset;
+    padding-bottom: 0;
+  }
+  .task-col {
+    min-width: 0;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
