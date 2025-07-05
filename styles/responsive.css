@@ -118,7 +118,7 @@
 
 .rewards-user-list, .rewards-special-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.2rem;
   margin-bottom: 1.2rem;
 }
