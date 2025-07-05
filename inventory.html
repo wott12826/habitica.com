@@ -926,29 +926,13 @@
   <script>
     // Game state for balance display
     let gameState = { gems: 0, coins: 0 };
-
+  
     // Update balance display
     function updateDisplay() {
-      const gemsElement = document.getElementById('gems');
-      const coinsElement = document.getElementById('coins');
-      
-      if (gemsElement && coinsElement) {
-        gemsElement.textContent = gameState.gems;
-        coinsElement.textContent = gameState.coins;
-        console.log('Balance updated - Gems:', gameState.gems, 'Coins:', gameState.coins);
-      } else {
-        console.error('Balance elements not found!');
-        console.log('gems element:', gemsElement);
-        console.log('coins element:', coinsElement);
-      }
+      document.getElementById('gems').textContent = gameState.gems;
+      document.getElementById('coins').textContent = gameState.coins;
     }
-
-    // Initialize display when page loads
-    document.addEventListener('DOMContentLoaded', function() {
-      console.log('Page loaded, initializing balance display');
-      updateDisplay();
-    });
-
+  
     // Load user data from Firebase
     function loadUserGameData(userId) {
       if (!userId || !window.firestore) {
@@ -973,32 +957,29 @@
           updateDisplay();
         })
         .catch((error) => {
-          console.error('Error loading user data:', error);
+          console.error('Error loading game data:', error);
+          console.log('Using default values due to error');
           updateDisplay();
         });
     }
-
-    // Check authentication state and load data
+  
+    // Check authentication state and load balance
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log('User authenticated in inventory:', user.email);
-        loadUserGameData(user.uid);
+        console.log('User authenticated:', user.email, 'UID:', user.uid);
+        if (user.uid) {
+          loadUserGameData(user.uid);
+        } else {
+          console.error('No user UID available');
+          updateDisplay();
+        }
       } else {
-        console.log('User not authenticated in inventory');
-        // Use default empty data
-        gameState = { gems: 0, coins: 0 };
+        console.log('User is signed out - showing default balance');
         updateDisplay();
       }
     });
-
-    // Refresh balance every 30 seconds to keep it updated
-    setInterval(() => {
-      const user = firebase.auth().currentUser;
-      if (user) {
-        loadUserGameData(user.uid);
-      }
-    }, 30000);
-
+  </script>
+<script>
     function signOut() {
       localStorage.setItem('manualSignOut', 'true');
       if (window.firebase && firebase.auth) {
