@@ -63,10 +63,11 @@
     height: 100% !important;
     background:#6c5ce7;
     flex-direction: column;
-    padding-top: 4rem;
+    padding-top: 4rem !important;
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
     transition: left 0.3s;
     z-index: 1000;
+    margin-top: 20% !important;
   }
   .header.nav-open .header-inner,
   .header.nav-open .nav-container { left: 0; }
