@@ -37,6 +37,20 @@
   }
 }
 
+/* Social media icons in navigation */
+.nav .nav-link i {
+  margin-right: 0.5rem;
+  font-size: 1.1em;
+}
+
+.nav .nav-link .fab.fa-telegram {
+  color: #0088cc;
+}
+
+.nav .nav-link .fab.fa-twitter {
+  color: #1da1f2;
+}
+
 /* Mobile sidebar navigation */
 .burger {
   display: none;
@@ -78,5 +92,18 @@
     align-items: flex-start;
     gap: 1rem;
     margin-top: 20% !important;
+  }
+  
+  /* Mobile styles for social links */
+  .nav .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0;
+    font-size: 1.1rem;
+  }
+  
+  .nav .nav-link i {
+    margin-right: 0.8rem;
+    font-size: 1.2em;
   }
 }
