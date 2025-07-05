@@ -1303,6 +1303,107 @@
       });
     });
 
+    // Equipment data
+    const equipmentData = [
+      { id: 201, name: "Magic Sword", category: "Weapon", icon: "static/icons/imgi_2_shop_weapon_special_summer2025Warrior.png", owned: false },
+      { id: 202, name: "Shield of Protection", category: "Offhand", icon: "static/icons/imgi_5_shop_shield_special_summer2025Warrior.png", owned: false },
+      { id: 203, name: "Viking Helm", category: "Head", icon: "static/icons/imgi_9_shop_head_warrior_1.png", owned: false },
+      { id: 204, name: "Magic Armor", category: "Armor", icon: "static/icons/imgi_3_shop_armor_special_summer2025Warrior.png", owned: false },
+      { id: 205, name: "Crown", category: "HeadAccessory", icon: "static/icons/imgi_64_headAccessory_special_pinkHeadband.png", owned: false },
+      { id: 206, name: "Magic Glasses", category: "Eyewear", icon: "static/icons/imgi_63_eyewear_special_greenTopFrame.png", owned: false },
+      { id: 207, name: "Cape", category: "Back", icon: "static/icons/imgi_55_background_purple.png", owned: false }
+    ];
+
+    // Pets and mounts data
+    const petsData = [
+      { id: 301, name: "Dragon", category: "Base", type: "pet", icon: "static/icons/imgi_1_swords-CvGDZwaq.png", owned: false },
+      { id: 302, name: "Unicorn", category: "Magic", type: "pet", icon: "static/icons/imgi_66_swords@3x-Ba5Csmf-.png", owned: false },
+      { id: 303, name: "Phoenix", category: "Special", type: "pet", icon: "static/icons/imgi_65_swords@2x-DEGP_Poy.png", owned: false },
+      { id: 304, name: "Dragon Mount", category: "Base", type: "mount", icon: "static/icons/imgi_7_shop_armor_warrior_1.png", owned: false },
+      { id: 305, name: "Unicorn Mount", category: "Magic", type: "mount", icon: "static/icons/imgi_6_shop_weapon_warrior_0.png", owned: false }
+    ];
+
+    function renderEquipmentItems() {
+      const equipmentList = document.getElementById('equipment-list');
+      if (!equipmentList) return;
+      
+      equipmentList.innerHTML = '';
+      const filters = getActiveFilters();
+      let filtered = equipmentData;
+      
+      if (filters.length > 0) {
+        filtered = equipmentData.filter(item => filters.includes(item.category));
+      }
+      
+      if (filtered.length === 0) {
+        equipmentList.innerHTML = '<div class="empty-state">No equipment found for selected filters.</div>';
+        return;
+      }
+      
+      filtered.forEach(item => {
+        const card = document.createElement('div');
+        card.className = item.owned ? 'item-card' : 'item-card locked';
+        
+        card.innerHTML = `
+          <div class="item-icon"><img src="${item.icon}" alt="${item.name}" style="width:40px;height:40px;"></div>
+          <div class="item-title">${item.name}</div>
+          <div class="item-desc">${item.category}</div>
+        `;
+        equipmentList.appendChild(card);
+      });
+    }
+
+    function renderPetsAndMounts() {
+      const petsSection = document.getElementById('pets-section');
+      if (!petsSection) return;
+      
+      petsSection.innerHTML = '';
+      const filters = getActiveFilters();
+      const hideMissing = document.getElementById('hide-missing')?.checked;
+      
+      // Render pets
+      const petsTitle = document.createElement('h3');
+      petsTitle.textContent = 'Pets';
+      petsTitle.style.cssText = 'margin-bottom: 1rem; color: #6c5ce7; font-size: 1.2rem;';
+      petsSection.appendChild(petsTitle);
+      
+      const petsGrid = document.createElement('div');
+      petsGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem; margin-bottom: 2rem;';
+      
+      const petItems = petsData.filter(item => item.type === 'pet');
+      petItems.forEach(pet => {
+        if (hideMissing && !pet.owned) return;
+        
+        const petSlot = document.createElement('div');
+        petSlot.className = pet.owned ? 'pet-slot owned' : 'pet-slot item-empty';
+        petSlot.innerHTML = `<img src="${pet.icon}" alt="${pet.name}" style="width:40px;height:40px;">`;
+        petsGrid.appendChild(petSlot);
+      });
+      
+      petsSection.appendChild(petsGrid);
+      
+      // Render mounts
+      const mountsTitle = document.createElement('h3');
+      mountsTitle.textContent = 'Mounts';
+      mountsTitle.style.cssText = 'margin-bottom: 1rem; color: #6c5ce7; font-size: 1.2rem;';
+      petsSection.appendChild(mountsTitle);
+      
+      const mountsGrid = document.createElement('div');
+      mountsGrid.style.cssText = 'display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 0.5rem;';
+      
+      const mountItems = petsData.filter(item => item.type === 'mount');
+      mountItems.forEach(mount => {
+        if (hideMissing && !mount.owned) return;
+        
+        const mountSlot = document.createElement('div');
+        mountSlot.className = mount.owned ? 'pet-slot owned' : 'pet-slot item-empty';
+        mountSlot.innerHTML = `<img src="${mount.icon}" alt="${mount.name}" style="width:40px;height:40px;">`;
+        mountsGrid.appendChild(mountSlot);
+      });
+      
+      petsSection.appendChild(mountsGrid);
+    }
+
     // Переключение табов Inventory
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.tab').forEach(tab => {
@@ -1311,7 +1412,32 @@
           this.classList.add('active');
           document.querySelectorAll('.tab-content').forEach(tc => tc.style.display = 'none');
           document.getElementById('tab-' + this.dataset.tab).style.display = '';
+          
+          // Show/hide appropriate filters
+          document.querySelectorAll('.filter-group').forEach(fg => fg.style.display = 'none');
+          if (this.dataset.tab === 'items') {
+            document.getElementById('items-filters').style.display = 'block';
+          } else if (this.dataset.tab === 'equipment') {
+            document.getElementById('equipment-filters').style.display = 'block';
+            renderEquipmentItems();
+          } else if (this.dataset.tab === 'pets') {
+            document.getElementById('pets-filters').style.display = 'block';
+            renderPetsAndMounts();
+          }
         });
+      });
+
+      // Add event listeners for filter changes
+      document.querySelectorAll('#equipment-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', renderEquipmentItems);
+      });
+      
+      document.querySelectorAll('#pets-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', renderPetsAndMounts);
+      });
+      
+      document.querySelectorAll('#items-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', renderInventoryItems);
       });
     });
 
