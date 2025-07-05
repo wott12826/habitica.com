@@ -133,3 +133,17 @@
     grid-template-columns: 1fr;
   }
 }
+
+.task-col-rewards {
+  min-width: 420px;
+  max-width: 480px;
+  width: 100%;
+  flex: 0 0 440px;
+}
+@media (max-width: 900px) {
+  .task-col-rewards {
+    min-width: 100%;
+    max-width: 100%;
+    flex: 1 1 100%;
+  }
+}
