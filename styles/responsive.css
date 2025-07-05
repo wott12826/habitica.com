@@ -98,9 +98,6 @@
   .profile {
     position: relative;
   }
-  .profile .close-sidebar {
-    display: none;
-  }
   .header.nav-open .profile .close-sidebar {
     display: block;
     position: absolute;
