@@ -97,5 +97,6 @@
 @media (max-width: 900px) {
   .profile .close-sidebar {
     display: block;
+    margin-right: 39% !important;
   }
 }
