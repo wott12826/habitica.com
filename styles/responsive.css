@@ -67,7 +67,6 @@
     box-shadow: 2px 0 8px rgba(0,0,0,0.1);
     transition: left 0.3s;
     z-index: 1000;
-    margin-top: 20% !important;
   }
   .header.nav-open .header-inner,
   .header.nav-open .nav-container { left: 0; }
